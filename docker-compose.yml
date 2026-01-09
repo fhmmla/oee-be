@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oee-modbus-backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - LICENSE_SECRET_KEY=${LICENSE_SECRET_KEY}
+      - LICENSE_IV=${LICENSE_IV}
+    volumes:
+      # Mount host machine-id for license validation
+      # PENTING: Ini membuat Machine ID sama di semua container pada host yang sama
+      - /etc/machine-id:/host-machine-id:ro
+    # Jika backend perlu akses ke network tertentu (misal Modbus gateway)
+    # network_mode: host
+    # Atau gunakan network custom:
+    # networks:
+    #   - modbus-network
+
+# Uncomment jika perlu custom network
+# networks:
+#   modbus-network:
+#     driver: bridge

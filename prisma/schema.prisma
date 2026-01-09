@@ -1,0 +1,233 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RoleUser {
+  ADMIN
+  VIEWER
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  email    String   @unique @db.VarChar(255)
+  password String   @db.VarChar(255)
+  role     RoleUser @default(VIEWER)
+
+  sessions Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("tbl_users")
+}
+
+model Session {
+  id        String   @id
+  userId    Int
+  expiresAt DateTime
+
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@map("tbl_sessions")
+
+}
+
+model LogHistory {
+  id            String  @id @default(uuid())
+  on_contact    Int?
+  alarm_contact Int?
+  temperature   String?
+  kwh           String?
+  capstan_speed String?
+  timestamp     DateTime @db.Timestamptz
+  machine_id    Int
+
+  machine Machine @relation(fields: [machine_id], references: [id])
+  @@map("tbl_log_history")
+}
+
+model Condition {
+  id               String  @id @default(uuid())
+  current_timestamp DateTime @db.Timestamptz
+  last_timstamp     DateTime? @db.Timestamptz
+  current_condition String
+  last_condition    String?
+  current_kwh       String
+  last_kwh          String?
+  machine_id        Int
+
+  machine Machine @relation(fields: [machine_id], references: [id])
+  @@map("tbl_condition")
+}
+
+model PowerMeter {
+  id         Int @id @default(autoincrement())
+  name       String
+  address    Int
+  gateway_id Int
+  mapping_id Int
+
+  gateway Gateway @relation(fields: [gateway_id], references: [id])
+  mapping Mapping @relation(fields: [mapping_id], references: [id])
+  machines Machine[]
+  @@map("tbl_power_meter")
+}
+
+model CapstanSpeed {
+  id         Int @id @default(autoincrement())
+  name       String
+  address    Int
+  gateway_id Int
+  mapping_id Int
+
+  gateway Gateway @relation(fields: [gateway_id], references: [id])
+  mapping Mapping @relation(fields: [mapping_id], references: [id])
+  machines Machine[]
+  @@map("tbl_capstan_speed")
+}
+
+model Gateway {
+  id       Int @id @default(autoincrement())
+  name     String
+  protocol String
+  config   Json
+
+  power_meters           PowerMeter[]
+  temp_sensors           TemperatureSensor[]
+  on_contact_sensors     OnContactSensor[]
+  alarm_contact_sensors  AlarmContactSensor[]
+  capstan_speeds         CapstanSpeed[]
+  @@map("tbl_gateway")
+}
+
+model Mapping {
+  id          Int @id @default(autoincrement())
+  type        String
+  params      Json
+
+  power_meters          PowerMeter[]
+  capstan_speeds        CapstanSpeed[]
+  temp_sensors          TemperatureSensor[]
+  on_contact_sensors    OnContactSensor[]
+  alarm_contact_sensors AlarmContactSensor[]
+  @@map("tbl_mapping")
+}
+
+model TemperatureSensor {
+  id         Int @id @default(autoincrement())
+  name       String
+  address    Int
+  gateway_id Int
+  mapping_id Int
+
+  gateway Gateway @relation(fields: [gateway_id], references: [id])
+  mapping Mapping @relation(fields: [mapping_id], references: [id])
+  machines Machine[]
+  @@map("tbl_temperature_sensor")
+}
+
+model OnContactSensor {
+  id         Int @id @default(autoincrement())
+  name       String
+  address    Int
+  gateway_id Int
+  mapping_id Int
+
+  gateway Gateway @relation(fields: [gateway_id], references: [id])
+  mapping Mapping @relation(fields: [mapping_id], references: [id])
+  machines Machine[]
+  @@map("tbl_on_contact_sensor")
+}
+
+model AlarmContactSensor {
+  id         Int @id @default(autoincrement())
+  name       String
+  address    Int
+  gateway_id Int
+  mapping_id Int
+
+  gateway Gateway @relation(fields: [gateway_id], references: [id])
+  mapping Mapping @relation(fields: [mapping_id], references: [id])
+  machines Machine[]
+  @@map("tbl_alarm_contact_sensor")
+}
+
+model Machine {
+  id                     Int @id @default(autoincrement())
+  name                   String
+  enabled                Boolean @default(true)
+  power_meter_id         Int
+  temperature_sensor_id  Int
+  on_contact_sensor_id   Int
+  alarm_contact_sensor_id Int
+  capstan_speed_id       Int
+
+  power_meter         PowerMeter         @relation(fields: [power_meter_id], references: [id])
+  temperature_sensor  TemperatureSensor  @relation(fields: [temperature_sensor_id], references: [id])
+  on_contact_sensor   OnContactSensor   @relation(fields: [on_contact_sensor_id], references: [id])
+  alarm_contact_sensor AlarmContactSensor @relation(fields: [alarm_contact_sensor_id], references: [id])
+  capstan_speed       CapstanSpeed       @relation(fields: [capstan_speed_id], references: [id])
+
+  logs       LogHistory[]
+  conditions Condition[]
+  run_hours  McRunHour[]
+  @@map("tbl_machine")
+}
+
+model McRunHour {
+  id                String  @id @default(uuid())
+  date              DateTime @db.Date
+  machine_id        Int
+  mc_run_h          String
+  mc_run_kwh        String
+  heat_up_h         String
+  heat_up_kwh       String
+  iddle_h           String
+  iddle_kwh         String
+  mc_production_h   String
+  mc_production_kwh String
+  is_one_block      Boolean
+
+  machine Machine @relation(fields: [machine_id], references: [id])
+  @@map("tbl_mc_run_hour")
+}
+
+model General {
+  key        String @id @db.VarChar(100)
+  c_name     String
+  c_logo     String
+  license_key String
+  log_freq   Int
+
+  @@map("tbl_general")
+}
+
+model Conversion {
+  key         String @id @db.VarChar(100)
+  co2_value  Int
+  cost_value Int
+
+  @@map("tbl_conversion")
+}
+
+model Smtp {
+  key       String @id @db.VarChar(100)
+  host     String
+  port     Int
+  email    String
+  password String
+
+  @@map("tbl_smtp")
+}
