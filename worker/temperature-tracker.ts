@@ -26,22 +26,40 @@ class TemperatureTracker {
 
   /**
    * Fetch HeatingUp timestamp from database and cache it
+   * FIXED: Now finds the FIRST HeatingUp after the last non-HeatingUp condition
+   * This ensures the 1-hour calculation starts from when HeatingUp actually began
    */
   private async fetchFromDatabase(machineId: number): Promise<void> {
     try {
-      const heatingUpCondition = await prisma.condition.findFirst({
+      // Step 1: Find the last condition that was NOT HeatingUp
+      const lastNonHeatingUp = await prisma.condition.findFirst({
         where: {
           machine_id: machineId,
-          current_condition: 'HeatingUp',
+          current_condition: { not: 'HeatingUp' },
         },
         orderBy: {
           current_timestamp: 'desc',
         },
       });
 
+      // Step 2: Find the FIRST HeatingUp condition after that
+      // This gives us when the continuous HeatingUp period started
+      const firstHeatingUp = await prisma.condition.findFirst({
+        where: {
+          machine_id: machineId,
+          current_condition: 'HeatingUp',
+          current_timestamp: { 
+            gt: lastNonHeatingUp?.current_timestamp || new Date(0) 
+          },
+        },
+        orderBy: {
+          current_timestamp: 'asc',  // ASC to get the FIRST one
+        },
+      });
+
       this.cache.set(machineId, {
         machineId,
-        heatingUpSince: heatingUpCondition ? new Date(heatingUpCondition.current_timestamp) : null,
+        heatingUpSince: firstHeatingUp ? new Date(firstHeatingUp.current_timestamp) : null,
         lastFetch: new Date(),
       });
     } catch (error) {
