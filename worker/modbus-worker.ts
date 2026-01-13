@@ -16,6 +16,7 @@ class ModbusWorker {
   private isRunning = false;
   private logFreq = 15; // Default 15 minutes
   private cronJob: any = null; // node-cron ScheduledTask
+  private freqCheckIntervalId: NodeJS.Timeout | null = null; // For checking log_freq changes
   private latestReadings: SensorReading[] = [];
 
   async start(): Promise<void> {
@@ -52,6 +53,9 @@ class ModbusWorker {
     // Setup cron job for LogHistory saves
     this.setupCronJob();
 
+    // Setup frequency watcher (checks every 1 minute for log_freq changes)
+    this.setupFrequencyWatcher();
+
     // Infinite loop for continuous sensor reading
     while (this.isRunning) {
       await this.executeCycle();
@@ -71,6 +75,13 @@ class ModbusWorker {
     if (this.cronJob) {
       this.cronJob.stop();
       logger.info('✓ Cron job stopped');
+    }
+
+    // Stop frequency watcher
+    if (this.freqCheckIntervalId) {
+      clearInterval(this.freqCheckIntervalId);
+      this.freqCheckIntervalId = null;
+      logger.info('✓ Frequency watcher stopped');
     }
   }
 
@@ -95,7 +106,8 @@ class ModbusWorker {
             const kwh = reading.kwh?.toString() || '0';
             
             // forceSnapshot=true ensures INSERT even if condition unchanged
-            await updateCondition(reading.machineId, condition, kwh, reading.timestamp, reading, true);
+            // skipLogHistory=true because saveLogHistory() already saved above
+            await updateCondition(reading.machineId, condition, kwh, reading.timestamp, reading, true, true);
           }
           
           logger.info(`✓ Cron snapshot complete: ${aggregated.length} machines`);
@@ -129,6 +141,78 @@ class ModbusWorker {
     });
 
     logger.info('✓ Daily calculation cron job scheduled successfully');
+  }
+
+  /**
+   * Setup frequency watcher to check for log_freq changes every 1 minute
+   * If log_freq changes, recreate the snapshot cron job
+   */
+  private setupFrequencyWatcher(): void {
+    const CHECK_INTERVAL_MS = 60 * 1000; // Check every 1 minute
+
+    logger.info('👁 Setting up frequency watcher (checks every 1 minute)');
+
+    this.freqCheckIntervalId = setInterval(async () => {
+      try {
+        const newLogFreq = await getLogFrequency();
+        
+        if (newLogFreq !== this.logFreq) {
+          logger.info(`🔄 Log frequency changed: ${this.logFreq} min → ${newLogFreq} min`);
+          
+          // Stop old cron job
+          if (this.cronJob) {
+            this.cronJob.stop();
+          }
+          
+          // Update frequency and recreate cron
+          this.logFreq = newLogFreq;
+          this.recreateSnapshotCron();
+          
+          logger.info('✓ Cron job recreated with new frequency');
+        }
+      } catch (error) {
+        logger.error('Error checking log frequency:', error);
+      }
+    }, CHECK_INTERVAL_MS);
+
+    logger.info('✓ Frequency watcher started');
+  }
+
+  /**
+   * Recreate only the snapshot cron job (not the daily calculation cron)
+   */
+  private recreateSnapshotCron(): void {
+    const cronExpression = `*/${this.logFreq} * * * *`;
+    
+    logger.info(`📅 Recreating snapshot cron with expression: "${cronExpression}"`);
+
+    this.cronJob = cron.schedule(cronExpression, async () => {
+      try {
+        logger.info('⏰ Cron triggered - Saving snapshots');
+        
+        if (this.latestReadings.length > 0) {
+          // 1. Save LogHistory snapshot
+          await saveLogHistory(this.latestReadings);
+          
+          // 2. Save Condition snapshot (with forceSnapshot=true)
+          const aggregated = aggregateReadings(this.latestReadings);
+          for (const reading of aggregated) {
+            const condition = await checkConditions(reading);
+            const kwh = reading.kwh?.toString() || '0';
+            
+            // forceSnapshot=true ensures INSERT even if condition unchanged
+            // skipLogHistory=true because saveLogHistory() already saved above
+            await updateCondition(reading.machineId, condition, kwh, reading.timestamp, reading, true, true);
+          }
+          
+          logger.info(`✓ Cron snapshot complete: ${aggregated.length} machines`);
+        } else {
+          logger.warn('No readings available to save');
+        }
+      } catch (error) {
+        logger.error('Error in cron job:', error);
+      }
+    });
   }
 
   private async executeCycle(): Promise<void> {

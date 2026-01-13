@@ -124,7 +124,8 @@ export async function updateCondition(
   currentKwh: string,
   currentTimestamp: Date,
   reading?: MachineReading,  // Optional reading parameter
-  forceSnapshot: boolean = false  // Force save even if condition unchanged (for cron)
+  forceSnapshot: boolean = false,  // Force save even if condition unchanged (for cron)
+  skipLogHistory: boolean = false  // Skip LogHistory save (when cron already saved it)
 ): Promise<void> {
   try {
     // Get existing condition for this machine
@@ -175,7 +176,8 @@ export async function updateCondition(
     }
     
     // Also save to LogHistory ONLY if condition actually changed (not on snapshot)
-    if (conditionChanged && reading) {
+    // Skip if forceSnapshot (cron) because saveLogHistory() already saved it
+    if (conditionChanged && reading && !skipLogHistory) {
       await prisma.logHistory.create({
         data: {
           on_contact: reading.on_contact !== undefined ? Math.round(reading.on_contact) : null,
