@@ -142,6 +142,18 @@ export async function updateCondition(
       return; // Exit early, no database operation
     }
 
+    // DEDUPLICATION: Prevent race condition between cron and cycle
+    // If a record with the same condition was created within 5 seconds, skip
+    if (existing) {
+      const timeSinceLastRecord = currentTimestamp.getTime() - new Date(existing.current_timestamp).getTime();
+      const DEDUP_WINDOW_MS = 5000; // 5 seconds
+      
+      if (existing.current_condition === currentCondition && timeSinceLastRecord < DEDUP_WINDOW_MS) {
+        logger.debug(`Skipping duplicate: ${currentCondition} for machine ${machineId} (within ${DEDUP_WINDOW_MS}ms window)`);
+        return;
+      }
+    }
+
     // Either condition changed OR forced snapshot (cron)
     // Always INSERT new record
     await prisma.condition.create({
