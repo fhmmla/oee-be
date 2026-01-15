@@ -1,8 +1,10 @@
 // worker/daily-calculator.ts
 // Calculate daily McRunHour from tbl_condition data
+// UPDATED: Using accurate segment-based calculation where sum of per-condition = total
 
 import { prisma } from '../lib/prisma';
 import { logger } from '../lib/logger';
+import type { Condition } from '../lib/generated/prisma/client';
 
 interface DailyStats {
   heatingUpHours: number;
@@ -11,19 +13,24 @@ interface DailyStats {
   iddleKwh: number;
   productionHours: number;
   productionKwh: number;
+  totalHours: number;
+  totalKwh: number;
 }
 
 /**
  * Calculate daily run hours and kwh for a specific machine
+ * 
+ * LOGIC:
+ * - Total Hours & KWH: First record → Last record
+ * - Per-Condition Hours: Duration from current record to next record belongs to current condition
+ *   This ensures: Sum(heatingUpHours + iddleHours + productionHours) = totalHours
+ * - Per-Condition KWH: Segment-based (start.last_kwh → end.current_kwh per segment)
+ * 
  * @param machineId - Machine ID to calculate
- * @param targetDate - Date to calculate in WIB timezone (YYYY-MM-DD)
+ * @param targetDate - Date to calculate in WIB timezone
  * @returns DailyStats object
  */
 export async function calculateDailyStats(machineId: number, targetDate: Date): Promise<DailyStats> {
-  // IMPORTANT: Server runs in WIB (UTC+7). JavaScript Date objects already store 
-  // timestamps in UTC internally. No manual conversion needed.
-  // When we create a Date at midnight WIB, its internal UTC value is already correct.
-  
   // Start of day in WIB (00:00:00 WIB)
   const startOfDay = new Date(targetDate);
   startOfDay.setHours(0, 0, 0, 0);
@@ -39,8 +46,7 @@ export async function calculateDailyStats(machineId: number, targetDate: Date): 
   logger.debug(`  Query range: ${startOfDay.toISOString()} to ${endOfDay.toISOString()}`);
 
   // Fetch all condition records for this machine on target date
-  // The Date objects already contain correct UTC timestamps for WIB boundaries
-  const conditions = await prisma.condition.findMany({
+  const conditions: Condition[] = await prisma.condition.findMany({
     where: {
       machine_id: machineId,
       current_timestamp: {
@@ -54,7 +60,6 @@ export async function calculateDailyStats(machineId: number, targetDate: Date): 
   });
 
   if (conditions.length === 0) {
-    const dateStr = `${targetDate.getFullYear()}-${String(targetDate.getMonth() + 1).padStart(2, '0')}-${String(targetDate.getDate()).padStart(2, '0')}`;
     logger.warn(`No condition data found for machine ${machineId} on ${dateStr} (WIB)`);
     return {
       heatingUpHours: 0,
@@ -63,9 +68,12 @@ export async function calculateDailyStats(machineId: number, targetDate: Date): 
       iddleKwh: 0,
       productionHours: 0,
       productionKwh: 0,
+      totalHours: 0,
+      totalKwh: 0,
     };
   }
 
+  // Initialize stats
   const stats: DailyStats = {
     heatingUpHours: 0,
     heatingUpKwh: 0,
@@ -73,111 +81,92 @@ export async function calculateDailyStats(machineId: number, targetDate: Date): 
     iddleKwh: 0,
     productionHours: 0,
     productionKwh: 0,
+    totalHours: 0,
+    totalKwh: 0,
   };
 
-  // ===== OPTION A: Calculate TOTAL from ALL records (simple & accurate) =====
+  // ===== 1. CALCULATE PER-CONDITION HOURS (Duration-based) =====
+  // For each record, the duration to the NEXT record belongs to THIS record's condition
+  // NOTE: MachineOFF is NOT counted - it is excluded from total hours
   
-  // Get first and last record across ALL conditions
-  const firstRecord = conditions[0]; // Already sorted ASC
-  const lastRecord = conditions[conditions.length - 1];
-  
-  if (firstRecord && lastRecord) {
-    // Total hours: last - first (regardless of condition)
-    const firstTime = new Date(firstRecord.current_timestamp);
-    const lastTime = new Date(lastRecord.current_timestamp);
-    const totalHoursCalculated = (lastTime.getTime() - firstTime.getTime()) / (1000 * 60 * 60);
+  for (let i = 0; i < conditions.length - 1; i++) {
+    const currentRecord = conditions[i]!;
+    const nextRecord = conditions[i + 1]!;
     
-    // Total KWH: Use last_kwh from first record, current_kwh from last record
-    const firstKwh = parseFloat(firstRecord.last_kwh ?? '0') || 0;  // Changed: use last_kwh
-    const lastKwh = parseFloat(lastRecord.current_kwh) || 0;
-    const totalKwhCalculated = lastKwh - firstKwh;
+    const currentTime = new Date(currentRecord.current_timestamp);
+    const nextTime = new Date(nextRecord.current_timestamp);
+    const durationHours = (nextTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60);
     
-    logger.info(`Machine ${machineId} TOTAL: ${totalHoursCalculated.toFixed(2)}h, KWH: ${firstKwh.toFixed(2)} (last) → ${lastKwh.toFixed(2)} (current) = ${totalKwhCalculated.toFixed(2)} kWh`);
+    // Assign duration to current record's condition
+    // MachineOFF is EXCLUDED (not counted)
+    switch (currentRecord.current_condition) {
+      case 'HeatingUp':
+        stats.heatingUpHours += durationHours;
+        break;
+      case 'Iddle':
+        stats.iddleHours += durationHours;
+        break;
+      case 'MachineProduction':
+        stats.productionHours += durationHours;
+        break;
+      case 'MachineOFF':
+        // MachineOFF is NOT counted - excluded from total
+        logger.debug(`  MachineOFF excluded: ${durationHours.toFixed(4)} hours`);
+        break;
+      default:
+        // Unknown conditions are excluded
+        logger.debug(`  Unknown condition "${currentRecord.current_condition}" excluded`);
+        break;
+    }
   }
 
-  // ===== Calculate KWH delta per condition (for breakdown) =====
+  // ===== 2. CALCULATE TOTAL HOURS (Sum of per-condition, excluding MachineOFF) =====
+  stats.totalHours = stats.heatingUpHours + stats.iddleHours + stats.productionHours;
+
+  // ===== 3. CALCULATE PER-CONDITION KWH (Segment-based) =====
+  // For KWH, we use segment-based calculation because KWH is cumulative
+  // Each continuous segment: start.last_kwh → end.current_kwh
+  // MachineOFF KWH is NOT counted
   
-  // Group by condition
-  const heatingUpRecords = conditions.filter(c => c.current_condition === 'HeatingUp');
-  const iddleRecords = conditions.filter(c => c.current_condition === 'Iddle');
-  const productionRecords = conditions.filter(c => c.current_condition === 'MachineProduction');
+  stats.heatingUpKwh = calculateKwhForCondition('HeatingUp', conditions);
+  stats.iddleKwh = calculateKwhForCondition('Iddle', conditions);
+  stats.productionKwh = calculateKwhForCondition('MachineProduction', conditions);
+  
+  // Total KWH = Sum of per-condition KWH (excluding MachineOFF)
+  stats.totalKwh = stats.heatingUpKwh + stats.iddleKwh + stats.productionKwh;
 
-  // KWH deltas per condition (pass all conditions for overlap detection)
-  if (heatingUpRecords.length > 0) {
-    stats.heatingUpKwh = calculateKwhDelta(heatingUpRecords, conditions);
-    stats.heatingUpHours = calculateHours(heatingUpRecords); // For reference, but won't be used in total
-  }
-
-  if (iddleRecords.length > 0) {
-    stats.iddleKwh = calculateKwhDelta(iddleRecords, conditions);
-    stats.iddleHours = calculateHours(iddleRecords);
-  }
-
-  if (productionRecords.length > 0) {
-    stats.productionKwh = calculateKwhDelta(productionRecords, conditions);
-    stats.productionHours = calculateHours(productionRecords);
-  }
-
+  // Log per-condition results
+  logger.info(`Machine ${machineId}: Total ${stats.totalHours.toFixed(2)}h, ${stats.totalKwh.toFixed(2)} kWh`);
+  logger.info(`  Per-condition Hours: HeatingUp=${stats.heatingUpHours.toFixed(2)}, Iddle=${stats.iddleHours.toFixed(2)}, Production=${stats.productionHours.toFixed(2)}`);
   logger.info(`  Per-condition KWH: HeatingUp=${stats.heatingUpKwh.toFixed(2)}, Iddle=${stats.iddleKwh.toFixed(2)}, Production=${stats.productionKwh.toFixed(2)}`);
 
   return stats;
 }
 
 /**
- * Calculate total hours for a condition
- * Simple method: Last timestamp - First timestamp
- * This handles gaps better and is more accurate
- */
-function calculateHours(records: any[]): number {
-  if (records.length === 0) return 0;
-  
-  // Get first and last record
-  const firstRecord = records[0];
-  const lastRecord = records[records.length - 1];
-  
-  const firstTime = new Date(firstRecord.current_timestamp);
-  const lastTime = new Date(lastRecord.current_timestamp);
-  
-  // Calculate duration
-  const durationMs = lastTime.getTime() - firstTime.getTime();
-  
-  // Convert to hours
-  return durationMs / (1000 * 60 * 60);
-}
-
-/**
- * Calculate KWH delta for a condition using SEGMENT-BASED approach
+ * Calculate KWH for a specific condition using SEGMENT-BASED approach
  * 
  * Identifies continuous segments of the same condition and sums their KWH.
- * This ensures accurate calculation even when conditions alternate.
- * 
- * Example timeline:
- *   10:00 Production (kwh: 100)
- *   12:00 Production (kwh: 110) ← End segment 1 (10 kWh)
- *   12:00 Iddle (kwh: 110)
- *   14:00 Iddle (kwh: 115) ← Iddle segment (5 kWh)
- *   14:00 Production (kwh: 115)
- *   16:00 Production (kwh: 125) ← End segment 2 (10 kWh)
- * 
- * Production total = 10 + 10 = 20 kWh (not 25!)
+ * For each segment: KWH = end.current_kwh - start.last_kwh
  */
-function calculateKwhDelta(records: any[], allConditions: any[]): number {
-  if (records.length === 0) return 0;
-
-  const conditionName = records[0].current_condition;
+function calculateKwhForCondition(conditionName: string, allConditions: Condition[]): number {
+  if (allConditions.length === 0) return 0;
   
-  // Sort ALL conditions by timestamp
+  // Sort by timestamp (should already be sorted, but ensure)
   const sortedAll = [...allConditions].sort((a, b) => 
     new Date(a.current_timestamp).getTime() - new Date(b.current_timestamp).getTime()
   );
   
   // Identify continuous segments for this condition
-  const segments: Array<{start: any, end: any}> = [];
-  let currentSegment: any = null;
+  interface Segment {
+    start: Condition;
+    end: Condition;
+  }
   
-  for (let i = 0; i < sortedAll.length; i++) {
-    const record = sortedAll[i];
-    
+  const segments: Segment[] = [];
+  let currentSegment: Segment | null = null;
+  
+  for (const record of sortedAll) {
     if (record.current_condition === conditionName) {
       if (!currentSegment) {
         // Start new segment
@@ -204,11 +193,9 @@ function calculateKwhDelta(records: any[], allConditions: any[]): number {
   let totalKwh = 0;
   
   for (const segment of segments) {
-    // For each segment: last_kwh from start, current_kwh from end
     const startKwh = parseFloat(segment.start.last_kwh ?? '0') || 0;
     const endKwh = parseFloat(segment.end.current_kwh) || 0;
     const segmentKwh = endKwh - startKwh;
-    
     totalKwh += segmentKwh;
   }
   
@@ -228,56 +215,16 @@ export async function saveDailyMcRunHour(machineId: number, targetDate: Date): P
     const day = targetDate.getDate();
     
     // Create date for database storage
-    // Use Date.UTC() so that the DATE displayed in database matches WIB date
-    // Example: Jan 4 WIB → stored as 2026-01-04T00:00:00Z (UTC midnight)
-    // This ensures the DATE field shows "2026-01-04" correctly
     const dateForDb = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
     
-    // Format date string for logging (WIB date, not UTC)
+    // Format date string for logging
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-    // ===== CALCULATE TOTAL from ALL records =====
-    // Get ALL condition records for this day
-    // Server runs in WIB - Date objects already have correct UTC timestamps
+    // ===== CHECK FOR SHARED POWER METER (is_one_block logic) =====
     const startOfDay = new Date(targetDate);
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(targetDate);
     endOfDay.setHours(23, 59, 59, 999);
-
-    const allRecords = await prisma.condition.findMany({
-      where: {
-        machine_id: machineId,
-        current_timestamp: {
-          gte: startOfDay,
-          lte: endOfDay,
-        },
-      },
-      orderBy: { current_timestamp: 'asc' },
-    });
-
-    // Calculate TOTAL hours and KWH from first to last record
-    let totalHours = 0;
-    let totalKwh = 0;
-
-    if (allRecords.length > 0) {
-      const firstRecord = allRecords[0];
-      const lastRecord = allRecords[allRecords.length - 1];
-      
-      if (firstRecord && lastRecord) {
-        const firstTime = new Date(firstRecord.current_timestamp);
-        const lastTime = new Date(lastRecord.current_timestamp);
-        totalHours = (lastTime.getTime() - firstTime.getTime()) / (1000 * 60 * 60);
-        
-        // Use last_kwh from first record, current_kwh from last record
-        const firstKwh = parseFloat(firstRecord.last_kwh ?? '0') || 0;  // Changed: use last_kwh
-        const lastKwh = parseFloat(lastRecord.current_kwh) || 0;
-        totalKwh = lastKwh - firstKwh;
-        
-        logger.info(`Machine ${machineId} on ${dateStr}: Total ${totalHours.toFixed(2)}h, ${totalKwh.toFixed(2)} kWh`);
-      }
-    }
-
-    // ===== CHECK FOR SHARED POWER METER (is_one_block logic) =====
     
     // 1. Get current machine info with power_meter_id
     const currentMachine = await prisma.machine.findUnique({
@@ -297,25 +244,20 @@ export async function saveDailyMcRunHour(machineId: number, targetDate: Date): P
     const machinesWithSamePowerMeter = await prisma.machine.findMany({
       where: {
         power_meter_id: currentMachine.power_meter_id,
-        id: { not: machineId }, // Exclude current machine
+        id: { not: machineId },
       },
       select: { id: true, name: true },
     });
 
-    // is_one_block = TRUE if only 1 machine runs (1 block)
-    // is_one_block = FALSE if 2 machines run (2 blocks, shared)
-    let isOneBlock = true; // Default: assume only this machine
+    // is_one_block = TRUE if only 1 machine runs
+    // is_one_block = FALSE if 2 machines run (shared)
+    let isOneBlock = true;
 
     // 3. Check if any other machine has Production condition on same day
     if (machinesWithSamePowerMeter.length > 0) {
-      // Server runs in WIB - reuse startOfDay/endOfDay from above
-      // (already defined with correct UTC timestamps)
-
-      // Check if current machine has Production
       const currentMachineHasProduction = stats.productionHours > 0;
 
       if (currentMachineHasProduction) {
-        // Check each other machine for Production condition on same day
         for (const otherMachine of machinesWithSamePowerMeter) {
           const otherMachineConditions = await prisma.condition.findFirst({
             where: {
@@ -329,33 +271,32 @@ export async function saveDailyMcRunHour(machineId: number, targetDate: Date): P
           });
 
           if (otherMachineConditions) {
-            // Found another machine with Production on same day!
-            // NOT one block, it's TWO blocks (shared)
             isOneBlock = false;
             logger.info(`🔗 Shared power meter detected: ${currentMachine.name} & ${otherMachine.name} both in Production on ${dateStr}`);
-            break; // Found one, that's enough
+            break;
           }
         }
       }
     }
 
-    // 4. Split KWH if is_one_block = FALSE (2 machines running)
-    let finalTotalKwh = totalKwh;
+    // 4. Split KWH if is_one_block = FALSE
+    let finalTotalKwh = stats.totalKwh;
     let finalProductionKwh = stats.productionKwh;
+    let finalHeatingUpKwh = stats.heatingUpKwh;
+    let finalIddleKwh = stats.iddleKwh;
 
-    if (!isOneBlock) { // FALSE = shared, need to split
-      // Split KWH equally (2 machines sharing)
-      finalTotalKwh = totalKwh / 2;
+    if (!isOneBlock) {
+      finalTotalKwh = stats.totalKwh / 2;
       finalProductionKwh = stats.productionKwh / 2;
+      finalHeatingUpKwh = stats.heatingUpKwh / 2;
+      finalIddleKwh = stats.iddleKwh / 2;
       
-      logger.info(`  → KWH split: ${totalKwh.toFixed(2)} / 2 = ${finalTotalKwh.toFixed(2)} (is_one_block=false)`);
+      logger.info(`  → KWH split by 2 (is_one_block=false)`);
     } else {
-      logger.info(`  → KWH full: ${totalKwh.toFixed(2)} (is_one_block=true, only this machine)`);
+      logger.info(`  → KWH full (is_one_block=true)`);
     }
 
     // ===== SAVE TO DATABASE =====
-    
-    // Check if record already exists
     const existing = await prisma.mcRunHour.findFirst({
       where: {
         machine_id: machineId,
@@ -365,31 +306,29 @@ export async function saveDailyMcRunHour(machineId: number, targetDate: Date): P
 
     const data = {
       date: dateForDb,
-      mc_run_h: totalHours.toFixed(2),
-      mc_run_kwh: finalTotalKwh.toFixed(2), // Use split KWH
+      mc_run_h: stats.totalHours.toFixed(2),
+      mc_run_kwh: finalTotalKwh.toFixed(2),
       heat_up_h: stats.heatingUpHours.toFixed(2),
-      heat_up_kwh: stats.heatingUpKwh.toFixed(2),
+      heat_up_kwh: finalHeatingUpKwh.toFixed(2),
       iddle_h: stats.iddleHours.toFixed(2),
-      iddle_kwh: stats.iddleKwh.toFixed(2),
+      iddle_kwh: finalIddleKwh.toFixed(2),
       mc_production_h: stats.productionHours.toFixed(2),
-      mc_production_kwh: finalProductionKwh.toFixed(2), // Use split KWH
-      is_one_block: isOneBlock, // Set based on detection
+      mc_production_kwh: finalProductionKwh.toFixed(2),
+      is_one_block: isOneBlock,
       machine_id: machineId,
     };
 
     if (existing) {
-      // Update existing record
       await prisma.mcRunHour.update({
         where: { id: existing.id },
         data,
       });
-      logger.info(`✓ Updated McRunHour for machine ${machineId} on ${dateStr} (Total: ${totalHours.toFixed(2)}h, ${totalKwh.toFixed(2)} kWh)`);
+      logger.info(`✓ Updated McRunHour for machine ${machineId} on ${dateStr}`);
     } else {
-      // Create new record
       await prisma.mcRunHour.create({
         data,
       });
-      logger.info(`✓ Created McRunHour for machine ${machineId} on ${dateStr} (Total: ${totalHours.toFixed(2)}h, ${totalKwh.toFixed(2)} kWh)`);
+      logger.info(`✓ Created McRunHour for machine ${machineId} on ${dateStr}`);
     }
   } catch (error) {
     logger.error(`Error saving McRunHour for machine ${machineId}:`, error);
@@ -403,18 +342,16 @@ export async function saveDailyMcRunHour(machineId: number, targetDate: Date): P
 export async function calculateAllMachinesDailyStats(): Promise<void> {
   try {
     // Calculate H-1 (yesterday) in WIB timezone
-    // Server runs in WIB (UTC+7), so new Date() returns WIB time
-    // Example: If cron runs at 01:00 WIB on Jan 5, yesterday = Jan 4 WIB
     const now = new Date();
     const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
     
-    // Format date string properly for WIB date (not using toISOString which shows UTC)
     const dateStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
     
     logger.info(`Starting daily McRunHour calculation for ${dateStr} (H-1 WIB)`);
 
-    // Get all machines
+    // Get all enabled machines
     const machines = await prisma.machine.findMany({
+      where: { enabled: true },
       select: { id: true, name: true },
     });
 
