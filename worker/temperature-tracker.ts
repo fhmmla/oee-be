@@ -79,6 +79,7 @@ class TemperatureTracker {
   /**
    * Check if temperature has been ≥ 300° for at least 1 hour
    * Uses LogHistory data for accurate tracking
+   * FALLBACK: If LogHistory insufficient, check last condition from Condition table
    * @returns true if temperature has been ≥ 300° for at least 1 hour
    */
   async check(
@@ -102,15 +103,54 @@ class TemperatureTracker {
 
     // Check cache
     const cached = this.cache.get(machineId);
-    if (!cached || !cached.heatingUpSince) {
-      return false;
+    
+    // Calculate duration if we have cache data
+    if (cached && cached.heatingUpSince) {
+      const now = new Date();
+      const duration = now.getTime() - cached.heatingUpSince.getTime();
+      
+      if (duration >= this.DURATION_MS) {
+        return true;
+      }
     }
 
-    // Calculate duration
-    const now = new Date();
-    const duration = now.getTime() - cached.heatingUpSince.getTime();
+    // FALLBACK: If LogHistory data insufficient (gap/restart), check last condition
+    // If last condition was MachineProduction or Iddle, it means temp was already >= 300 for 1 hour
+    // So we should NOT reset to HeatingUp just because of data gap
+    const fallbackResult = await this.checkLastConditionFallback(machineId);
+    if (fallbackResult) {
+      console.log(`[TempTracker] Machine ${machineId}: Using fallback - last condition indicates temp was already >= 300 for 1 hour`);
+    }
+    
+    return fallbackResult;
+  }
 
-    return duration >= this.DURATION_MS;
+  /**
+   * Fallback: Check last condition from Condition table
+   * If last condition was MachineProduction or Iddle, temp was >= 300 for 1 hour before
+   * This handles cases where LogHistory has gaps (restart, downtime, etc.)
+   */
+  private async checkLastConditionFallback(machineId: number): Promise<boolean> {
+    try {
+      const lastCondition = await prisma.condition.findFirst({
+        where: { machine_id: machineId },
+        orderBy: { current_timestamp: 'desc' },
+        select: { current_condition: true },
+      });
+
+      if (!lastCondition) {
+        return false;
+      }
+
+      // If last condition was MachineProduction or Iddle, 
+      // it means temperature WAS >= 300 for at least 1 hour before
+      // So we maintain that state instead of resetting to HeatingUp
+      const conditionsRequiringTemp300 = ['MachineProduction', 'Iddle'];
+      return conditionsRequiringTemp300.includes(lastCondition.current_condition || '');
+    } catch (error) {
+      console.error(`Error checking last condition fallback for machine ${machineId}:`, error);
+      return false;
+    }
   }
 
   /**
