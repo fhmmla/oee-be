@@ -86,16 +86,26 @@ export async function calculateDailyStats(machineId: number, targetDate: Date): 
   };
 
   // ===== 1. CALCULATE PER-CONDITION HOURS (Duration-based) =====
-  // For each record, the duration to the NEXT record belongs to THIS record's condition
+  // Logic matches KWH: start.last_timestamp → end.current_timestamp
+  // For first record: use last_timestamp as start
+  // For subsequent: use current_timestamp of previous record
   // NOTE: MachineOFF is NOT counted - it is excluded from total hours
   
   for (let i = 0; i < conditions.length - 1; i++) {
     const currentRecord = conditions[i]!;
     const nextRecord = conditions[i + 1]!;
     
-    const currentTime = new Date(currentRecord.current_timestamp);
-    const nextTime = new Date(nextRecord.current_timestamp);
-    const durationHours = (nextTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60);
+    // For first record, use last_timestamp to capture full duration
+    // This matches KWH logic: start.last_kwh uses the "before" value
+    let startTime: Date;
+    if (i === 0 && currentRecord.last_timstamp) {
+      startTime = new Date(currentRecord.last_timstamp);
+    } else {
+      startTime = new Date(currentRecord.current_timestamp);
+    }
+    
+    const endTime = new Date(nextRecord.current_timestamp);
+    const durationHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
     
     // Assign duration to current record's condition
     // MachineOFF is EXCLUDED (not counted)

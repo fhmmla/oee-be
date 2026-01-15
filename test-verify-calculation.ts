@@ -70,14 +70,19 @@ async function verifyCalculation(): Promise<void> {
   const firstTime = new Date(firstRecord.current_timestamp);
   const lastTime = new Date(lastRecord.current_timestamp);
 
+  const firstLastTime = firstRecord.last_timstamp ? new Date(firstRecord.last_timstamp) : null;
+
   console.log('\n┌─────────────────────────────────────────────────────────────────────────────┐');
   console.log('│ FIRST RECORD (Acuan awal perhitungan)                                       │');
   console.log('├─────────────────────────────────────────────────────────────────────────────┤');
-  console.log(`│ ID:             ${firstRecord.id.padEnd(57)} │`);
-  console.log(`│ Timestamp:      ${firstTime.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }).padEnd(57)} │`);
-  console.log(`│ Condition:      ${firstRecord.current_condition.padEnd(57)} │`);
-  console.log(`│ last_kwh:       ${(firstRecord.last_kwh ?? 'null').toString().padEnd(57)} │`);
-  console.log(`│ current_kwh:    ${firstRecord.current_kwh.padEnd(57)} │`);
+  console.log(`│ ID:              ${firstRecord.id.padEnd(56)} │`);
+  console.log(`│ last_timstamp:   ${(firstLastTime ? firstLastTime.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) : 'null').padEnd(56)} │`);
+  console.log(`│ current_timstamp:${firstTime.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }).padEnd(56)} │`);
+  console.log(`│ Condition:       ${firstRecord.current_condition.padEnd(56)} │`);
+  console.log(`│ last_kwh:        ${(firstRecord.last_kwh ?? 'null').toString().padEnd(56)} │`);
+  console.log(`│ current_kwh:     ${firstRecord.current_kwh.padEnd(56)} │`);
+  console.log('├─────────────────────────────────────────────────────────────────────────────┤');
+  console.log('│ 📌 Hours Start: last_timstamp | KWH Start: last_kwh                         │');
   console.log('└─────────────────────────────────────────────────────────────────────────────┘');
   
   console.log('\n┌─────────────────────────────────────────────────────────────────────────────┐');
@@ -167,13 +172,21 @@ async function verifyCalculation(): Promise<void> {
   let machineOffKwh = 0;
 
   // ===== CALCULATE HOURS: Duration to next record =====
+  // Logic: start.last_timestamp → end.current_timestamp (matches KWH logic)
   for (let i = 0; i < allConditions.length - 1; i++) {
     const currentRecord = allConditions[i]!;
     const nextRecord = allConditions[i + 1]!;
     
-    const currentTime = new Date(currentRecord.current_timestamp);
-    const nextTime = new Date(nextRecord.current_timestamp);
-    const durationHours = (nextTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60);
+    // For first record, use last_timstamp to capture full duration
+    let startTime: Date;
+    if (i === 0 && currentRecord.last_timstamp) {
+      startTime = new Date(currentRecord.last_timstamp);
+    } else {
+      startTime = new Date(currentRecord.current_timestamp);
+    }
+    
+    const endTime = new Date(nextRecord.current_timestamp);
+    const durationHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
     
     const condition = currentRecord.current_condition;
     
