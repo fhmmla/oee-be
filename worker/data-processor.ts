@@ -91,14 +91,15 @@ export async function saveLogHistory(readings: SensorReading[]): Promise<void> {
 /**
  * Check 4 conditions based on sensor values
  * 
- * New Logic:
- * 1. if on_contact = 0 → MachineOFF
- * 2. if on_contact = 1 AND NOT all 4 temps >= target_temp for 1 hour → HeatingUp
- * 3. if on_contact = 1 AND all 4 temps >= target_temp for 1 hour AND capstan_speed < speed_to_production → Iddle
- * 4. if on_contact = 1 AND all 4 temps >= target_temp for 1 hour AND capstan_speed >= speed_to_production → MachineProduction
+ * Logic (on_contact >= 1 means ON, < 1 means OFF):
+ * 1. if on_contact < 1 → MachineOFF
+ * 2. if on_contact >= 1 AND NOT all 4 temps >= target_temp for 1 hour → HeatingUp
+ * 3. if on_contact >= 1 AND all 4 temps >= target_temp for 1 hour AND capstan_speed < speed_to_production → Iddle
+ * 4. if on_contact >= 1 AND all 4 temps >= target_temp for 1 hour AND capstan_speed >= speed_to_production → MachineProduction
  */
 export async function checkConditions(reading: MachineReading): Promise<string> {
-  const onContact = reading.on_contact || 0;
+  const onContactValue = reading.on_contact || 0;
+  const isOn = onContactValue >= 1;  // >= 1 means ON
   const capstanSpeed = reading.capstan_speed || 0;
   const speedToProduction = reading.speed_to_production || 60; // Default 60 if not set
 
@@ -119,7 +120,8 @@ export async function checkConditions(reading: MachineReading): Promise<string> 
   };
 
   // ----- CONDITION 1: Machine OFF -----
-  if (onContact === 0) {
+  // on_contact < 1 means OFF
+  if (!isOn) {
     return 'MachineOFF';
   }
   
@@ -134,23 +136,23 @@ export async function checkConditions(reading: MachineReading): Promise<string> 
   );
 
   // ----- CONDITION 2: Heating Up -----
-  // on_contact = 1 AND NOT all 4 temps >= target_temp for 1 hour
-  if (onContact === 1 && !allTempsReachedTarget) {
+  // isOn (on_contact >= 1) AND NOT all 4 temps >= target_temp for 1 hour
+  if (isOn && !allTempsReachedTarget) {
     return 'HeatingUp';
   }
   
-  // At this point: on_contact = 1 AND all temps >= target for 1 hour
+  // At this point: isOn AND all temps >= target for 1 hour
   // Now check capstan speed
   
   // ----- CONDITION 3: Iddle -----
-  // on_contact = 1 AND all temps reached target AND capstan_speed < speed_to_production
-  if (onContact === 1 && allTempsReachedTarget && capstanSpeed < speedToProduction) {
+  // isOn AND all temps reached target AND capstan_speed < speed_to_production
+  if (isOn && allTempsReachedTarget && capstanSpeed < speedToProduction) {
     return 'Iddle';
   }
   
   // ----- CONDITION 4: Machine Production -----
-  // on_contact = 1 AND all temps reached target AND capstan_speed >= speed_to_production
-  if (onContact === 1 && allTempsReachedTarget && capstanSpeed >= speedToProduction) {
+  // isOn AND all temps reached target AND capstan_speed >= speed_to_production
+  if (isOn && allTempsReachedTarget && capstanSpeed >= speedToProduction) {
     return 'MachineProduction';
   }
   
