@@ -2,16 +2,46 @@
 // Modbus data reader dengan optimized reading
 
 import type ModbusRTU from 'modbus-serial';
-import type { MappingParam, SensorReading } from '../../type';
+import type { MappingParam, SensorReading, SensorType } from '../../type';
 import { parseModbusData } from './data-parser';
 import { logger } from '../logger';
 
 export interface ReadSensorOptions {
   machineId: number;
   machineName: string;
-  sensorType: 'power_meter' | 'temperature_sensor' | 'on_contact_sensor' | 'alarm_contact_sensor';
+  sensorType: SensorType;
   slaveId: number;
   params: MappingParam[];
+}
+
+/**
+ * Map sensor type to the correct value key in SensorReading.values
+ * This ensures values are stored correctly regardless of param.name in database
+ */
+function getValueKeyForSensorType(sensorType: SensorType, paramName: string): keyof SensorReading['values'] | null {
+  // Temperature sensors - store as 'temperature'
+  if (sensorType.startsWith('temperature_')) {
+    return 'temperature';
+  }
+  
+  // Other sensors - map based on sensor type
+  switch (sensorType) {
+    case 'power_meter':
+      // Power meter can have kwh param
+      if (paramName.toLowerCase().includes('kwh') || paramName.toLowerCase().includes('energy')) {
+        return 'kwh';
+      }
+      return 'kwh'; // Default for power meter
+      
+    case 'on_contact_sensor':
+      return 'on_contact';
+      
+    case 'capstan_speed':
+      return 'capstan_speed';
+      
+    default:
+      return null;
+  }
 }
 
 export async function readSensor(
@@ -46,10 +76,17 @@ export async function readSensor(
         // Apply formula (multiplier)
         value = value * param.formula;
 
-        // Store in values object
-        values[param.name as keyof SensorReading['values']] = value;
-
-        logger.debug(`Read ${param.name} from ${machineName}: ${value}`);
+        // Get the correct value key based on sensor type
+        const valueKey = getValueKeyForSensorType(sensorType, param.name);
+        
+        if (valueKey) {
+          values[valueKey] = value;
+          logger.debug(`Read ${sensorType}/${param.name} from ${machineName}: ${value} -> stored as '${valueKey}'`);
+        } else {
+          // Fallback: store with param name as key
+          values[param.name as keyof SensorReading['values']] = value;
+          logger.debug(`Read ${param.name} from ${machineName}: ${value} (fallback storage)`);
+        }
       } catch (error) {
         logger.error(`Error reading ${param.name} from ${machineName}:`, error);
         // Continue reading other params even if one fails

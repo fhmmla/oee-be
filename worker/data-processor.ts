@@ -2,7 +2,7 @@
 // Process dan save readings ke database
 
 import { prisma } from '../lib/prisma';
-import type { SensorReading, MachineReading } from '../type';
+import type { SensorReading, MachineReading, TemperatureSensorType } from '../type';
 import { logger } from '../lib/logger';
 
 // Aggregate sensor readings per machine
@@ -10,7 +10,10 @@ export function aggregateReadings(readings: SensorReading[]): MachineReading[] {
   const machineMap = new Map<number, MachineReading>();
 
   for (const reading of readings) {
-    if (!reading.success) continue;
+    if (!reading.success) {
+      logger.debug(`Skipping failed reading: ${reading.machineName}/${reading.sensorType}`);
+      continue;
+    }
 
     let machineReading = machineMap.get(reading.machineId);
     if (!machineReading) {
@@ -22,8 +25,35 @@ export function aggregateReadings(readings: SensorReading[]): MachineReading[] {
       machineMap.set(reading.machineId, machineReading);
     }
 
-    // Merge values
-    Object.assign(machineReading, reading.values);
+    // Debug: log raw values
+    logger.debug(`Aggregating ${reading.sensorType} for ${reading.machineName}: values=${JSON.stringify(reading.values)}`);
+
+    // Merge values based on sensor type
+    if (reading.sensorType === 'power_meter') {
+      machineReading.kwh = reading.values.kwh;
+    } else if (reading.sensorType === 'on_contact_sensor') {
+      machineReading.on_contact = reading.values.on_contact;
+    } else if (reading.sensorType === 'capstan_speed') {
+      machineReading.capstan_speed = reading.values.capstan_speed;
+      logger.debug(`  -> capstan_speed = ${machineReading.capstan_speed}`);
+    } else if (reading.sensorType === 'temperature_inlet_heater') {
+      machineReading.temperature_inlet_heater = reading.values.temperature;
+      logger.debug(`  -> temperature_inlet_heater = ${machineReading.temperature_inlet_heater}`);
+    } else if (reading.sensorType === 'temperature_lower_heater') {
+      machineReading.temperature_lower_heater = reading.values.temperature;
+      logger.debug(`  -> temperature_lower_heater = ${machineReading.temperature_lower_heater}`);
+    } else if (reading.sensorType === 'temperature_after_catalyst') {
+      machineReading.temperature_after_catalyst = reading.values.temperature;
+      logger.debug(`  -> temperature_after_catalyst = ${machineReading.temperature_after_catalyst}`);
+    } else if (reading.sensorType === 'temperature_upper_heater') {
+      machineReading.temperature_upper_heater = reading.values.temperature;
+      logger.debug(`  -> temperature_upper_heater = ${machineReading.temperature_upper_heater}`);
+    }
+  }
+
+  // Debug: log final aggregated readings
+  for (const [machineId, reading] of machineMap) {
+    logger.debug(`Aggregated Machine ${machineId}: temps=[${reading.temperature_inlet_heater}, ${reading.temperature_lower_heater}, ${reading.temperature_after_catalyst}, ${reading.temperature_upper_heater}], capstan=${reading.capstan_speed}, on_contact=${reading.on_contact}, kwh=${reading.kwh}`);
   }
 
   return Array.from(machineMap.values());
@@ -36,11 +66,12 @@ export async function saveLogHistory(readings: SensorReading[]): Promise<void> {
     
     const logRecords = aggregated.map(reading => ({
       on_contact: reading.on_contact !== undefined ? Math.round(reading.on_contact) : null,
-      alarm_contact: reading.alarm_contact !== undefined ? Math.round(reading.alarm_contact) : null,
-      temperature: reading.temperature?.toString() || null,
+      temperature_inlet_heater: reading.temperature_inlet_heater !== undefined ? Math.round(reading.temperature_inlet_heater) : null,
+      temperature_lower_heater: reading.temperature_lower_heater !== undefined ? Math.round(reading.temperature_lower_heater) : null,
+      temperature_after_catalyst: reading.temperature_after_catalyst !== undefined ? Math.round(reading.temperature_after_catalyst) : null,
+      temperature_upper_heater: reading.temperature_upper_heater !== undefined ? Math.round(reading.temperature_upper_heater) : null,
       kwh: reading.kwh?.toString() || null,
-      // Handle both capstan_speed and capstand_speed (typo in mapping)
-      capstan_speed: (reading.capstan_speed || (reading as any).capstand_speed)?.toString() || null,
+      capstan_speed: reading.capstan_speed !== undefined ? Math.round(reading.capstan_speed) : null,
       timestamp: reading.timestamp,
       machine_id: reading.machineId,
     }));
@@ -57,63 +88,74 @@ export async function saveLogHistory(readings: SensorReading[]): Promise<void> {
   }
 }
 
-// Check 5 conditions based on sensor values
+/**
+ * Check 4 conditions based on sensor values
+ * 
+ * New Logic:
+ * 1. if on_contact = 0 → MachineOFF
+ * 2. if on_contact = 1 AND NOT all 4 temps >= target_temp for 1 hour → HeatingUp
+ * 3. if on_contact = 1 AND all 4 temps >= target_temp for 1 hour AND capstan_speed < speed_to_production → Iddle
+ * 4. if on_contact = 1 AND all 4 temps >= target_temp for 1 hour AND capstan_speed >= speed_to_production → MachineProduction
+ */
 export async function checkConditions(reading: MachineReading): Promise<string> {
   const onContact = reading.on_contact || 0;
-  const temperature = reading.temperature || 0;
-  const alarmContact = reading.alarm_contact || 0;
-  // Handle both capstan_speed and capstand_speed (typo in mapping)
-  const capstanSpeed = reading.capstan_speed || (reading as any).capstand_speed || 0;
+  const capstanSpeed = reading.capstan_speed || 0;
+  const speedToProduction = reading.speed_to_production || 60; // Default 60 if not set
+
+  // Get temperature values (default to 0 if not available)
+  const temperatures = {
+    inlet_heater: reading.temperature_inlet_heater || 0,
+    lower_heater: reading.temperature_lower_heater || 0,
+    after_catalyst: reading.temperature_after_catalyst || 0,
+    upper_heater: reading.temperature_upper_heater || 0,
+  };
+
+  // Get target temperatures (default to 300 if not set)
+  const targetTemps = {
+    inlet_heater: reading.target_temp_inlet_heater || 300,
+    lower_heater: reading.target_temp_lower_heater || 300,
+    after_catalyst: reading.target_temp_after_catalyst || 300,
+    upper_heater: reading.target_temp_upper_heater || 300,
+  };
 
   // ----- CONDITION 1: Machine OFF -----
   if (onContact === 0) {
     return 'MachineOFF';
   }
   
-  // Now we know on_contact = 1, check if we need temperature tracking
-  // Import temperature tracker
+  // Now we know on_contact = 1, check if all temperatures meet their targets for 1 hour
   const { tempTracker } = require('./temperature-tracker');
   
-  // Determine potential condition to optimize DB query
-  let potentialCondition = 'HeatingUp'; // Default assumption
-  
-  // Quick check: if temp >= 300 and alarm/capstan indicate production/idle
-  if (temperature >= 300 && (alarmContact === 1 || alarmContact === 0)) {
-    potentialCondition = 'HeatingUp'; // Might transition, need to check
-  }
-  
-  // OPTIMIZED: Only query DB if potentially in HeatingUp state
-  // This reduces queries by ~90%!
-  const temp300Over1Hour = await tempTracker.check(reading.machineId, temperature, potentialCondition);
+  // Check if ALL 4 temperature sensors have been >= their target_temp for 1 hour
+  const allTempsReachedTarget = await tempTracker.checkAll(
+    reading.machineId,
+    temperatures,
+    targetTemps
+  );
 
   // ----- CONDITION 2: Heating Up -----
-  // on_contact = 1 & temperature tidak lebih dari 300° dalam 1 jam
-  if (onContact === 1 && !temp300Over1Hour) {
+  // on_contact = 1 AND NOT all 4 temps >= target_temp for 1 hour
+  if (onContact === 1 && !allTempsReachedTarget) {
     return 'HeatingUp';
   }
   
-  // ----- CONDITION 3: Iddle (alarm_contact = 0) -----
-  // on_contact = 1 & temp 300° over 1 hour & alarm_contact = 0
-  else if (onContact === 1 && temp300Over1Hour && alarmContact === 0) {
+  // At this point: on_contact = 1 AND all temps >= target for 1 hour
+  // Now check capstan speed
+  
+  // ----- CONDITION 3: Iddle -----
+  // on_contact = 1 AND all temps reached target AND capstan_speed < speed_to_production
+  if (onContact === 1 && allTempsReachedTarget && capstanSpeed < speedToProduction) {
     return 'Iddle';
   }
   
   // ----- CONDITION 4: Machine Production -----
-  // on_contact = 1 & temperature 300° over 1 hour & alarm_contact = 1 & capstan_speed = 1
-  else if (onContact === 1 && temp300Over1Hour && alarmContact === 1 && capstanSpeed === 1) {
+  // on_contact = 1 AND all temps reached target AND capstan_speed >= speed_to_production
+  if (onContact === 1 && allTempsReachedTarget && capstanSpeed >= speedToProduction) {
     return 'MachineProduction';
   }
   
-  // ----- CONDITION 5: Iddle (capstan_speed = 0) -----
-  // on_contact = 1 & temp 300° over 1 hour & alarm_contact = 1 & capstan_speed = 0
-  else if (onContact === 1 && temp300Over1Hour && alarmContact === 1 && capstanSpeed === 0) {
-    return 'Iddle';
-  }
-  
   // Default (shouldn't happen)
-  else {
-    return 'UNKNOWN';
-  }
+  return 'UNKNOWN';
 }
 
 // Update Condition table if condition changed
@@ -176,16 +218,17 @@ export async function updateCondition(
     }
     
     // Also save to LogHistory ONLY if condition actually changed (not on snapshot)
-    // Skip if forceSnapshot (cron) because saveLogHistory() already saved it
+    // Skip if forceSnapshot (cron) because saveLogHistory() already saved above
     if (conditionChanged && reading && !skipLogHistory) {
       await prisma.logHistory.create({
         data: {
           on_contact: reading.on_contact !== undefined ? Math.round(reading.on_contact) : null,
-          alarm_contact: reading.alarm_contact !== undefined ? Math.round(reading.alarm_contact) : null,
-          temperature: reading.temperature?.toString() || null,
+          temperature_inlet_heater: reading.temperature_inlet_heater !== undefined ? Math.round(reading.temperature_inlet_heater) : null,
+          temperature_lower_heater: reading.temperature_lower_heater !== undefined ? Math.round(reading.temperature_lower_heater) : null,
+          temperature_after_catalyst: reading.temperature_after_catalyst !== undefined ? Math.round(reading.temperature_after_catalyst) : null,
+          temperature_upper_heater: reading.temperature_upper_heater !== undefined ? Math.round(reading.temperature_upper_heater) : null,
           kwh: reading.kwh?.toString() || null,
-          // Handle both capstan_speed and capstand_speed (typo in mapping)
-          capstan_speed: (reading.capstan_speed || (reading as any).capstand_speed)?.toString() || null,
+          capstan_speed: reading.capstan_speed !== undefined ? Math.round(reading.capstan_speed) : null,
           timestamp: currentTimestamp,
           machine_id: machineId,
         },

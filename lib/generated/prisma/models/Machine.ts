@@ -29,18 +29,22 @@ export type AggregateMachine = {
 export type MachineAvgAggregateOutputType = {
   id: number | null
   power_meter_id: number | null
-  temperature_sensor_id: number | null
+  temperature_inlet_heater_id: number | null
+  temperature_lower_heater_id: number | null
+  temperature_after_catalyst_id: number | null
+  temperature_upper_heater_id: number | null
   on_contact_sensor_id: number | null
-  alarm_contact_sensor_id: number | null
   capstan_speed_id: number | null
 }
 
 export type MachineSumAggregateOutputType = {
   id: number | null
   power_meter_id: number | null
-  temperature_sensor_id: number | null
+  temperature_inlet_heater_id: number | null
+  temperature_lower_heater_id: number | null
+  temperature_after_catalyst_id: number | null
+  temperature_upper_heater_id: number | null
   on_contact_sensor_id: number | null
-  alarm_contact_sensor_id: number | null
   capstan_speed_id: number | null
 }
 
@@ -49,9 +53,11 @@ export type MachineMinAggregateOutputType = {
   name: string | null
   enabled: boolean | null
   power_meter_id: number | null
-  temperature_sensor_id: number | null
+  temperature_inlet_heater_id: number | null
+  temperature_lower_heater_id: number | null
+  temperature_after_catalyst_id: number | null
+  temperature_upper_heater_id: number | null
   on_contact_sensor_id: number | null
-  alarm_contact_sensor_id: number | null
   capstan_speed_id: number | null
 }
 
@@ -60,9 +66,11 @@ export type MachineMaxAggregateOutputType = {
   name: string | null
   enabled: boolean | null
   power_meter_id: number | null
-  temperature_sensor_id: number | null
+  temperature_inlet_heater_id: number | null
+  temperature_lower_heater_id: number | null
+  temperature_after_catalyst_id: number | null
+  temperature_upper_heater_id: number | null
   on_contact_sensor_id: number | null
-  alarm_contact_sensor_id: number | null
   capstan_speed_id: number | null
 }
 
@@ -71,9 +79,11 @@ export type MachineCountAggregateOutputType = {
   name: number
   enabled: number
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id: number
+  temperature_lower_heater_id: number
+  temperature_after_catalyst_id: number
+  temperature_upper_heater_id: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
   _all: number
 }
@@ -82,18 +92,22 @@ export type MachineCountAggregateOutputType = {
 export type MachineAvgAggregateInputType = {
   id?: true
   power_meter_id?: true
-  temperature_sensor_id?: true
+  temperature_inlet_heater_id?: true
+  temperature_lower_heater_id?: true
+  temperature_after_catalyst_id?: true
+  temperature_upper_heater_id?: true
   on_contact_sensor_id?: true
-  alarm_contact_sensor_id?: true
   capstan_speed_id?: true
 }
 
 export type MachineSumAggregateInputType = {
   id?: true
   power_meter_id?: true
-  temperature_sensor_id?: true
+  temperature_inlet_heater_id?: true
+  temperature_lower_heater_id?: true
+  temperature_after_catalyst_id?: true
+  temperature_upper_heater_id?: true
   on_contact_sensor_id?: true
-  alarm_contact_sensor_id?: true
   capstan_speed_id?: true
 }
 
@@ -102,9 +116,11 @@ export type MachineMinAggregateInputType = {
   name?: true
   enabled?: true
   power_meter_id?: true
-  temperature_sensor_id?: true
+  temperature_inlet_heater_id?: true
+  temperature_lower_heater_id?: true
+  temperature_after_catalyst_id?: true
+  temperature_upper_heater_id?: true
   on_contact_sensor_id?: true
-  alarm_contact_sensor_id?: true
   capstan_speed_id?: true
 }
 
@@ -113,9 +129,11 @@ export type MachineMaxAggregateInputType = {
   name?: true
   enabled?: true
   power_meter_id?: true
-  temperature_sensor_id?: true
+  temperature_inlet_heater_id?: true
+  temperature_lower_heater_id?: true
+  temperature_after_catalyst_id?: true
+  temperature_upper_heater_id?: true
   on_contact_sensor_id?: true
-  alarm_contact_sensor_id?: true
   capstan_speed_id?: true
 }
 
@@ -124,9 +142,11 @@ export type MachineCountAggregateInputType = {
   name?: true
   enabled?: true
   power_meter_id?: true
-  temperature_sensor_id?: true
+  temperature_inlet_heater_id?: true
+  temperature_lower_heater_id?: true
+  temperature_after_catalyst_id?: true
+  temperature_upper_heater_id?: true
   on_contact_sensor_id?: true
-  alarm_contact_sensor_id?: true
   capstan_speed_id?: true
   _all?: true
 }
@@ -222,9 +242,11 @@ export type MachineGroupByOutputType = {
   name: string
   enabled: boolean
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id: number
+  temperature_lower_heater_id: number
+  temperature_after_catalyst_id: number
+  temperature_upper_heater_id: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
   _count: MachineCountAggregateOutputType | null
   _avg: MachineAvgAggregateOutputType | null
@@ -256,14 +278,18 @@ export type MachineWhereInput = {
   name?: Prisma.StringFilter<"Machine"> | string
   enabled?: Prisma.BoolFilter<"Machine"> | boolean
   power_meter_id?: Prisma.IntFilter<"Machine"> | number
-  temperature_sensor_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_inlet_heater_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_lower_heater_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_after_catalyst_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_upper_heater_id?: Prisma.IntFilter<"Machine"> | number
   on_contact_sensor_id?: Prisma.IntFilter<"Machine"> | number
-  alarm_contact_sensor_id?: Prisma.IntFilter<"Machine"> | number
   capstan_speed_id?: Prisma.IntFilter<"Machine"> | number
   power_meter?: Prisma.XOR<Prisma.PowerMeterScalarRelationFilter, Prisma.PowerMeterWhereInput>
-  temperature_sensor?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
+  temperature_inlet_heater?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
+  temperature_lower_heater?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
+  temperature_after_catalyst?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
+  temperature_upper_heater?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
   on_contact_sensor?: Prisma.XOR<Prisma.OnContactSensorScalarRelationFilter, Prisma.OnContactSensorWhereInput>
-  alarm_contact_sensor?: Prisma.XOR<Prisma.AlarmContactSensorScalarRelationFilter, Prisma.AlarmContactSensorWhereInput>
   capstan_speed?: Prisma.XOR<Prisma.CapstanSpeedScalarRelationFilter, Prisma.CapstanSpeedWhereInput>
   logs?: Prisma.LogHistoryListRelationFilter
   conditions?: Prisma.ConditionListRelationFilter
@@ -275,14 +301,18 @@ export type MachineOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   enabled?: Prisma.SortOrder
   power_meter_id?: Prisma.SortOrder
-  temperature_sensor_id?: Prisma.SortOrder
+  temperature_inlet_heater_id?: Prisma.SortOrder
+  temperature_lower_heater_id?: Prisma.SortOrder
+  temperature_after_catalyst_id?: Prisma.SortOrder
+  temperature_upper_heater_id?: Prisma.SortOrder
   on_contact_sensor_id?: Prisma.SortOrder
-  alarm_contact_sensor_id?: Prisma.SortOrder
   capstan_speed_id?: Prisma.SortOrder
   power_meter?: Prisma.PowerMeterOrderByWithRelationInput
-  temperature_sensor?: Prisma.TemperatureSensorOrderByWithRelationInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorOrderByWithRelationInput
+  temperature_lower_heater?: Prisma.TemperatureSensorOrderByWithRelationInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorOrderByWithRelationInput
+  temperature_upper_heater?: Prisma.TemperatureSensorOrderByWithRelationInput
   on_contact_sensor?: Prisma.OnContactSensorOrderByWithRelationInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorOrderByWithRelationInput
   capstan_speed?: Prisma.CapstanSpeedOrderByWithRelationInput
   logs?: Prisma.LogHistoryOrderByRelationAggregateInput
   conditions?: Prisma.ConditionOrderByRelationAggregateInput
@@ -297,14 +327,18 @@ export type MachineWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Machine"> | string
   enabled?: Prisma.BoolFilter<"Machine"> | boolean
   power_meter_id?: Prisma.IntFilter<"Machine"> | number
-  temperature_sensor_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_inlet_heater_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_lower_heater_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_after_catalyst_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_upper_heater_id?: Prisma.IntFilter<"Machine"> | number
   on_contact_sensor_id?: Prisma.IntFilter<"Machine"> | number
-  alarm_contact_sensor_id?: Prisma.IntFilter<"Machine"> | number
   capstan_speed_id?: Prisma.IntFilter<"Machine"> | number
   power_meter?: Prisma.XOR<Prisma.PowerMeterScalarRelationFilter, Prisma.PowerMeterWhereInput>
-  temperature_sensor?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
+  temperature_inlet_heater?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
+  temperature_lower_heater?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
+  temperature_after_catalyst?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
+  temperature_upper_heater?: Prisma.XOR<Prisma.TemperatureSensorScalarRelationFilter, Prisma.TemperatureSensorWhereInput>
   on_contact_sensor?: Prisma.XOR<Prisma.OnContactSensorScalarRelationFilter, Prisma.OnContactSensorWhereInput>
-  alarm_contact_sensor?: Prisma.XOR<Prisma.AlarmContactSensorScalarRelationFilter, Prisma.AlarmContactSensorWhereInput>
   capstan_speed?: Prisma.XOR<Prisma.CapstanSpeedScalarRelationFilter, Prisma.CapstanSpeedWhereInput>
   logs?: Prisma.LogHistoryListRelationFilter
   conditions?: Prisma.ConditionListRelationFilter
@@ -316,9 +350,11 @@ export type MachineOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   enabled?: Prisma.SortOrder
   power_meter_id?: Prisma.SortOrder
-  temperature_sensor_id?: Prisma.SortOrder
+  temperature_inlet_heater_id?: Prisma.SortOrder
+  temperature_lower_heater_id?: Prisma.SortOrder
+  temperature_after_catalyst_id?: Prisma.SortOrder
+  temperature_upper_heater_id?: Prisma.SortOrder
   on_contact_sensor_id?: Prisma.SortOrder
-  alarm_contact_sensor_id?: Prisma.SortOrder
   capstan_speed_id?: Prisma.SortOrder
   _count?: Prisma.MachineCountOrderByAggregateInput
   _avg?: Prisma.MachineAvgOrderByAggregateInput
@@ -335,9 +371,11 @@ export type MachineScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Machine"> | string
   enabled?: Prisma.BoolWithAggregatesFilter<"Machine"> | boolean
   power_meter_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
-  temperature_sensor_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
+  temperature_inlet_heater_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
+  temperature_lower_heater_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
+  temperature_after_catalyst_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
+  temperature_upper_heater_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
   on_contact_sensor_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
-  alarm_contact_sensor_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
   capstan_speed_id?: Prisma.IntWithAggregatesFilter<"Machine"> | number
 }
 
@@ -345,9 +383,11 @@ export type MachineCreateInput = {
   name: string
   enabled?: boolean
   power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
-  temperature_sensor: Prisma.TemperatureSensorCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
   on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
-  alarm_contact_sensor: Prisma.AlarmContactSensorCreateNestedOneWithoutMachinesInput
   capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
   logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
@@ -359,9 +399,11 @@ export type MachineUncheckedCreateInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
   logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
@@ -372,9 +414,11 @@ export type MachineUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
-  temperature_sensor?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
   on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorUpdateOneRequiredWithoutMachinesNestedInput
   capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
   logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
@@ -386,9 +430,11 @@ export type MachineUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
   logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
@@ -400,9 +446,11 @@ export type MachineCreateManyInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
 }
 
@@ -416,9 +464,11 @@ export type MachineUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -442,18 +492,22 @@ export type MachineCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   enabled?: Prisma.SortOrder
   power_meter_id?: Prisma.SortOrder
-  temperature_sensor_id?: Prisma.SortOrder
+  temperature_inlet_heater_id?: Prisma.SortOrder
+  temperature_lower_heater_id?: Prisma.SortOrder
+  temperature_after_catalyst_id?: Prisma.SortOrder
+  temperature_upper_heater_id?: Prisma.SortOrder
   on_contact_sensor_id?: Prisma.SortOrder
-  alarm_contact_sensor_id?: Prisma.SortOrder
   capstan_speed_id?: Prisma.SortOrder
 }
 
 export type MachineAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   power_meter_id?: Prisma.SortOrder
-  temperature_sensor_id?: Prisma.SortOrder
+  temperature_inlet_heater_id?: Prisma.SortOrder
+  temperature_lower_heater_id?: Prisma.SortOrder
+  temperature_after_catalyst_id?: Prisma.SortOrder
+  temperature_upper_heater_id?: Prisma.SortOrder
   on_contact_sensor_id?: Prisma.SortOrder
-  alarm_contact_sensor_id?: Prisma.SortOrder
   capstan_speed_id?: Prisma.SortOrder
 }
 
@@ -462,9 +516,11 @@ export type MachineMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   enabled?: Prisma.SortOrder
   power_meter_id?: Prisma.SortOrder
-  temperature_sensor_id?: Prisma.SortOrder
+  temperature_inlet_heater_id?: Prisma.SortOrder
+  temperature_lower_heater_id?: Prisma.SortOrder
+  temperature_after_catalyst_id?: Prisma.SortOrder
+  temperature_upper_heater_id?: Prisma.SortOrder
   on_contact_sensor_id?: Prisma.SortOrder
-  alarm_contact_sensor_id?: Prisma.SortOrder
   capstan_speed_id?: Prisma.SortOrder
 }
 
@@ -473,18 +529,22 @@ export type MachineMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   enabled?: Prisma.SortOrder
   power_meter_id?: Prisma.SortOrder
-  temperature_sensor_id?: Prisma.SortOrder
+  temperature_inlet_heater_id?: Prisma.SortOrder
+  temperature_lower_heater_id?: Prisma.SortOrder
+  temperature_after_catalyst_id?: Prisma.SortOrder
+  temperature_upper_heater_id?: Prisma.SortOrder
   on_contact_sensor_id?: Prisma.SortOrder
-  alarm_contact_sensor_id?: Prisma.SortOrder
   capstan_speed_id?: Prisma.SortOrder
 }
 
 export type MachineSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   power_meter_id?: Prisma.SortOrder
-  temperature_sensor_id?: Prisma.SortOrder
+  temperature_inlet_heater_id?: Prisma.SortOrder
+  temperature_lower_heater_id?: Prisma.SortOrder
+  temperature_after_catalyst_id?: Prisma.SortOrder
+  temperature_upper_heater_id?: Prisma.SortOrder
   on_contact_sensor_id?: Prisma.SortOrder
-  alarm_contact_sensor_id?: Prisma.SortOrder
   capstan_speed_id?: Prisma.SortOrder
 }
 
@@ -600,45 +660,171 @@ export type MachineUncheckedUpdateManyWithoutCapstan_speedNestedInput = {
   deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
 }
 
-export type MachineCreateNestedManyWithoutTemperature_sensorInput = {
-  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_sensorInput, Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput> | Prisma.MachineCreateWithoutTemperature_sensorInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput[]
-  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_sensorInput | Prisma.MachineCreateOrConnectWithoutTemperature_sensorInput[]
-  createMany?: Prisma.MachineCreateManyTemperature_sensorInputEnvelope
+export type MachineCreateNestedManyWithoutTemperature_inlet_heaterInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_inlet_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput> | Prisma.MachineCreateWithoutTemperature_inlet_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_inlet_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_inlet_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_inlet_heaterInputEnvelope
   connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
 }
 
-export type MachineUncheckedCreateNestedManyWithoutTemperature_sensorInput = {
-  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_sensorInput, Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput> | Prisma.MachineCreateWithoutTemperature_sensorInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput[]
-  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_sensorInput | Prisma.MachineCreateOrConnectWithoutTemperature_sensorInput[]
-  createMany?: Prisma.MachineCreateManyTemperature_sensorInputEnvelope
+export type MachineCreateNestedManyWithoutTemperature_lower_heaterInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_lower_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput> | Prisma.MachineCreateWithoutTemperature_lower_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_lower_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_lower_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_lower_heaterInputEnvelope
   connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
 }
 
-export type MachineUpdateManyWithoutTemperature_sensorNestedInput = {
-  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_sensorInput, Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput> | Prisma.MachineCreateWithoutTemperature_sensorInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput[]
-  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_sensorInput | Prisma.MachineCreateOrConnectWithoutTemperature_sensorInput[]
-  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_sensorInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_sensorInput[]
-  createMany?: Prisma.MachineCreateManyTemperature_sensorInputEnvelope
+export type MachineCreateNestedManyWithoutTemperature_after_catalystInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_after_catalystInput, Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput> | Prisma.MachineCreateWithoutTemperature_after_catalystInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_after_catalystInput | Prisma.MachineCreateOrConnectWithoutTemperature_after_catalystInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_after_catalystInputEnvelope
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+}
+
+export type MachineCreateNestedManyWithoutTemperature_upper_heaterInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_upper_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput> | Prisma.MachineCreateWithoutTemperature_upper_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_upper_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_upper_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_upper_heaterInputEnvelope
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+}
+
+export type MachineUncheckedCreateNestedManyWithoutTemperature_inlet_heaterInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_inlet_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput> | Prisma.MachineCreateWithoutTemperature_inlet_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_inlet_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_inlet_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_inlet_heaterInputEnvelope
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+}
+
+export type MachineUncheckedCreateNestedManyWithoutTemperature_lower_heaterInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_lower_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput> | Prisma.MachineCreateWithoutTemperature_lower_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_lower_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_lower_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_lower_heaterInputEnvelope
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+}
+
+export type MachineUncheckedCreateNestedManyWithoutTemperature_after_catalystInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_after_catalystInput, Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput> | Prisma.MachineCreateWithoutTemperature_after_catalystInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_after_catalystInput | Prisma.MachineCreateOrConnectWithoutTemperature_after_catalystInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_after_catalystInputEnvelope
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+}
+
+export type MachineUncheckedCreateNestedManyWithoutTemperature_upper_heaterInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_upper_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput> | Prisma.MachineCreateWithoutTemperature_upper_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_upper_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_upper_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_upper_heaterInputEnvelope
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+}
+
+export type MachineUpdateManyWithoutTemperature_inlet_heaterNestedInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_inlet_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput> | Prisma.MachineCreateWithoutTemperature_inlet_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_inlet_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_inlet_heaterInput[]
+  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_inlet_heaterInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_inlet_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_inlet_heaterInputEnvelope
   set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
   disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
   delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
   connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_sensorInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_sensorInput[]
-  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_sensorInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_sensorInput[]
+  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_inlet_heaterInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_inlet_heaterInput[]
+  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_inlet_heaterInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_inlet_heaterInput[]
   deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
 }
 
-export type MachineUncheckedUpdateManyWithoutTemperature_sensorNestedInput = {
-  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_sensorInput, Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput> | Prisma.MachineCreateWithoutTemperature_sensorInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput[]
-  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_sensorInput | Prisma.MachineCreateOrConnectWithoutTemperature_sensorInput[]
-  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_sensorInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_sensorInput[]
-  createMany?: Prisma.MachineCreateManyTemperature_sensorInputEnvelope
+export type MachineUpdateManyWithoutTemperature_lower_heaterNestedInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_lower_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput> | Prisma.MachineCreateWithoutTemperature_lower_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_lower_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_lower_heaterInput[]
+  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_lower_heaterInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_lower_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_lower_heaterInputEnvelope
   set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
   disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
   delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
   connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_sensorInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_sensorInput[]
-  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_sensorInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_sensorInput[]
+  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_lower_heaterInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_lower_heaterInput[]
+  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_lower_heaterInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_lower_heaterInput[]
+  deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
+}
+
+export type MachineUpdateManyWithoutTemperature_after_catalystNestedInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_after_catalystInput, Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput> | Prisma.MachineCreateWithoutTemperature_after_catalystInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_after_catalystInput | Prisma.MachineCreateOrConnectWithoutTemperature_after_catalystInput[]
+  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_after_catalystInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_after_catalystInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_after_catalystInputEnvelope
+  set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_after_catalystInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_after_catalystInput[]
+  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_after_catalystInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_after_catalystInput[]
+  deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
+}
+
+export type MachineUpdateManyWithoutTemperature_upper_heaterNestedInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_upper_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput> | Prisma.MachineCreateWithoutTemperature_upper_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_upper_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_upper_heaterInput[]
+  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_upper_heaterInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_upper_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_upper_heaterInputEnvelope
+  set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_upper_heaterInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_upper_heaterInput[]
+  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_upper_heaterInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_upper_heaterInput[]
+  deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
+}
+
+export type MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterNestedInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_inlet_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput> | Prisma.MachineCreateWithoutTemperature_inlet_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_inlet_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_inlet_heaterInput[]
+  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_inlet_heaterInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_inlet_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_inlet_heaterInputEnvelope
+  set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_inlet_heaterInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_inlet_heaterInput[]
+  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_inlet_heaterInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_inlet_heaterInput[]
+  deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
+}
+
+export type MachineUncheckedUpdateManyWithoutTemperature_lower_heaterNestedInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_lower_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput> | Prisma.MachineCreateWithoutTemperature_lower_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_lower_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_lower_heaterInput[]
+  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_lower_heaterInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_lower_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_lower_heaterInputEnvelope
+  set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_lower_heaterInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_lower_heaterInput[]
+  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_lower_heaterInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_lower_heaterInput[]
+  deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
+}
+
+export type MachineUncheckedUpdateManyWithoutTemperature_after_catalystNestedInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_after_catalystInput, Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput> | Prisma.MachineCreateWithoutTemperature_after_catalystInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_after_catalystInput | Prisma.MachineCreateOrConnectWithoutTemperature_after_catalystInput[]
+  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_after_catalystInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_after_catalystInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_after_catalystInputEnvelope
+  set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_after_catalystInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_after_catalystInput[]
+  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_after_catalystInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_after_catalystInput[]
+  deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
+}
+
+export type MachineUncheckedUpdateManyWithoutTemperature_upper_heaterNestedInput = {
+  create?: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_upper_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput> | Prisma.MachineCreateWithoutTemperature_upper_heaterInput[] | Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput[]
+  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutTemperature_upper_heaterInput | Prisma.MachineCreateOrConnectWithoutTemperature_upper_heaterInput[]
+  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_upper_heaterInput | Prisma.MachineUpsertWithWhereUniqueWithoutTemperature_upper_heaterInput[]
+  createMany?: Prisma.MachineCreateManyTemperature_upper_heaterInputEnvelope
+  set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
+  update?: Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_upper_heaterInput | Prisma.MachineUpdateWithWhereUniqueWithoutTemperature_upper_heaterInput[]
+  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutTemperature_upper_heaterInput | Prisma.MachineUpdateManyWithWhereWithoutTemperature_upper_heaterInput[]
   deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
 }
 
@@ -684,48 +870,6 @@ export type MachineUncheckedUpdateManyWithoutOn_contact_sensorNestedInput = {
   deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
 }
 
-export type MachineCreateNestedManyWithoutAlarm_contact_sensorInput = {
-  create?: Prisma.XOR<Prisma.MachineCreateWithoutAlarm_contact_sensorInput, Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput> | Prisma.MachineCreateWithoutAlarm_contact_sensorInput[] | Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput[]
-  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutAlarm_contact_sensorInput | Prisma.MachineCreateOrConnectWithoutAlarm_contact_sensorInput[]
-  createMany?: Prisma.MachineCreateManyAlarm_contact_sensorInputEnvelope
-  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-}
-
-export type MachineUncheckedCreateNestedManyWithoutAlarm_contact_sensorInput = {
-  create?: Prisma.XOR<Prisma.MachineCreateWithoutAlarm_contact_sensorInput, Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput> | Prisma.MachineCreateWithoutAlarm_contact_sensorInput[] | Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput[]
-  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutAlarm_contact_sensorInput | Prisma.MachineCreateOrConnectWithoutAlarm_contact_sensorInput[]
-  createMany?: Prisma.MachineCreateManyAlarm_contact_sensorInputEnvelope
-  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-}
-
-export type MachineUpdateManyWithoutAlarm_contact_sensorNestedInput = {
-  create?: Prisma.XOR<Prisma.MachineCreateWithoutAlarm_contact_sensorInput, Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput> | Prisma.MachineCreateWithoutAlarm_contact_sensorInput[] | Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput[]
-  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutAlarm_contact_sensorInput | Prisma.MachineCreateOrConnectWithoutAlarm_contact_sensorInput[]
-  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutAlarm_contact_sensorInput | Prisma.MachineUpsertWithWhereUniqueWithoutAlarm_contact_sensorInput[]
-  createMany?: Prisma.MachineCreateManyAlarm_contact_sensorInputEnvelope
-  set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  update?: Prisma.MachineUpdateWithWhereUniqueWithoutAlarm_contact_sensorInput | Prisma.MachineUpdateWithWhereUniqueWithoutAlarm_contact_sensorInput[]
-  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutAlarm_contact_sensorInput | Prisma.MachineUpdateManyWithWhereWithoutAlarm_contact_sensorInput[]
-  deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
-}
-
-export type MachineUncheckedUpdateManyWithoutAlarm_contact_sensorNestedInput = {
-  create?: Prisma.XOR<Prisma.MachineCreateWithoutAlarm_contact_sensorInput, Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput> | Prisma.MachineCreateWithoutAlarm_contact_sensorInput[] | Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput[]
-  connectOrCreate?: Prisma.MachineCreateOrConnectWithoutAlarm_contact_sensorInput | Prisma.MachineCreateOrConnectWithoutAlarm_contact_sensorInput[]
-  upsert?: Prisma.MachineUpsertWithWhereUniqueWithoutAlarm_contact_sensorInput | Prisma.MachineUpsertWithWhereUniqueWithoutAlarm_contact_sensorInput[]
-  createMany?: Prisma.MachineCreateManyAlarm_contact_sensorInputEnvelope
-  set?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  disconnect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  delete?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  connect?: Prisma.MachineWhereUniqueInput | Prisma.MachineWhereUniqueInput[]
-  update?: Prisma.MachineUpdateWithWhereUniqueWithoutAlarm_contact_sensorInput | Prisma.MachineUpdateWithWhereUniqueWithoutAlarm_contact_sensorInput[]
-  updateMany?: Prisma.MachineUpdateManyWithWhereWithoutAlarm_contact_sensorInput | Prisma.MachineUpdateManyWithWhereWithoutAlarm_contact_sensorInput[]
-  deleteMany?: Prisma.MachineScalarWhereInput | Prisma.MachineScalarWhereInput[]
-}
-
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -748,9 +892,11 @@ export type MachineCreateWithoutLogsInput = {
   name: string
   enabled?: boolean
   power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
-  temperature_sensor: Prisma.TemperatureSensorCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
   on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
-  alarm_contact_sensor: Prisma.AlarmContactSensorCreateNestedOneWithoutMachinesInput
   capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
   conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
   run_hours?: Prisma.McRunHourCreateNestedManyWithoutMachineInput
@@ -761,9 +907,11 @@ export type MachineUncheckedCreateWithoutLogsInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
   conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
   run_hours?: Prisma.McRunHourUncheckedCreateNestedManyWithoutMachineInput
@@ -789,9 +937,11 @@ export type MachineUpdateWithoutLogsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
-  temperature_sensor?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
   on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorUpdateOneRequiredWithoutMachinesNestedInput
   capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
   conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
   run_hours?: Prisma.McRunHourUpdateManyWithoutMachineNestedInput
@@ -802,9 +952,11 @@ export type MachineUncheckedUpdateWithoutLogsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
   conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
   run_hours?: Prisma.McRunHourUncheckedUpdateManyWithoutMachineNestedInput
@@ -814,9 +966,11 @@ export type MachineCreateWithoutConditionsInput = {
   name: string
   enabled?: boolean
   power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
-  temperature_sensor: Prisma.TemperatureSensorCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
   on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
-  alarm_contact_sensor: Prisma.AlarmContactSensorCreateNestedOneWithoutMachinesInput
   capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
   logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
   run_hours?: Prisma.McRunHourCreateNestedManyWithoutMachineInput
@@ -827,9 +981,11 @@ export type MachineUncheckedCreateWithoutConditionsInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
   logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
   run_hours?: Prisma.McRunHourUncheckedCreateNestedManyWithoutMachineInput
@@ -855,9 +1011,11 @@ export type MachineUpdateWithoutConditionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
-  temperature_sensor?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
   on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorUpdateOneRequiredWithoutMachinesNestedInput
   capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
   logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
   run_hours?: Prisma.McRunHourUpdateManyWithoutMachineNestedInput
@@ -868,9 +1026,11 @@ export type MachineUncheckedUpdateWithoutConditionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
   logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
   run_hours?: Prisma.McRunHourUncheckedUpdateManyWithoutMachineNestedInput
@@ -879,9 +1039,11 @@ export type MachineUncheckedUpdateWithoutConditionsInput = {
 export type MachineCreateWithoutPower_meterInput = {
   name: string
   enabled?: boolean
-  temperature_sensor: Prisma.TemperatureSensorCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
   on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
-  alarm_contact_sensor: Prisma.AlarmContactSensorCreateNestedOneWithoutMachinesInput
   capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
   logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
@@ -892,9 +1054,11 @@ export type MachineUncheckedCreateWithoutPower_meterInput = {
   id?: number
   name: string
   enabled?: boolean
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
   logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
@@ -935,9 +1099,11 @@ export type MachineScalarWhereInput = {
   name?: Prisma.StringFilter<"Machine"> | string
   enabled?: Prisma.BoolFilter<"Machine"> | boolean
   power_meter_id?: Prisma.IntFilter<"Machine"> | number
-  temperature_sensor_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_inlet_heater_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_lower_heater_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_after_catalyst_id?: Prisma.IntFilter<"Machine"> | number
+  temperature_upper_heater_id?: Prisma.IntFilter<"Machine"> | number
   on_contact_sensor_id?: Prisma.IntFilter<"Machine"> | number
-  alarm_contact_sensor_id?: Prisma.IntFilter<"Machine"> | number
   capstan_speed_id?: Prisma.IntFilter<"Machine"> | number
 }
 
@@ -945,9 +1111,11 @@ export type MachineCreateWithoutCapstan_speedInput = {
   name: string
   enabled?: boolean
   power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
-  temperature_sensor: Prisma.TemperatureSensorCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
   on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
-  alarm_contact_sensor: Prisma.AlarmContactSensorCreateNestedOneWithoutMachinesInput
   logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
   run_hours?: Prisma.McRunHourCreateNestedManyWithoutMachineInput
@@ -958,9 +1126,11 @@ export type MachineUncheckedCreateWithoutCapstan_speedInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
   run_hours?: Prisma.McRunHourUncheckedCreateNestedManyWithoutMachineInput
@@ -992,63 +1162,234 @@ export type MachineUpdateManyWithWhereWithoutCapstan_speedInput = {
   data: Prisma.XOR<Prisma.MachineUpdateManyMutationInput, Prisma.MachineUncheckedUpdateManyWithoutCapstan_speedInput>
 }
 
-export type MachineCreateWithoutTemperature_sensorInput = {
+export type MachineCreateWithoutTemperature_inlet_heaterInput = {
   name: string
   enabled?: boolean
   power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
   on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
-  alarm_contact_sensor: Prisma.AlarmContactSensorCreateNestedOneWithoutMachinesInput
   capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
   logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
   run_hours?: Prisma.McRunHourCreateNestedManyWithoutMachineInput
 }
 
-export type MachineUncheckedCreateWithoutTemperature_sensorInput = {
+export type MachineUncheckedCreateWithoutTemperature_inlet_heaterInput = {
   id?: number
   name: string
   enabled?: boolean
   power_meter_id: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
   logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
   run_hours?: Prisma.McRunHourUncheckedCreateNestedManyWithoutMachineInput
 }
 
-export type MachineCreateOrConnectWithoutTemperature_sensorInput = {
+export type MachineCreateOrConnectWithoutTemperature_inlet_heaterInput = {
   where: Prisma.MachineWhereUniqueInput
-  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_sensorInput, Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput>
+  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_inlet_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput>
 }
 
-export type MachineCreateManyTemperature_sensorInputEnvelope = {
-  data: Prisma.MachineCreateManyTemperature_sensorInput | Prisma.MachineCreateManyTemperature_sensorInput[]
+export type MachineCreateManyTemperature_inlet_heaterInputEnvelope = {
+  data: Prisma.MachineCreateManyTemperature_inlet_heaterInput | Prisma.MachineCreateManyTemperature_inlet_heaterInput[]
   skipDuplicates?: boolean
 }
 
-export type MachineUpsertWithWhereUniqueWithoutTemperature_sensorInput = {
-  where: Prisma.MachineWhereUniqueInput
-  update: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_sensorInput, Prisma.MachineUncheckedUpdateWithoutTemperature_sensorInput>
-  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_sensorInput, Prisma.MachineUncheckedCreateWithoutTemperature_sensorInput>
+export type MachineCreateWithoutTemperature_lower_heaterInput = {
+  name: string
+  enabled?: boolean
+  power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
+  on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
+  capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
+  logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
+  conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
+  run_hours?: Prisma.McRunHourCreateNestedManyWithoutMachineInput
 }
 
-export type MachineUpdateWithWhereUniqueWithoutTemperature_sensorInput = {
-  where: Prisma.MachineWhereUniqueInput
-  data: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_sensorInput, Prisma.MachineUncheckedUpdateWithoutTemperature_sensorInput>
+export type MachineUncheckedCreateWithoutTemperature_lower_heaterInput = {
+  id?: number
+  name: string
+  enabled?: boolean
+  power_meter_id: number
+  temperature_inlet_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
+  on_contact_sensor_id: number
+  capstan_speed_id: number
+  logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
+  conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
+  run_hours?: Prisma.McRunHourUncheckedCreateNestedManyWithoutMachineInput
 }
 
-export type MachineUpdateManyWithWhereWithoutTemperature_sensorInput = {
+export type MachineCreateOrConnectWithoutTemperature_lower_heaterInput = {
+  where: Prisma.MachineWhereUniqueInput
+  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_lower_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput>
+}
+
+export type MachineCreateManyTemperature_lower_heaterInputEnvelope = {
+  data: Prisma.MachineCreateManyTemperature_lower_heaterInput | Prisma.MachineCreateManyTemperature_lower_heaterInput[]
+  skipDuplicates?: boolean
+}
+
+export type MachineCreateWithoutTemperature_after_catalystInput = {
+  name: string
+  enabled?: boolean
+  power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
+  on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
+  capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
+  logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
+  conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
+  run_hours?: Prisma.McRunHourCreateNestedManyWithoutMachineInput
+}
+
+export type MachineUncheckedCreateWithoutTemperature_after_catalystInput = {
+  id?: number
+  name: string
+  enabled?: boolean
+  power_meter_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_upper_heater_id?: number
+  on_contact_sensor_id: number
+  capstan_speed_id: number
+  logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
+  conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
+  run_hours?: Prisma.McRunHourUncheckedCreateNestedManyWithoutMachineInput
+}
+
+export type MachineCreateOrConnectWithoutTemperature_after_catalystInput = {
+  where: Prisma.MachineWhereUniqueInput
+  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_after_catalystInput, Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput>
+}
+
+export type MachineCreateManyTemperature_after_catalystInputEnvelope = {
+  data: Prisma.MachineCreateManyTemperature_after_catalystInput | Prisma.MachineCreateManyTemperature_after_catalystInput[]
+  skipDuplicates?: boolean
+}
+
+export type MachineCreateWithoutTemperature_upper_heaterInput = {
+  name: string
+  enabled?: boolean
+  power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
+  capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
+  logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
+  conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
+  run_hours?: Prisma.McRunHourCreateNestedManyWithoutMachineInput
+}
+
+export type MachineUncheckedCreateWithoutTemperature_upper_heaterInput = {
+  id?: number
+  name: string
+  enabled?: boolean
+  power_meter_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  on_contact_sensor_id: number
+  capstan_speed_id: number
+  logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
+  conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
+  run_hours?: Prisma.McRunHourUncheckedCreateNestedManyWithoutMachineInput
+}
+
+export type MachineCreateOrConnectWithoutTemperature_upper_heaterInput = {
+  where: Prisma.MachineWhereUniqueInput
+  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_upper_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput>
+}
+
+export type MachineCreateManyTemperature_upper_heaterInputEnvelope = {
+  data: Prisma.MachineCreateManyTemperature_upper_heaterInput | Prisma.MachineCreateManyTemperature_upper_heaterInput[]
+  skipDuplicates?: boolean
+}
+
+export type MachineUpsertWithWhereUniqueWithoutTemperature_inlet_heaterInput = {
+  where: Prisma.MachineWhereUniqueInput
+  update: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_inlet_heaterInput, Prisma.MachineUncheckedUpdateWithoutTemperature_inlet_heaterInput>
+  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_inlet_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_inlet_heaterInput>
+}
+
+export type MachineUpdateWithWhereUniqueWithoutTemperature_inlet_heaterInput = {
+  where: Prisma.MachineWhereUniqueInput
+  data: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_inlet_heaterInput, Prisma.MachineUncheckedUpdateWithoutTemperature_inlet_heaterInput>
+}
+
+export type MachineUpdateManyWithWhereWithoutTemperature_inlet_heaterInput = {
   where: Prisma.MachineScalarWhereInput
-  data: Prisma.XOR<Prisma.MachineUpdateManyMutationInput, Prisma.MachineUncheckedUpdateManyWithoutTemperature_sensorInput>
+  data: Prisma.XOR<Prisma.MachineUpdateManyMutationInput, Prisma.MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterInput>
+}
+
+export type MachineUpsertWithWhereUniqueWithoutTemperature_lower_heaterInput = {
+  where: Prisma.MachineWhereUniqueInput
+  update: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_lower_heaterInput, Prisma.MachineUncheckedUpdateWithoutTemperature_lower_heaterInput>
+  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_lower_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_lower_heaterInput>
+}
+
+export type MachineUpdateWithWhereUniqueWithoutTemperature_lower_heaterInput = {
+  where: Prisma.MachineWhereUniqueInput
+  data: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_lower_heaterInput, Prisma.MachineUncheckedUpdateWithoutTemperature_lower_heaterInput>
+}
+
+export type MachineUpdateManyWithWhereWithoutTemperature_lower_heaterInput = {
+  where: Prisma.MachineScalarWhereInput
+  data: Prisma.XOR<Prisma.MachineUpdateManyMutationInput, Prisma.MachineUncheckedUpdateManyWithoutTemperature_lower_heaterInput>
+}
+
+export type MachineUpsertWithWhereUniqueWithoutTemperature_after_catalystInput = {
+  where: Prisma.MachineWhereUniqueInput
+  update: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_after_catalystInput, Prisma.MachineUncheckedUpdateWithoutTemperature_after_catalystInput>
+  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_after_catalystInput, Prisma.MachineUncheckedCreateWithoutTemperature_after_catalystInput>
+}
+
+export type MachineUpdateWithWhereUniqueWithoutTemperature_after_catalystInput = {
+  where: Prisma.MachineWhereUniqueInput
+  data: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_after_catalystInput, Prisma.MachineUncheckedUpdateWithoutTemperature_after_catalystInput>
+}
+
+export type MachineUpdateManyWithWhereWithoutTemperature_after_catalystInput = {
+  where: Prisma.MachineScalarWhereInput
+  data: Prisma.XOR<Prisma.MachineUpdateManyMutationInput, Prisma.MachineUncheckedUpdateManyWithoutTemperature_after_catalystInput>
+}
+
+export type MachineUpsertWithWhereUniqueWithoutTemperature_upper_heaterInput = {
+  where: Prisma.MachineWhereUniqueInput
+  update: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_upper_heaterInput, Prisma.MachineUncheckedUpdateWithoutTemperature_upper_heaterInput>
+  create: Prisma.XOR<Prisma.MachineCreateWithoutTemperature_upper_heaterInput, Prisma.MachineUncheckedCreateWithoutTemperature_upper_heaterInput>
+}
+
+export type MachineUpdateWithWhereUniqueWithoutTemperature_upper_heaterInput = {
+  where: Prisma.MachineWhereUniqueInput
+  data: Prisma.XOR<Prisma.MachineUpdateWithoutTemperature_upper_heaterInput, Prisma.MachineUncheckedUpdateWithoutTemperature_upper_heaterInput>
+}
+
+export type MachineUpdateManyWithWhereWithoutTemperature_upper_heaterInput = {
+  where: Prisma.MachineScalarWhereInput
+  data: Prisma.XOR<Prisma.MachineUpdateManyMutationInput, Prisma.MachineUncheckedUpdateManyWithoutTemperature_upper_heaterInput>
 }
 
 export type MachineCreateWithoutOn_contact_sensorInput = {
   name: string
   enabled?: boolean
   power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
-  temperature_sensor: Prisma.TemperatureSensorCreateNestedOneWithoutMachinesInput
-  alarm_contact_sensor: Prisma.AlarmContactSensorCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
   capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
   logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
@@ -1060,8 +1401,10 @@ export type MachineUncheckedCreateWithoutOn_contact_sensorInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
-  alarm_contact_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   capstan_speed_id: number
   logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
@@ -1094,64 +1437,15 @@ export type MachineUpdateManyWithWhereWithoutOn_contact_sensorInput = {
   data: Prisma.XOR<Prisma.MachineUpdateManyMutationInput, Prisma.MachineUncheckedUpdateManyWithoutOn_contact_sensorInput>
 }
 
-export type MachineCreateWithoutAlarm_contact_sensorInput = {
-  name: string
-  enabled?: boolean
-  power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
-  temperature_sensor: Prisma.TemperatureSensorCreateNestedOneWithoutMachinesInput
-  on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
-  capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
-  logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
-  conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
-  run_hours?: Prisma.McRunHourCreateNestedManyWithoutMachineInput
-}
-
-export type MachineUncheckedCreateWithoutAlarm_contact_sensorInput = {
-  id?: number
-  name: string
-  enabled?: boolean
-  power_meter_id: number
-  temperature_sensor_id: number
-  on_contact_sensor_id: number
-  capstan_speed_id: number
-  logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
-  conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
-  run_hours?: Prisma.McRunHourUncheckedCreateNestedManyWithoutMachineInput
-}
-
-export type MachineCreateOrConnectWithoutAlarm_contact_sensorInput = {
-  where: Prisma.MachineWhereUniqueInput
-  create: Prisma.XOR<Prisma.MachineCreateWithoutAlarm_contact_sensorInput, Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput>
-}
-
-export type MachineCreateManyAlarm_contact_sensorInputEnvelope = {
-  data: Prisma.MachineCreateManyAlarm_contact_sensorInput | Prisma.MachineCreateManyAlarm_contact_sensorInput[]
-  skipDuplicates?: boolean
-}
-
-export type MachineUpsertWithWhereUniqueWithoutAlarm_contact_sensorInput = {
-  where: Prisma.MachineWhereUniqueInput
-  update: Prisma.XOR<Prisma.MachineUpdateWithoutAlarm_contact_sensorInput, Prisma.MachineUncheckedUpdateWithoutAlarm_contact_sensorInput>
-  create: Prisma.XOR<Prisma.MachineCreateWithoutAlarm_contact_sensorInput, Prisma.MachineUncheckedCreateWithoutAlarm_contact_sensorInput>
-}
-
-export type MachineUpdateWithWhereUniqueWithoutAlarm_contact_sensorInput = {
-  where: Prisma.MachineWhereUniqueInput
-  data: Prisma.XOR<Prisma.MachineUpdateWithoutAlarm_contact_sensorInput, Prisma.MachineUncheckedUpdateWithoutAlarm_contact_sensorInput>
-}
-
-export type MachineUpdateManyWithWhereWithoutAlarm_contact_sensorInput = {
-  where: Prisma.MachineScalarWhereInput
-  data: Prisma.XOR<Prisma.MachineUpdateManyMutationInput, Prisma.MachineUncheckedUpdateManyWithoutAlarm_contact_sensorInput>
-}
-
 export type MachineCreateWithoutRun_hoursInput = {
   name: string
   enabled?: boolean
   power_meter: Prisma.PowerMeterCreateNestedOneWithoutMachinesInput
-  temperature_sensor: Prisma.TemperatureSensorCreateNestedOneWithoutMachinesInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_inlet_heaterInput
+  temperature_lower_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_lower_heaterInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_after_catalystInput
+  temperature_upper_heater?: Prisma.TemperatureSensorCreateNestedOneWithoutMachines_upper_heaterInput
   on_contact_sensor: Prisma.OnContactSensorCreateNestedOneWithoutMachinesInput
-  alarm_contact_sensor: Prisma.AlarmContactSensorCreateNestedOneWithoutMachinesInput
   capstan_speed: Prisma.CapstanSpeedCreateNestedOneWithoutMachinesInput
   logs?: Prisma.LogHistoryCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionCreateNestedManyWithoutMachineInput
@@ -1162,9 +1456,11 @@ export type MachineUncheckedCreateWithoutRun_hoursInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
   logs?: Prisma.LogHistoryUncheckedCreateNestedManyWithoutMachineInput
   conditions?: Prisma.ConditionUncheckedCreateNestedManyWithoutMachineInput
@@ -1190,9 +1486,11 @@ export type MachineUpdateWithoutRun_hoursInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
-  temperature_sensor?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
   on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorUpdateOneRequiredWithoutMachinesNestedInput
   capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
   logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
@@ -1203,9 +1501,11 @@ export type MachineUncheckedUpdateWithoutRun_hoursInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
   logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
@@ -1215,18 +1515,22 @@ export type MachineCreateManyPower_meterInput = {
   id?: number
   name: string
   enabled?: boolean
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
 }
 
 export type MachineUpdateWithoutPower_meterInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  temperature_sensor?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
   on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorUpdateOneRequiredWithoutMachinesNestedInput
   capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
   logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
@@ -1237,9 +1541,11 @@ export type MachineUncheckedUpdateWithoutPower_meterInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
   logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
@@ -1250,9 +1556,11 @@ export type MachineUncheckedUpdateManyWithoutPower_meterInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -1261,18 +1569,22 @@ export type MachineCreateManyCapstan_speedInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
 }
 
 export type MachineUpdateWithoutCapstan_speedInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
-  temperature_sensor?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
   on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorUpdateOneRequiredWithoutMachinesNestedInput
   logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
   run_hours?: Prisma.McRunHourUpdateManyWithoutMachineNestedInput
@@ -1283,9 +1595,11 @@ export type MachineUncheckedUpdateWithoutCapstan_speedInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
   run_hours?: Prisma.McRunHourUncheckedUpdateManyWithoutMachineNestedInput
@@ -1296,53 +1610,222 @@ export type MachineUncheckedUpdateManyWithoutCapstan_speedInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type MachineCreateManyTemperature_sensorInput = {
+export type MachineCreateManyTemperature_inlet_heaterInput = {
   id?: number
   name: string
   enabled?: boolean
   power_meter_id: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   on_contact_sensor_id: number
-  alarm_contact_sensor_id: number
   capstan_speed_id: number
 }
 
-export type MachineUpdateWithoutTemperature_sensorInput = {
+export type MachineCreateManyTemperature_lower_heaterInput = {
+  id?: number
+  name: string
+  enabled?: boolean
+  power_meter_id: number
+  temperature_inlet_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
+  on_contact_sensor_id: number
+  capstan_speed_id: number
+}
+
+export type MachineCreateManyTemperature_after_catalystInput = {
+  id?: number
+  name: string
+  enabled?: boolean
+  power_meter_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_upper_heater_id?: number
+  on_contact_sensor_id: number
+  capstan_speed_id: number
+}
+
+export type MachineCreateManyTemperature_upper_heaterInput = {
+  id?: number
+  name: string
+  enabled?: boolean
+  power_meter_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  on_contact_sensor_id: number
+  capstan_speed_id: number
+}
+
+export type MachineUpdateWithoutTemperature_inlet_heaterInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
   on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorUpdateOneRequiredWithoutMachinesNestedInput
   capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
   logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
   run_hours?: Prisma.McRunHourUpdateManyWithoutMachineNestedInput
 }
 
-export type MachineUncheckedUpdateWithoutTemperature_sensorInput = {
+export type MachineUncheckedUpdateWithoutTemperature_inlet_heaterInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
   logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
   run_hours?: Prisma.McRunHourUncheckedUpdateManyWithoutMachineNestedInput
 }
 
-export type MachineUncheckedUpdateManyWithoutTemperature_sensorInput = {
+export type MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MachineUpdateWithoutTemperature_lower_heaterInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
+  on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
+  capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
+  logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
+  conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
+  run_hours?: Prisma.McRunHourUpdateManyWithoutMachineNestedInput
+}
+
+export type MachineUncheckedUpdateWithoutTemperature_lower_heaterInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
+  logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
+  conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
+  run_hours?: Prisma.McRunHourUncheckedUpdateManyWithoutMachineNestedInput
+}
+
+export type MachineUncheckedUpdateManyWithoutTemperature_lower_heaterInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MachineUpdateWithoutTemperature_after_catalystInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
+  on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
+  capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
+  logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
+  conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
+  run_hours?: Prisma.McRunHourUpdateManyWithoutMachineNestedInput
+}
+
+export type MachineUncheckedUpdateWithoutTemperature_after_catalystInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
+  logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
+  conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
+  run_hours?: Prisma.McRunHourUncheckedUpdateManyWithoutMachineNestedInput
+}
+
+export type MachineUncheckedUpdateManyWithoutTemperature_after_catalystInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MachineUpdateWithoutTemperature_upper_heaterInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
+  capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
+  logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
+  conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
+  run_hours?: Prisma.McRunHourUpdateManyWithoutMachineNestedInput
+}
+
+export type MachineUncheckedUpdateWithoutTemperature_upper_heaterInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
+  logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
+  conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
+  run_hours?: Prisma.McRunHourUncheckedUpdateManyWithoutMachineNestedInput
+}
+
+export type MachineUncheckedUpdateManyWithoutTemperature_upper_heaterInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -1351,8 +1834,10 @@ export type MachineCreateManyOn_contact_sensorInput = {
   name: string
   enabled?: boolean
   power_meter_id: number
-  temperature_sensor_id: number
-  alarm_contact_sensor_id: number
+  temperature_inlet_heater_id?: number
+  temperature_lower_heater_id?: number
+  temperature_after_catalyst_id?: number
+  temperature_upper_heater_id?: number
   capstan_speed_id: number
 }
 
@@ -1360,8 +1845,10 @@ export type MachineUpdateWithoutOn_contact_sensorInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
-  temperature_sensor?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachinesNestedInput
-  alarm_contact_sensor?: Prisma.AlarmContactSensorUpdateOneRequiredWithoutMachinesNestedInput
+  temperature_inlet_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_inlet_heaterNestedInput
+  temperature_lower_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_lower_heaterNestedInput
+  temperature_after_catalyst?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_after_catalystNestedInput
+  temperature_upper_heater?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachines_upper_heaterNestedInput
   capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
   logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
@@ -1373,8 +1860,10 @@ export type MachineUncheckedUpdateWithoutOn_contact_sensorInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
   logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
   conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
@@ -1386,53 +1875,10 @@ export type MachineUncheckedUpdateManyWithoutOn_contact_sensorInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  alarm_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
-}
-
-export type MachineCreateManyAlarm_contact_sensorInput = {
-  id?: number
-  name: string
-  enabled?: boolean
-  power_meter_id: number
-  temperature_sensor_id: number
-  on_contact_sensor_id: number
-  capstan_speed_id: number
-}
-
-export type MachineUpdateWithoutAlarm_contact_sensorInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  power_meter?: Prisma.PowerMeterUpdateOneRequiredWithoutMachinesNestedInput
-  temperature_sensor?: Prisma.TemperatureSensorUpdateOneRequiredWithoutMachinesNestedInput
-  on_contact_sensor?: Prisma.OnContactSensorUpdateOneRequiredWithoutMachinesNestedInput
-  capstan_speed?: Prisma.CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput
-  logs?: Prisma.LogHistoryUpdateManyWithoutMachineNestedInput
-  conditions?: Prisma.ConditionUpdateManyWithoutMachineNestedInput
-  run_hours?: Prisma.McRunHourUpdateManyWithoutMachineNestedInput
-}
-
-export type MachineUncheckedUpdateWithoutAlarm_contact_sensorInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
-  logs?: Prisma.LogHistoryUncheckedUpdateManyWithoutMachineNestedInput
-  conditions?: Prisma.ConditionUncheckedUpdateManyWithoutMachineNestedInput
-  run_hours?: Prisma.McRunHourUncheckedUpdateManyWithoutMachineNestedInput
-}
-
-export type MachineUncheckedUpdateManyWithoutAlarm_contact_sensorInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  power_meter_id?: Prisma.IntFieldUpdateOperationsInput | number
-  temperature_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  on_contact_sensor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_inlet_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_lower_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_after_catalyst_id?: Prisma.IntFieldUpdateOperationsInput | number
+  temperature_upper_heater_id?: Prisma.IntFieldUpdateOperationsInput | number
   capstan_speed_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -1490,14 +1936,18 @@ export type MachineSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name?: boolean
   enabled?: boolean
   power_meter_id?: boolean
-  temperature_sensor_id?: boolean
+  temperature_inlet_heater_id?: boolean
+  temperature_lower_heater_id?: boolean
+  temperature_after_catalyst_id?: boolean
+  temperature_upper_heater_id?: boolean
   on_contact_sensor_id?: boolean
-  alarm_contact_sensor_id?: boolean
   capstan_speed_id?: boolean
   power_meter?: boolean | Prisma.PowerMeterDefaultArgs<ExtArgs>
-  temperature_sensor?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_inlet_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_lower_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_after_catalyst?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_upper_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
   on_contact_sensor?: boolean | Prisma.OnContactSensorDefaultArgs<ExtArgs>
-  alarm_contact_sensor?: boolean | Prisma.AlarmContactSensorDefaultArgs<ExtArgs>
   capstan_speed?: boolean | Prisma.CapstanSpeedDefaultArgs<ExtArgs>
   logs?: boolean | Prisma.Machine$logsArgs<ExtArgs>
   conditions?: boolean | Prisma.Machine$conditionsArgs<ExtArgs>
@@ -1510,14 +1960,18 @@ export type MachineSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   name?: boolean
   enabled?: boolean
   power_meter_id?: boolean
-  temperature_sensor_id?: boolean
+  temperature_inlet_heater_id?: boolean
+  temperature_lower_heater_id?: boolean
+  temperature_after_catalyst_id?: boolean
+  temperature_upper_heater_id?: boolean
   on_contact_sensor_id?: boolean
-  alarm_contact_sensor_id?: boolean
   capstan_speed_id?: boolean
   power_meter?: boolean | Prisma.PowerMeterDefaultArgs<ExtArgs>
-  temperature_sensor?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_inlet_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_lower_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_after_catalyst?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_upper_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
   on_contact_sensor?: boolean | Prisma.OnContactSensorDefaultArgs<ExtArgs>
-  alarm_contact_sensor?: boolean | Prisma.AlarmContactSensorDefaultArgs<ExtArgs>
   capstan_speed?: boolean | Prisma.CapstanSpeedDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["machine"]>
 
@@ -1526,14 +1980,18 @@ export type MachineSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   name?: boolean
   enabled?: boolean
   power_meter_id?: boolean
-  temperature_sensor_id?: boolean
+  temperature_inlet_heater_id?: boolean
+  temperature_lower_heater_id?: boolean
+  temperature_after_catalyst_id?: boolean
+  temperature_upper_heater_id?: boolean
   on_contact_sensor_id?: boolean
-  alarm_contact_sensor_id?: boolean
   capstan_speed_id?: boolean
   power_meter?: boolean | Prisma.PowerMeterDefaultArgs<ExtArgs>
-  temperature_sensor?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_inlet_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_lower_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_after_catalyst?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_upper_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
   on_contact_sensor?: boolean | Prisma.OnContactSensorDefaultArgs<ExtArgs>
-  alarm_contact_sensor?: boolean | Prisma.AlarmContactSensorDefaultArgs<ExtArgs>
   capstan_speed?: boolean | Prisma.CapstanSpeedDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["machine"]>
 
@@ -1542,18 +2000,22 @@ export type MachineSelectScalar = {
   name?: boolean
   enabled?: boolean
   power_meter_id?: boolean
-  temperature_sensor_id?: boolean
+  temperature_inlet_heater_id?: boolean
+  temperature_lower_heater_id?: boolean
+  temperature_after_catalyst_id?: boolean
+  temperature_upper_heater_id?: boolean
   on_contact_sensor_id?: boolean
-  alarm_contact_sensor_id?: boolean
   capstan_speed_id?: boolean
 }
 
-export type MachineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "enabled" | "power_meter_id" | "temperature_sensor_id" | "on_contact_sensor_id" | "alarm_contact_sensor_id" | "capstan_speed_id", ExtArgs["result"]["machine"]>
+export type MachineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "enabled" | "power_meter_id" | "temperature_inlet_heater_id" | "temperature_lower_heater_id" | "temperature_after_catalyst_id" | "temperature_upper_heater_id" | "on_contact_sensor_id" | "capstan_speed_id", ExtArgs["result"]["machine"]>
 export type MachineInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   power_meter?: boolean | Prisma.PowerMeterDefaultArgs<ExtArgs>
-  temperature_sensor?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_inlet_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_lower_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_after_catalyst?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_upper_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
   on_contact_sensor?: boolean | Prisma.OnContactSensorDefaultArgs<ExtArgs>
-  alarm_contact_sensor?: boolean | Prisma.AlarmContactSensorDefaultArgs<ExtArgs>
   capstan_speed?: boolean | Prisma.CapstanSpeedDefaultArgs<ExtArgs>
   logs?: boolean | Prisma.Machine$logsArgs<ExtArgs>
   conditions?: boolean | Prisma.Machine$conditionsArgs<ExtArgs>
@@ -1562,16 +2024,20 @@ export type MachineInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
 }
 export type MachineIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   power_meter?: boolean | Prisma.PowerMeterDefaultArgs<ExtArgs>
-  temperature_sensor?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_inlet_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_lower_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_after_catalyst?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_upper_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
   on_contact_sensor?: boolean | Prisma.OnContactSensorDefaultArgs<ExtArgs>
-  alarm_contact_sensor?: boolean | Prisma.AlarmContactSensorDefaultArgs<ExtArgs>
   capstan_speed?: boolean | Prisma.CapstanSpeedDefaultArgs<ExtArgs>
 }
 export type MachineIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   power_meter?: boolean | Prisma.PowerMeterDefaultArgs<ExtArgs>
-  temperature_sensor?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_inlet_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_lower_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_after_catalyst?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
+  temperature_upper_heater?: boolean | Prisma.TemperatureSensorDefaultArgs<ExtArgs>
   on_contact_sensor?: boolean | Prisma.OnContactSensorDefaultArgs<ExtArgs>
-  alarm_contact_sensor?: boolean | Prisma.AlarmContactSensorDefaultArgs<ExtArgs>
   capstan_speed?: boolean | Prisma.CapstanSpeedDefaultArgs<ExtArgs>
 }
 
@@ -1579,9 +2045,11 @@ export type $MachinePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Machine"
   objects: {
     power_meter: Prisma.$PowerMeterPayload<ExtArgs>
-    temperature_sensor: Prisma.$TemperatureSensorPayload<ExtArgs>
+    temperature_inlet_heater: Prisma.$TemperatureSensorPayload<ExtArgs>
+    temperature_lower_heater: Prisma.$TemperatureSensorPayload<ExtArgs>
+    temperature_after_catalyst: Prisma.$TemperatureSensorPayload<ExtArgs>
+    temperature_upper_heater: Prisma.$TemperatureSensorPayload<ExtArgs>
     on_contact_sensor: Prisma.$OnContactSensorPayload<ExtArgs>
-    alarm_contact_sensor: Prisma.$AlarmContactSensorPayload<ExtArgs>
     capstan_speed: Prisma.$CapstanSpeedPayload<ExtArgs>
     logs: Prisma.$LogHistoryPayload<ExtArgs>[]
     conditions: Prisma.$ConditionPayload<ExtArgs>[]
@@ -1592,9 +2060,11 @@ export type $MachinePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     name: string
     enabled: boolean
     power_meter_id: number
-    temperature_sensor_id: number
+    temperature_inlet_heater_id: number
+    temperature_lower_heater_id: number
+    temperature_after_catalyst_id: number
+    temperature_upper_heater_id: number
     on_contact_sensor_id: number
-    alarm_contact_sensor_id: number
     capstan_speed_id: number
   }, ExtArgs["result"]["machine"]>
   composites: {}
@@ -1991,9 +2461,11 @@ readonly fields: MachineFieldRefs;
 export interface Prisma__MachineClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   power_meter<T extends Prisma.PowerMeterDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PowerMeterDefaultArgs<ExtArgs>>): Prisma.Prisma__PowerMeterClient<runtime.Types.Result.GetResult<Prisma.$PowerMeterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  temperature_sensor<T extends Prisma.TemperatureSensorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TemperatureSensorDefaultArgs<ExtArgs>>): Prisma.Prisma__TemperatureSensorClient<runtime.Types.Result.GetResult<Prisma.$TemperatureSensorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  temperature_inlet_heater<T extends Prisma.TemperatureSensorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TemperatureSensorDefaultArgs<ExtArgs>>): Prisma.Prisma__TemperatureSensorClient<runtime.Types.Result.GetResult<Prisma.$TemperatureSensorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  temperature_lower_heater<T extends Prisma.TemperatureSensorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TemperatureSensorDefaultArgs<ExtArgs>>): Prisma.Prisma__TemperatureSensorClient<runtime.Types.Result.GetResult<Prisma.$TemperatureSensorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  temperature_after_catalyst<T extends Prisma.TemperatureSensorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TemperatureSensorDefaultArgs<ExtArgs>>): Prisma.Prisma__TemperatureSensorClient<runtime.Types.Result.GetResult<Prisma.$TemperatureSensorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  temperature_upper_heater<T extends Prisma.TemperatureSensorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TemperatureSensorDefaultArgs<ExtArgs>>): Prisma.Prisma__TemperatureSensorClient<runtime.Types.Result.GetResult<Prisma.$TemperatureSensorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   on_contact_sensor<T extends Prisma.OnContactSensorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OnContactSensorDefaultArgs<ExtArgs>>): Prisma.Prisma__OnContactSensorClient<runtime.Types.Result.GetResult<Prisma.$OnContactSensorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  alarm_contact_sensor<T extends Prisma.AlarmContactSensorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AlarmContactSensorDefaultArgs<ExtArgs>>): Prisma.Prisma__AlarmContactSensorClient<runtime.Types.Result.GetResult<Prisma.$AlarmContactSensorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   capstan_speed<T extends Prisma.CapstanSpeedDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapstanSpeedDefaultArgs<ExtArgs>>): Prisma.Prisma__CapstanSpeedClient<runtime.Types.Result.GetResult<Prisma.$CapstanSpeedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   logs<T extends Prisma.Machine$logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Machine$logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LogHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conditions<T extends Prisma.Machine$conditionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Machine$conditionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConditionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2031,9 +2503,11 @@ export interface MachineFieldRefs {
   readonly name: Prisma.FieldRef<"Machine", 'String'>
   readonly enabled: Prisma.FieldRef<"Machine", 'Boolean'>
   readonly power_meter_id: Prisma.FieldRef<"Machine", 'Int'>
-  readonly temperature_sensor_id: Prisma.FieldRef<"Machine", 'Int'>
+  readonly temperature_inlet_heater_id: Prisma.FieldRef<"Machine", 'Int'>
+  readonly temperature_lower_heater_id: Prisma.FieldRef<"Machine", 'Int'>
+  readonly temperature_after_catalyst_id: Prisma.FieldRef<"Machine", 'Int'>
+  readonly temperature_upper_heater_id: Prisma.FieldRef<"Machine", 'Int'>
   readonly on_contact_sensor_id: Prisma.FieldRef<"Machine", 'Int'>
-  readonly alarm_contact_sensor_id: Prisma.FieldRef<"Machine", 'Int'>
   readonly capstan_speed_id: Prisma.FieldRef<"Machine", 'Int'>
 }
     

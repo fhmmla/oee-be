@@ -90,11 +90,6 @@ export type TemperatureSensor = Prisma.TemperatureSensorModel
  */
 export type OnContactSensor = Prisma.OnContactSensorModel
 /**
- * Model AlarmContactSensor
- * 
- */
-export type AlarmContactSensor = Prisma.AlarmContactSensorModel
-/**
  * Model Machine
  * 
  */

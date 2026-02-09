@@ -61,7 +61,6 @@ export const ModelName = {
   Mapping: 'Mapping',
   TemperatureSensor: 'TemperatureSensor',
   OnContactSensor: 'OnContactSensor',
-  AlarmContactSensor: 'AlarmContactSensor',
   Machine: 'Machine',
   McRunHour: 'McRunHour',
   General: 'General',
@@ -110,8 +109,10 @@ export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeo
 export const LogHistoryScalarFieldEnum = {
   id: 'id',
   on_contact: 'on_contact',
-  alarm_contact: 'alarm_contact',
-  temperature: 'temperature',
+  temperature_inlet_heater: 'temperature_inlet_heater',
+  temperature_lower_heater: 'temperature_lower_heater',
+  temperature_after_catalyst: 'temperature_after_catalyst',
+  temperature_upper_heater: 'temperature_upper_heater',
   kwh: 'kwh',
   capstan_speed: 'capstan_speed',
   timestamp: 'timestamp',
@@ -150,6 +151,7 @@ export const CapstanSpeedScalarFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address',
+  speed_to_production: 'speed_to_production',
   gateway_id: 'gateway_id',
   mapping_id: 'mapping_id'
 } as const
@@ -180,6 +182,7 @@ export const TemperatureSensorScalarFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address',
+  target_temp: 'target_temp',
   gateway_id: 'gateway_id',
   mapping_id: 'mapping_id'
 } as const
@@ -198,25 +201,16 @@ export const OnContactSensorScalarFieldEnum = {
 export type OnContactSensorScalarFieldEnum = (typeof OnContactSensorScalarFieldEnum)[keyof typeof OnContactSensorScalarFieldEnum]
 
 
-export const AlarmContactSensorScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  address: 'address',
-  gateway_id: 'gateway_id',
-  mapping_id: 'mapping_id'
-} as const
-
-export type AlarmContactSensorScalarFieldEnum = (typeof AlarmContactSensorScalarFieldEnum)[keyof typeof AlarmContactSensorScalarFieldEnum]
-
-
 export const MachineScalarFieldEnum = {
   id: 'id',
   name: 'name',
   enabled: 'enabled',
   power_meter_id: 'power_meter_id',
-  temperature_sensor_id: 'temperature_sensor_id',
+  temperature_inlet_heater_id: 'temperature_inlet_heater_id',
+  temperature_lower_heater_id: 'temperature_lower_heater_id',
+  temperature_after_catalyst_id: 'temperature_after_catalyst_id',
+  temperature_upper_heater_id: 'temperature_upper_heater_id',
   on_contact_sensor_id: 'on_contact_sensor_id',
-  alarm_contact_sensor_id: 'alarm_contact_sensor_id',
   capstan_speed_id: 'capstan_speed_id'
 } as const
 

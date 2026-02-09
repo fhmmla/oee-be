@@ -29,6 +29,7 @@ export type AggregateCapstanSpeed = {
 export type CapstanSpeedAvgAggregateOutputType = {
   id: number | null
   address: number | null
+  speed_to_production: number | null
   gateway_id: number | null
   mapping_id: number | null
 }
@@ -36,6 +37,7 @@ export type CapstanSpeedAvgAggregateOutputType = {
 export type CapstanSpeedSumAggregateOutputType = {
   id: number | null
   address: number | null
+  speed_to_production: number | null
   gateway_id: number | null
   mapping_id: number | null
 }
@@ -44,6 +46,7 @@ export type CapstanSpeedMinAggregateOutputType = {
   id: number | null
   name: string | null
   address: number | null
+  speed_to_production: number | null
   gateway_id: number | null
   mapping_id: number | null
 }
@@ -52,6 +55,7 @@ export type CapstanSpeedMaxAggregateOutputType = {
   id: number | null
   name: string | null
   address: number | null
+  speed_to_production: number | null
   gateway_id: number | null
   mapping_id: number | null
 }
@@ -60,6 +64,7 @@ export type CapstanSpeedCountAggregateOutputType = {
   id: number
   name: number
   address: number
+  speed_to_production: number
   gateway_id: number
   mapping_id: number
   _all: number
@@ -69,6 +74,7 @@ export type CapstanSpeedCountAggregateOutputType = {
 export type CapstanSpeedAvgAggregateInputType = {
   id?: true
   address?: true
+  speed_to_production?: true
   gateway_id?: true
   mapping_id?: true
 }
@@ -76,6 +82,7 @@ export type CapstanSpeedAvgAggregateInputType = {
 export type CapstanSpeedSumAggregateInputType = {
   id?: true
   address?: true
+  speed_to_production?: true
   gateway_id?: true
   mapping_id?: true
 }
@@ -84,6 +91,7 @@ export type CapstanSpeedMinAggregateInputType = {
   id?: true
   name?: true
   address?: true
+  speed_to_production?: true
   gateway_id?: true
   mapping_id?: true
 }
@@ -92,6 +100,7 @@ export type CapstanSpeedMaxAggregateInputType = {
   id?: true
   name?: true
   address?: true
+  speed_to_production?: true
   gateway_id?: true
   mapping_id?: true
 }
@@ -100,6 +109,7 @@ export type CapstanSpeedCountAggregateInputType = {
   id?: true
   name?: true
   address?: true
+  speed_to_production?: true
   gateway_id?: true
   mapping_id?: true
   _all?: true
@@ -195,6 +205,7 @@ export type CapstanSpeedGroupByOutputType = {
   id: number
   name: string
   address: number
+  speed_to_production: number
   gateway_id: number
   mapping_id: number
   _count: CapstanSpeedCountAggregateOutputType | null
@@ -226,6 +237,7 @@ export type CapstanSpeedWhereInput = {
   id?: Prisma.IntFilter<"CapstanSpeed"> | number
   name?: Prisma.StringFilter<"CapstanSpeed"> | string
   address?: Prisma.IntFilter<"CapstanSpeed"> | number
+  speed_to_production?: Prisma.IntFilter<"CapstanSpeed"> | number
   gateway_id?: Prisma.IntFilter<"CapstanSpeed"> | number
   mapping_id?: Prisma.IntFilter<"CapstanSpeed"> | number
   gateway?: Prisma.XOR<Prisma.GatewayScalarRelationFilter, Prisma.GatewayWhereInput>
@@ -237,6 +249,7 @@ export type CapstanSpeedOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  speed_to_production?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
   gateway?: Prisma.GatewayOrderByWithRelationInput
@@ -251,6 +264,7 @@ export type CapstanSpeedWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CapstanSpeedWhereInput | Prisma.CapstanSpeedWhereInput[]
   name?: Prisma.StringFilter<"CapstanSpeed"> | string
   address?: Prisma.IntFilter<"CapstanSpeed"> | number
+  speed_to_production?: Prisma.IntFilter<"CapstanSpeed"> | number
   gateway_id?: Prisma.IntFilter<"CapstanSpeed"> | number
   mapping_id?: Prisma.IntFilter<"CapstanSpeed"> | number
   gateway?: Prisma.XOR<Prisma.GatewayScalarRelationFilter, Prisma.GatewayWhereInput>
@@ -262,6 +276,7 @@ export type CapstanSpeedOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  speed_to_production?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
   _count?: Prisma.CapstanSpeedCountOrderByAggregateInput
@@ -278,6 +293,7 @@ export type CapstanSpeedScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"CapstanSpeed"> | number
   name?: Prisma.StringWithAggregatesFilter<"CapstanSpeed"> | string
   address?: Prisma.IntWithAggregatesFilter<"CapstanSpeed"> | number
+  speed_to_production?: Prisma.IntWithAggregatesFilter<"CapstanSpeed"> | number
   gateway_id?: Prisma.IntWithAggregatesFilter<"CapstanSpeed"> | number
   mapping_id?: Prisma.IntWithAggregatesFilter<"CapstanSpeed"> | number
 }
@@ -285,6 +301,7 @@ export type CapstanSpeedScalarWhereWithAggregatesInput = {
 export type CapstanSpeedCreateInput = {
   name: string
   address: number
+  speed_to_production?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutCapstan_speedsInput
   mapping: Prisma.MappingCreateNestedOneWithoutCapstan_speedsInput
   machines?: Prisma.MachineCreateNestedManyWithoutCapstan_speedInput
@@ -294,6 +311,7 @@ export type CapstanSpeedUncheckedCreateInput = {
   id?: number
   name: string
   address: number
+  speed_to_production?: number
   gateway_id: number
   mapping_id: number
   machines?: Prisma.MachineUncheckedCreateNestedManyWithoutCapstan_speedInput
@@ -302,6 +320,7 @@ export type CapstanSpeedUncheckedCreateInput = {
 export type CapstanSpeedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutCapstan_speedsNestedInput
   mapping?: Prisma.MappingUpdateOneRequiredWithoutCapstan_speedsNestedInput
   machines?: Prisma.MachineUpdateManyWithoutCapstan_speedNestedInput
@@ -311,6 +330,7 @@ export type CapstanSpeedUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines?: Prisma.MachineUncheckedUpdateManyWithoutCapstan_speedNestedInput
@@ -320,6 +340,7 @@ export type CapstanSpeedCreateManyInput = {
   id?: number
   name: string
   address: number
+  speed_to_production?: number
   gateway_id: number
   mapping_id: number
 }
@@ -327,12 +348,14 @@ export type CapstanSpeedCreateManyInput = {
 export type CapstanSpeedUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type CapstanSpeedUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -341,6 +364,7 @@ export type CapstanSpeedCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  speed_to_production?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -348,6 +372,7 @@ export type CapstanSpeedCountOrderByAggregateInput = {
 export type CapstanSpeedAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  speed_to_production?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -356,6 +381,7 @@ export type CapstanSpeedMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  speed_to_production?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -364,6 +390,7 @@ export type CapstanSpeedMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  speed_to_production?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -371,6 +398,7 @@ export type CapstanSpeedMinOrderByAggregateInput = {
 export type CapstanSpeedSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  speed_to_production?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -491,6 +519,7 @@ export type CapstanSpeedUpdateOneRequiredWithoutMachinesNestedInput = {
 export type CapstanSpeedCreateWithoutGatewayInput = {
   name: string
   address: number
+  speed_to_production?: number
   mapping: Prisma.MappingCreateNestedOneWithoutCapstan_speedsInput
   machines?: Prisma.MachineCreateNestedManyWithoutCapstan_speedInput
 }
@@ -499,6 +528,7 @@ export type CapstanSpeedUncheckedCreateWithoutGatewayInput = {
   id?: number
   name: string
   address: number
+  speed_to_production?: number
   mapping_id: number
   machines?: Prisma.MachineUncheckedCreateNestedManyWithoutCapstan_speedInput
 }
@@ -536,6 +566,7 @@ export type CapstanSpeedScalarWhereInput = {
   id?: Prisma.IntFilter<"CapstanSpeed"> | number
   name?: Prisma.StringFilter<"CapstanSpeed"> | string
   address?: Prisma.IntFilter<"CapstanSpeed"> | number
+  speed_to_production?: Prisma.IntFilter<"CapstanSpeed"> | number
   gateway_id?: Prisma.IntFilter<"CapstanSpeed"> | number
   mapping_id?: Prisma.IntFilter<"CapstanSpeed"> | number
 }
@@ -543,6 +574,7 @@ export type CapstanSpeedScalarWhereInput = {
 export type CapstanSpeedCreateWithoutMappingInput = {
   name: string
   address: number
+  speed_to_production?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutCapstan_speedsInput
   machines?: Prisma.MachineCreateNestedManyWithoutCapstan_speedInput
 }
@@ -551,6 +583,7 @@ export type CapstanSpeedUncheckedCreateWithoutMappingInput = {
   id?: number
   name: string
   address: number
+  speed_to_production?: number
   gateway_id: number
   machines?: Prisma.MachineUncheckedCreateNestedManyWithoutCapstan_speedInput
 }
@@ -584,6 +617,7 @@ export type CapstanSpeedUpdateManyWithWhereWithoutMappingInput = {
 export type CapstanSpeedCreateWithoutMachinesInput = {
   name: string
   address: number
+  speed_to_production?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutCapstan_speedsInput
   mapping: Prisma.MappingCreateNestedOneWithoutCapstan_speedsInput
 }
@@ -592,6 +626,7 @@ export type CapstanSpeedUncheckedCreateWithoutMachinesInput = {
   id?: number
   name: string
   address: number
+  speed_to_production?: number
   gateway_id: number
   mapping_id: number
 }
@@ -615,6 +650,7 @@ export type CapstanSpeedUpdateToOneWithWhereWithoutMachinesInput = {
 export type CapstanSpeedUpdateWithoutMachinesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutCapstan_speedsNestedInput
   mapping?: Prisma.MappingUpdateOneRequiredWithoutCapstan_speedsNestedInput
 }
@@ -623,6 +659,7 @@ export type CapstanSpeedUncheckedUpdateWithoutMachinesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -631,12 +668,14 @@ export type CapstanSpeedCreateManyGatewayInput = {
   id?: number
   name: string
   address: number
+  speed_to_production?: number
   mapping_id: number
 }
 
 export type CapstanSpeedUpdateWithoutGatewayInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   mapping?: Prisma.MappingUpdateOneRequiredWithoutCapstan_speedsNestedInput
   machines?: Prisma.MachineUpdateManyWithoutCapstan_speedNestedInput
 }
@@ -645,6 +684,7 @@ export type CapstanSpeedUncheckedUpdateWithoutGatewayInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines?: Prisma.MachineUncheckedUpdateManyWithoutCapstan_speedNestedInput
 }
@@ -653,6 +693,7 @@ export type CapstanSpeedUncheckedUpdateManyWithoutGatewayInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -660,12 +701,14 @@ export type CapstanSpeedCreateManyMappingInput = {
   id?: number
   name: string
   address: number
+  speed_to_production?: number
   gateway_id: number
 }
 
 export type CapstanSpeedUpdateWithoutMappingInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutCapstan_speedsNestedInput
   machines?: Prisma.MachineUpdateManyWithoutCapstan_speedNestedInput
 }
@@ -674,6 +717,7 @@ export type CapstanSpeedUncheckedUpdateWithoutMappingInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines?: Prisma.MachineUncheckedUpdateManyWithoutCapstan_speedNestedInput
 }
@@ -682,6 +726,7 @@ export type CapstanSpeedUncheckedUpdateManyWithoutMappingInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
+  speed_to_production?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -720,6 +765,7 @@ export type CapstanSpeedSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   name?: boolean
   address?: boolean
+  speed_to_production?: boolean
   gateway_id?: boolean
   mapping_id?: boolean
   gateway?: boolean | Prisma.GatewayDefaultArgs<ExtArgs>
@@ -732,6 +778,7 @@ export type CapstanSpeedSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   name?: boolean
   address?: boolean
+  speed_to_production?: boolean
   gateway_id?: boolean
   mapping_id?: boolean
   gateway?: boolean | Prisma.GatewayDefaultArgs<ExtArgs>
@@ -742,6 +789,7 @@ export type CapstanSpeedSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   name?: boolean
   address?: boolean
+  speed_to_production?: boolean
   gateway_id?: boolean
   mapping_id?: boolean
   gateway?: boolean | Prisma.GatewayDefaultArgs<ExtArgs>
@@ -752,11 +800,12 @@ export type CapstanSpeedSelectScalar = {
   id?: boolean
   name?: boolean
   address?: boolean
+  speed_to_production?: boolean
   gateway_id?: boolean
   mapping_id?: boolean
 }
 
-export type CapstanSpeedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "gateway_id" | "mapping_id", ExtArgs["result"]["capstanSpeed"]>
+export type CapstanSpeedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "speed_to_production" | "gateway_id" | "mapping_id", ExtArgs["result"]["capstanSpeed"]>
 export type CapstanSpeedInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gateway?: boolean | Prisma.GatewayDefaultArgs<ExtArgs>
   mapping?: boolean | Prisma.MappingDefaultArgs<ExtArgs>
@@ -783,6 +832,7 @@ export type $CapstanSpeedPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: number
     name: string
     address: number
+    speed_to_production: number
     gateway_id: number
     mapping_id: number
   }, ExtArgs["result"]["capstanSpeed"]>
@@ -1214,6 +1264,7 @@ export interface CapstanSpeedFieldRefs {
   readonly id: Prisma.FieldRef<"CapstanSpeed", 'Int'>
   readonly name: Prisma.FieldRef<"CapstanSpeed", 'String'>
   readonly address: Prisma.FieldRef<"CapstanSpeed", 'Int'>
+  readonly speed_to_production: Prisma.FieldRef<"CapstanSpeed", 'Int'>
   readonly gateway_id: Prisma.FieldRef<"CapstanSpeed", 'Int'>
   readonly mapping_id: Prisma.FieldRef<"CapstanSpeed", 'Int'>
 }

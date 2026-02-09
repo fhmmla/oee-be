@@ -7,7 +7,7 @@ import type { Condition } from './lib/generated/prisma/client';
 
 // ========== KONFIGURASI ==========
 const MACHINE_ID = 2;           // Ganti dengan Machine ID yang ingin ditest
-const TARGET_DATE = '2026-01-14'; // Ganti dengan tanggal yang ingin diverifikasi (YYYY-MM-DD)
+const TARGET_DATE = '2026-01-19'; // Ganti dengan tanggal yang ingin diverifikasi (YYYY-MM-DD)
 // =================================
 
 interface ConditionStats {

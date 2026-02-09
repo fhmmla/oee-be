@@ -10,7 +10,7 @@ import { readSensorWithRetry } from '../lib/modbus/reader';
 import { getLogFrequency } from '../lib/config';
 import { logger } from '../lib/logger';
 import { validateLicense } from '../lib/license';
-import type { SensorReading, MachineData } from '../type';
+import type { SensorReading, MachineData, MachineReading } from '../type';
 
 class ModbusWorker {
   private isRunning = false;
@@ -18,6 +18,7 @@ class ModbusWorker {
   private cronJob: any = null; // node-cron ScheduledTask
   private freqCheckIntervalId: NodeJS.Timeout | null = null; // For checking log_freq changes
   private latestReadings: SensorReading[] = [];
+  private machineConfigCache: MachineData[] = []; // Cache machine config for target temps
 
   async start(): Promise<void> {
     if (this.isRunning) {
@@ -38,6 +39,7 @@ class ModbusWorker {
       const machines = await getMachine();
       if (machines && machines.length > 0) {
         const machineIds = machines.map(m => m.id);
+        this.machineConfigCache = machines as unknown as MachineData[];
         
         const { tempTracker } = require('./temperature-tracker');
         await tempTracker.initialize(machineIds);
@@ -58,7 +60,14 @@ class ModbusWorker {
 
     // Infinite loop for continuous sensor reading
     while (this.isRunning) {
-      await this.executeCycle();
+      try {
+        await this.executeCycle();
+      } catch (error) {
+        // Log but don't crash on cycle errors
+        logger.error('Unhandled error in execution cycle:', error);
+        // Wait a bit before retrying
+        await this.sleep(2000);
+      }
       
       // Small delay to prevent CPU thrashing (100ms)
       await this.sleep(100);
@@ -100,7 +109,7 @@ class ModbusWorker {
           await saveLogHistory(this.latestReadings);
           
           // 2. Save Condition snapshot (with forceSnapshot=true)
-          const aggregated = aggregateReadings(this.latestReadings);
+          const aggregated = this.aggregateWithConfig(this.latestReadings);
           for (const reading of aggregated) {
             const condition = await checkConditions(reading);
             const kwh = reading.kwh?.toString() || '0';
@@ -195,7 +204,7 @@ class ModbusWorker {
           await saveLogHistory(this.latestReadings);
           
           // 2. Save Condition snapshot (with forceSnapshot=true)
-          const aggregated = aggregateReadings(this.latestReadings);
+          const aggregated = this.aggregateWithConfig(this.latestReadings);
           for (const reading of aggregated) {
             const condition = await checkConditions(reading);
             const kwh = reading.kwh?.toString() || '0';
@@ -213,6 +222,27 @@ class ModbusWorker {
         logger.error('Error in cron job:', error);
       }
     });
+  }
+
+  /**
+   * Aggregate readings and attach machine config (target temps, speed_to_production)
+   */
+  private aggregateWithConfig(readings: SensorReading[]): MachineReading[] {
+    const aggregated = aggregateReadings(readings);
+    
+    // Attach target temperatures and speed_to_production from machine config
+    for (const reading of aggregated) {
+      const machineConfig = this.machineConfigCache.find(m => m.id === reading.machineId);
+      if (machineConfig) {
+        reading.target_temp_inlet_heater = machineConfig.temperature_inlet_heater?.target_temp || 300;
+        reading.target_temp_lower_heater = machineConfig.temperature_lower_heater?.target_temp || 300;
+        reading.target_temp_after_catalyst = machineConfig.temperature_after_catalyst?.target_temp || 300;
+        reading.target_temp_upper_heater = machineConfig.temperature_upper_heater?.target_temp || 300;
+        reading.speed_to_production = machineConfig.capstan_speed?.speed_to_production || 60;
+      }
+    }
+    
+    return aggregated;
   }
 
   private async executeCycle(): Promise<void> {
@@ -235,6 +265,9 @@ class ModbusWorker {
         return;
       }
 
+      // Update machine config cache
+      this.machineConfigCache = machines as unknown as MachineData[];
+
       // 2. Group sensors by gateway
       const gatewayGroups = groupByGateway(machines as unknown as MachineData[]);
       logger.debug(`Reading from ${gatewayGroups.length} gateways, ${machines.length} machines`);
@@ -251,7 +284,7 @@ class ModbusWorker {
 
       // 5. Always check conditions and update ONLY if changed
       // This will also save LogHistory when condition changes
-      const aggregated = aggregateReadings(allReadings);
+      const aggregated = this.aggregateWithConfig(allReadings);
       for (const reading of aggregated) {
         const condition = await checkConditions(reading);
         const kwh = reading.kwh?.toString() || '0';
@@ -349,4 +382,15 @@ process.on('SIGTERM', async () => {
   logger.info('Received SIGTERM signal');
   await worker.shutdown();
   process.exit(0);
+});
+
+// Unhandled rejection and exception handlers to prevent crashes
+process.on('unhandledRejection', (reason, _promise) => {
+  logger.error('Unhandled Rejection:', reason);
+  // Don't exit - just log the error
+});
+
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught Exception:', error);
+  // Don't exit - just log the error
 });

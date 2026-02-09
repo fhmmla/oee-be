@@ -200,7 +200,6 @@ export type MappingWhereInput = {
   capstan_speeds?: Prisma.CapstanSpeedListRelationFilter
   temp_sensors?: Prisma.TemperatureSensorListRelationFilter
   on_contact_sensors?: Prisma.OnContactSensorListRelationFilter
-  alarm_contact_sensors?: Prisma.AlarmContactSensorListRelationFilter
 }
 
 export type MappingOrderByWithRelationInput = {
@@ -211,7 +210,6 @@ export type MappingOrderByWithRelationInput = {
   capstan_speeds?: Prisma.CapstanSpeedOrderByRelationAggregateInput
   temp_sensors?: Prisma.TemperatureSensorOrderByRelationAggregateInput
   on_contact_sensors?: Prisma.OnContactSensorOrderByRelationAggregateInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorOrderByRelationAggregateInput
 }
 
 export type MappingWhereUniqueInput = Prisma.AtLeast<{
@@ -225,7 +223,6 @@ export type MappingWhereUniqueInput = Prisma.AtLeast<{
   capstan_speeds?: Prisma.CapstanSpeedListRelationFilter
   temp_sensors?: Prisma.TemperatureSensorListRelationFilter
   on_contact_sensors?: Prisma.OnContactSensorListRelationFilter
-  alarm_contact_sensors?: Prisma.AlarmContactSensorListRelationFilter
 }, "id">
 
 export type MappingOrderByWithAggregationInput = {
@@ -255,7 +252,6 @@ export type MappingCreateInput = {
   capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutMappingInput
   temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutMappingInput
   on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutMappingInput
 }
 
 export type MappingUncheckedCreateInput = {
@@ -266,7 +262,6 @@ export type MappingUncheckedCreateInput = {
   capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutMappingInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutMappingInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutMappingInput
 }
 
 export type MappingUpdateInput = {
@@ -276,7 +271,6 @@ export type MappingUpdateInput = {
   capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutMappingNestedInput
   temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutMappingNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingUncheckedUpdateInput = {
@@ -287,7 +281,6 @@ export type MappingUncheckedUpdateInput = {
   capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutMappingNestedInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutMappingNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingCreateManyInput = {
@@ -392,27 +385,12 @@ export type MappingUpdateOneRequiredWithoutOn_contact_sensorsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MappingUpdateToOneWithWhereWithoutOn_contact_sensorsInput, Prisma.MappingUpdateWithoutOn_contact_sensorsInput>, Prisma.MappingUncheckedUpdateWithoutOn_contact_sensorsInput>
 }
 
-export type MappingCreateNestedOneWithoutAlarm_contact_sensorsInput = {
-  create?: Prisma.XOR<Prisma.MappingCreateWithoutAlarm_contact_sensorsInput, Prisma.MappingUncheckedCreateWithoutAlarm_contact_sensorsInput>
-  connectOrCreate?: Prisma.MappingCreateOrConnectWithoutAlarm_contact_sensorsInput
-  connect?: Prisma.MappingWhereUniqueInput
-}
-
-export type MappingUpdateOneRequiredWithoutAlarm_contact_sensorsNestedInput = {
-  create?: Prisma.XOR<Prisma.MappingCreateWithoutAlarm_contact_sensorsInput, Prisma.MappingUncheckedCreateWithoutAlarm_contact_sensorsInput>
-  connectOrCreate?: Prisma.MappingCreateOrConnectWithoutAlarm_contact_sensorsInput
-  upsert?: Prisma.MappingUpsertWithoutAlarm_contact_sensorsInput
-  connect?: Prisma.MappingWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MappingUpdateToOneWithWhereWithoutAlarm_contact_sensorsInput, Prisma.MappingUpdateWithoutAlarm_contact_sensorsInput>, Prisma.MappingUncheckedUpdateWithoutAlarm_contact_sensorsInput>
-}
-
 export type MappingCreateWithoutPower_metersInput = {
   type: string
   params: Prisma.JsonNullValueInput | runtime.InputJsonValue
   capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutMappingInput
   temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutMappingInput
   on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutMappingInput
 }
 
 export type MappingUncheckedCreateWithoutPower_metersInput = {
@@ -422,7 +400,6 @@ export type MappingUncheckedCreateWithoutPower_metersInput = {
   capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutMappingInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutMappingInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutMappingInput
 }
 
 export type MappingCreateOrConnectWithoutPower_metersInput = {
@@ -447,7 +424,6 @@ export type MappingUpdateWithoutPower_metersInput = {
   capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutMappingNestedInput
   temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutMappingNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingUncheckedUpdateWithoutPower_metersInput = {
@@ -457,7 +433,6 @@ export type MappingUncheckedUpdateWithoutPower_metersInput = {
   capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutMappingNestedInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutMappingNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingCreateWithoutCapstan_speedsInput = {
@@ -466,7 +441,6 @@ export type MappingCreateWithoutCapstan_speedsInput = {
   power_meters?: Prisma.PowerMeterCreateNestedManyWithoutMappingInput
   temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutMappingInput
   on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutMappingInput
 }
 
 export type MappingUncheckedCreateWithoutCapstan_speedsInput = {
@@ -476,7 +450,6 @@ export type MappingUncheckedCreateWithoutCapstan_speedsInput = {
   power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutMappingInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutMappingInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutMappingInput
 }
 
 export type MappingCreateOrConnectWithoutCapstan_speedsInput = {
@@ -501,7 +474,6 @@ export type MappingUpdateWithoutCapstan_speedsInput = {
   power_meters?: Prisma.PowerMeterUpdateManyWithoutMappingNestedInput
   temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutMappingNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingUncheckedUpdateWithoutCapstan_speedsInput = {
@@ -511,7 +483,6 @@ export type MappingUncheckedUpdateWithoutCapstan_speedsInput = {
   power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutMappingNestedInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutMappingNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingCreateWithoutTemp_sensorsInput = {
@@ -520,7 +491,6 @@ export type MappingCreateWithoutTemp_sensorsInput = {
   power_meters?: Prisma.PowerMeterCreateNestedManyWithoutMappingInput
   capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutMappingInput
   on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutMappingInput
 }
 
 export type MappingUncheckedCreateWithoutTemp_sensorsInput = {
@@ -530,7 +500,6 @@ export type MappingUncheckedCreateWithoutTemp_sensorsInput = {
   power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutMappingInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutMappingInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutMappingInput
 }
 
 export type MappingCreateOrConnectWithoutTemp_sensorsInput = {
@@ -555,7 +524,6 @@ export type MappingUpdateWithoutTemp_sensorsInput = {
   power_meters?: Prisma.PowerMeterUpdateManyWithoutMappingNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutMappingNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingUncheckedUpdateWithoutTemp_sensorsInput = {
@@ -565,7 +533,6 @@ export type MappingUncheckedUpdateWithoutTemp_sensorsInput = {
   power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutMappingNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutMappingNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingCreateWithoutOn_contact_sensorsInput = {
@@ -574,7 +541,6 @@ export type MappingCreateWithoutOn_contact_sensorsInput = {
   power_meters?: Prisma.PowerMeterCreateNestedManyWithoutMappingInput
   capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutMappingInput
   temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutMappingInput
 }
 
 export type MappingUncheckedCreateWithoutOn_contact_sensorsInput = {
@@ -584,7 +550,6 @@ export type MappingUncheckedCreateWithoutOn_contact_sensorsInput = {
   power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutMappingInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutMappingInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutMappingInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutMappingInput
 }
 
 export type MappingCreateOrConnectWithoutOn_contact_sensorsInput = {
@@ -609,7 +574,6 @@ export type MappingUpdateWithoutOn_contact_sensorsInput = {
   power_meters?: Prisma.PowerMeterUpdateManyWithoutMappingNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutMappingNestedInput
   temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutMappingNestedInput
 }
 
 export type MappingUncheckedUpdateWithoutOn_contact_sensorsInput = {
@@ -619,61 +583,6 @@ export type MappingUncheckedUpdateWithoutOn_contact_sensorsInput = {
   power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutMappingNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutMappingNestedInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutMappingNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutMappingNestedInput
-}
-
-export type MappingCreateWithoutAlarm_contact_sensorsInput = {
-  type: string
-  params: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  power_meters?: Prisma.PowerMeterCreateNestedManyWithoutMappingInput
-  capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutMappingInput
-  temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutMappingInput
-  on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutMappingInput
-}
-
-export type MappingUncheckedCreateWithoutAlarm_contact_sensorsInput = {
-  id?: number
-  type: string
-  params: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutMappingInput
-  capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutMappingInput
-  temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutMappingInput
-  on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutMappingInput
-}
-
-export type MappingCreateOrConnectWithoutAlarm_contact_sensorsInput = {
-  where: Prisma.MappingWhereUniqueInput
-  create: Prisma.XOR<Prisma.MappingCreateWithoutAlarm_contact_sensorsInput, Prisma.MappingUncheckedCreateWithoutAlarm_contact_sensorsInput>
-}
-
-export type MappingUpsertWithoutAlarm_contact_sensorsInput = {
-  update: Prisma.XOR<Prisma.MappingUpdateWithoutAlarm_contact_sensorsInput, Prisma.MappingUncheckedUpdateWithoutAlarm_contact_sensorsInput>
-  create: Prisma.XOR<Prisma.MappingCreateWithoutAlarm_contact_sensorsInput, Prisma.MappingUncheckedCreateWithoutAlarm_contact_sensorsInput>
-  where?: Prisma.MappingWhereInput
-}
-
-export type MappingUpdateToOneWithWhereWithoutAlarm_contact_sensorsInput = {
-  where?: Prisma.MappingWhereInput
-  data: Prisma.XOR<Prisma.MappingUpdateWithoutAlarm_contact_sensorsInput, Prisma.MappingUncheckedUpdateWithoutAlarm_contact_sensorsInput>
-}
-
-export type MappingUpdateWithoutAlarm_contact_sensorsInput = {
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  power_meters?: Prisma.PowerMeterUpdateManyWithoutMappingNestedInput
-  capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutMappingNestedInput
-  temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutMappingNestedInput
-  on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutMappingNestedInput
-}
-
-export type MappingUncheckedUpdateWithoutAlarm_contact_sensorsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  params?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutMappingNestedInput
-  capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutMappingNestedInput
-  temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutMappingNestedInput
-  on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutMappingNestedInput
 }
 
 
@@ -686,7 +595,6 @@ export type MappingCountOutputType = {
   capstan_speeds: number
   temp_sensors: number
   on_contact_sensors: number
-  alarm_contact_sensors: number
 }
 
 export type MappingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -694,7 +602,6 @@ export type MappingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   capstan_speeds?: boolean | MappingCountOutputTypeCountCapstan_speedsArgs
   temp_sensors?: boolean | MappingCountOutputTypeCountTemp_sensorsArgs
   on_contact_sensors?: boolean | MappingCountOutputTypeCountOn_contact_sensorsArgs
-  alarm_contact_sensors?: boolean | MappingCountOutputTypeCountAlarm_contact_sensorsArgs
 }
 
 /**
@@ -735,13 +642,6 @@ export type MappingCountOutputTypeCountOn_contact_sensorsArgs<ExtArgs extends ru
   where?: Prisma.OnContactSensorWhereInput
 }
 
-/**
- * MappingCountOutputType without action
- */
-export type MappingCountOutputTypeCountAlarm_contact_sensorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AlarmContactSensorWhereInput
-}
-
 
 export type MappingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -751,7 +651,6 @@ export type MappingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   capstan_speeds?: boolean | Prisma.Mapping$capstan_speedsArgs<ExtArgs>
   temp_sensors?: boolean | Prisma.Mapping$temp_sensorsArgs<ExtArgs>
   on_contact_sensors?: boolean | Prisma.Mapping$on_contact_sensorsArgs<ExtArgs>
-  alarm_contact_sensors?: boolean | Prisma.Mapping$alarm_contact_sensorsArgs<ExtArgs>
   _count?: boolean | Prisma.MappingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mapping"]>
 
@@ -779,7 +678,6 @@ export type MappingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   capstan_speeds?: boolean | Prisma.Mapping$capstan_speedsArgs<ExtArgs>
   temp_sensors?: boolean | Prisma.Mapping$temp_sensorsArgs<ExtArgs>
   on_contact_sensors?: boolean | Prisma.Mapping$on_contact_sensorsArgs<ExtArgs>
-  alarm_contact_sensors?: boolean | Prisma.Mapping$alarm_contact_sensorsArgs<ExtArgs>
   _count?: boolean | Prisma.MappingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MappingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -792,7 +690,6 @@ export type $MappingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     capstan_speeds: Prisma.$CapstanSpeedPayload<ExtArgs>[]
     temp_sensors: Prisma.$TemperatureSensorPayload<ExtArgs>[]
     on_contact_sensors: Prisma.$OnContactSensorPayload<ExtArgs>[]
-    alarm_contact_sensors: Prisma.$AlarmContactSensorPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1196,7 +1093,6 @@ export interface Prisma__MappingClient<T, Null = never, ExtArgs extends runtime.
   capstan_speeds<T extends Prisma.Mapping$capstan_speedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mapping$capstan_speedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapstanSpeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   temp_sensors<T extends Prisma.Mapping$temp_sensorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mapping$temp_sensorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TemperatureSensorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   on_contact_sensors<T extends Prisma.Mapping$on_contact_sensorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mapping$on_contact_sensorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnContactSensorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  alarm_contact_sensors<T extends Prisma.Mapping$alarm_contact_sensorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mapping$alarm_contact_sensorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlarmContactSensorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1710,30 +1606,6 @@ export type Mapping$on_contact_sensorsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.OnContactSensorScalarFieldEnum | Prisma.OnContactSensorScalarFieldEnum[]
-}
-
-/**
- * Mapping.alarm_contact_sensors
- */
-export type Mapping$alarm_contact_sensorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the AlarmContactSensor
-   */
-  select?: Prisma.AlarmContactSensorSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the AlarmContactSensor
-   */
-  omit?: Prisma.AlarmContactSensorOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AlarmContactSensorInclude<ExtArgs> | null
-  where?: Prisma.AlarmContactSensorWhereInput
-  orderBy?: Prisma.AlarmContactSensorOrderByWithRelationInput | Prisma.AlarmContactSensorOrderByWithRelationInput[]
-  cursor?: Prisma.AlarmContactSensorWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AlarmContactSensorScalarFieldEnum | Prisma.AlarmContactSensorScalarFieldEnum[]
 }
 
 /**

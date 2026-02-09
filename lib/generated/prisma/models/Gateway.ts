@@ -207,7 +207,6 @@ export type GatewayWhereInput = {
   power_meters?: Prisma.PowerMeterListRelationFilter
   temp_sensors?: Prisma.TemperatureSensorListRelationFilter
   on_contact_sensors?: Prisma.OnContactSensorListRelationFilter
-  alarm_contact_sensors?: Prisma.AlarmContactSensorListRelationFilter
   capstan_speeds?: Prisma.CapstanSpeedListRelationFilter
 }
 
@@ -219,7 +218,6 @@ export type GatewayOrderByWithRelationInput = {
   power_meters?: Prisma.PowerMeterOrderByRelationAggregateInput
   temp_sensors?: Prisma.TemperatureSensorOrderByRelationAggregateInput
   on_contact_sensors?: Prisma.OnContactSensorOrderByRelationAggregateInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorOrderByRelationAggregateInput
   capstan_speeds?: Prisma.CapstanSpeedOrderByRelationAggregateInput
 }
 
@@ -234,7 +232,6 @@ export type GatewayWhereUniqueInput = Prisma.AtLeast<{
   power_meters?: Prisma.PowerMeterListRelationFilter
   temp_sensors?: Prisma.TemperatureSensorListRelationFilter
   on_contact_sensors?: Prisma.OnContactSensorListRelationFilter
-  alarm_contact_sensors?: Prisma.AlarmContactSensorListRelationFilter
   capstan_speeds?: Prisma.CapstanSpeedListRelationFilter
 }, "id">
 
@@ -267,7 +264,6 @@ export type GatewayCreateInput = {
   power_meters?: Prisma.PowerMeterCreateNestedManyWithoutGatewayInput
   temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutGatewayInput
   on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutGatewayInput
   capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutGatewayInput
 }
 
@@ -279,7 +275,6 @@ export type GatewayUncheckedCreateInput = {
   power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutGatewayInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutGatewayInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutGatewayInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutGatewayInput
 }
 
@@ -290,7 +285,6 @@ export type GatewayUpdateInput = {
   power_meters?: Prisma.PowerMeterUpdateManyWithoutGatewayNestedInput
   temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutGatewayNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutGatewayNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutGatewayNestedInput
 }
 
@@ -302,7 +296,6 @@ export type GatewayUncheckedUpdateInput = {
   power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutGatewayNestedInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutGatewayNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutGatewayNestedInput
 }
 
@@ -414,27 +407,12 @@ export type GatewayUpdateOneRequiredWithoutOn_contact_sensorsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.GatewayUpdateToOneWithWhereWithoutOn_contact_sensorsInput, Prisma.GatewayUpdateWithoutOn_contact_sensorsInput>, Prisma.GatewayUncheckedUpdateWithoutOn_contact_sensorsInput>
 }
 
-export type GatewayCreateNestedOneWithoutAlarm_contact_sensorsInput = {
-  create?: Prisma.XOR<Prisma.GatewayCreateWithoutAlarm_contact_sensorsInput, Prisma.GatewayUncheckedCreateWithoutAlarm_contact_sensorsInput>
-  connectOrCreate?: Prisma.GatewayCreateOrConnectWithoutAlarm_contact_sensorsInput
-  connect?: Prisma.GatewayWhereUniqueInput
-}
-
-export type GatewayUpdateOneRequiredWithoutAlarm_contact_sensorsNestedInput = {
-  create?: Prisma.XOR<Prisma.GatewayCreateWithoutAlarm_contact_sensorsInput, Prisma.GatewayUncheckedCreateWithoutAlarm_contact_sensorsInput>
-  connectOrCreate?: Prisma.GatewayCreateOrConnectWithoutAlarm_contact_sensorsInput
-  upsert?: Prisma.GatewayUpsertWithoutAlarm_contact_sensorsInput
-  connect?: Prisma.GatewayWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.GatewayUpdateToOneWithWhereWithoutAlarm_contact_sensorsInput, Prisma.GatewayUpdateWithoutAlarm_contact_sensorsInput>, Prisma.GatewayUncheckedUpdateWithoutAlarm_contact_sensorsInput>
-}
-
 export type GatewayCreateWithoutPower_metersInput = {
   name: string
   protocol: string
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutGatewayInput
   on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutGatewayInput
   capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutGatewayInput
 }
 
@@ -445,7 +423,6 @@ export type GatewayUncheckedCreateWithoutPower_metersInput = {
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutGatewayInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutGatewayInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutGatewayInput
 }
 
@@ -471,7 +448,6 @@ export type GatewayUpdateWithoutPower_metersInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutGatewayNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutGatewayNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutGatewayNestedInput
 }
 
@@ -482,7 +458,6 @@ export type GatewayUncheckedUpdateWithoutPower_metersInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutGatewayNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutGatewayNestedInput
 }
 
@@ -493,7 +468,6 @@ export type GatewayCreateWithoutCapstan_speedsInput = {
   power_meters?: Prisma.PowerMeterCreateNestedManyWithoutGatewayInput
   temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutGatewayInput
   on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutGatewayInput
 }
 
 export type GatewayUncheckedCreateWithoutCapstan_speedsInput = {
@@ -504,7 +478,6 @@ export type GatewayUncheckedCreateWithoutCapstan_speedsInput = {
   power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutGatewayInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutGatewayInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutGatewayInput
 }
 
 export type GatewayCreateOrConnectWithoutCapstan_speedsInput = {
@@ -530,7 +503,6 @@ export type GatewayUpdateWithoutCapstan_speedsInput = {
   power_meters?: Prisma.PowerMeterUpdateManyWithoutGatewayNestedInput
   temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutGatewayNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutGatewayNestedInput
 }
 
 export type GatewayUncheckedUpdateWithoutCapstan_speedsInput = {
@@ -541,7 +513,6 @@ export type GatewayUncheckedUpdateWithoutCapstan_speedsInput = {
   power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutGatewayNestedInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutGatewayNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
 }
 
 export type GatewayCreateWithoutTemp_sensorsInput = {
@@ -550,7 +521,6 @@ export type GatewayCreateWithoutTemp_sensorsInput = {
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   power_meters?: Prisma.PowerMeterCreateNestedManyWithoutGatewayInput
   on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutGatewayInput
   capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutGatewayInput
 }
 
@@ -561,7 +531,6 @@ export type GatewayUncheckedCreateWithoutTemp_sensorsInput = {
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutGatewayInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutGatewayInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutGatewayInput
 }
 
@@ -587,7 +556,6 @@ export type GatewayUpdateWithoutTemp_sensorsInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   power_meters?: Prisma.PowerMeterUpdateManyWithoutGatewayNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutGatewayNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutGatewayNestedInput
 }
 
@@ -598,7 +566,6 @@ export type GatewayUncheckedUpdateWithoutTemp_sensorsInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutGatewayNestedInput
   on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutGatewayNestedInput
 }
 
@@ -608,7 +575,6 @@ export type GatewayCreateWithoutOn_contact_sensorsInput = {
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   power_meters?: Prisma.PowerMeterCreateNestedManyWithoutGatewayInput
   temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorCreateNestedManyWithoutGatewayInput
   capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutGatewayInput
 }
 
@@ -619,7 +585,6 @@ export type GatewayUncheckedCreateWithoutOn_contact_sensorsInput = {
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutGatewayInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutGatewayInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedCreateNestedManyWithoutGatewayInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutGatewayInput
 }
 
@@ -645,7 +610,6 @@ export type GatewayUpdateWithoutOn_contact_sensorsInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   power_meters?: Prisma.PowerMeterUpdateManyWithoutGatewayNestedInput
   temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUpdateManyWithoutGatewayNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutGatewayNestedInput
 }
 
@@ -656,65 +620,6 @@ export type GatewayUncheckedUpdateWithoutOn_contact_sensorsInput = {
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutGatewayNestedInput
   temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutGatewayNestedInput
-  alarm_contact_sensors?: Prisma.AlarmContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
-  capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutGatewayNestedInput
-}
-
-export type GatewayCreateWithoutAlarm_contact_sensorsInput = {
-  name: string
-  protocol: string
-  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  power_meters?: Prisma.PowerMeterCreateNestedManyWithoutGatewayInput
-  temp_sensors?: Prisma.TemperatureSensorCreateNestedManyWithoutGatewayInput
-  on_contact_sensors?: Prisma.OnContactSensorCreateNestedManyWithoutGatewayInput
-  capstan_speeds?: Prisma.CapstanSpeedCreateNestedManyWithoutGatewayInput
-}
-
-export type GatewayUncheckedCreateWithoutAlarm_contact_sensorsInput = {
-  id?: number
-  name: string
-  protocol: string
-  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  power_meters?: Prisma.PowerMeterUncheckedCreateNestedManyWithoutGatewayInput
-  temp_sensors?: Prisma.TemperatureSensorUncheckedCreateNestedManyWithoutGatewayInput
-  on_contact_sensors?: Prisma.OnContactSensorUncheckedCreateNestedManyWithoutGatewayInput
-  capstan_speeds?: Prisma.CapstanSpeedUncheckedCreateNestedManyWithoutGatewayInput
-}
-
-export type GatewayCreateOrConnectWithoutAlarm_contact_sensorsInput = {
-  where: Prisma.GatewayWhereUniqueInput
-  create: Prisma.XOR<Prisma.GatewayCreateWithoutAlarm_contact_sensorsInput, Prisma.GatewayUncheckedCreateWithoutAlarm_contact_sensorsInput>
-}
-
-export type GatewayUpsertWithoutAlarm_contact_sensorsInput = {
-  update: Prisma.XOR<Prisma.GatewayUpdateWithoutAlarm_contact_sensorsInput, Prisma.GatewayUncheckedUpdateWithoutAlarm_contact_sensorsInput>
-  create: Prisma.XOR<Prisma.GatewayCreateWithoutAlarm_contact_sensorsInput, Prisma.GatewayUncheckedCreateWithoutAlarm_contact_sensorsInput>
-  where?: Prisma.GatewayWhereInput
-}
-
-export type GatewayUpdateToOneWithWhereWithoutAlarm_contact_sensorsInput = {
-  where?: Prisma.GatewayWhereInput
-  data: Prisma.XOR<Prisma.GatewayUpdateWithoutAlarm_contact_sensorsInput, Prisma.GatewayUncheckedUpdateWithoutAlarm_contact_sensorsInput>
-}
-
-export type GatewayUpdateWithoutAlarm_contact_sensorsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  protocol?: Prisma.StringFieldUpdateOperationsInput | string
-  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  power_meters?: Prisma.PowerMeterUpdateManyWithoutGatewayNestedInput
-  temp_sensors?: Prisma.TemperatureSensorUpdateManyWithoutGatewayNestedInput
-  on_contact_sensors?: Prisma.OnContactSensorUpdateManyWithoutGatewayNestedInput
-  capstan_speeds?: Prisma.CapstanSpeedUpdateManyWithoutGatewayNestedInput
-}
-
-export type GatewayUncheckedUpdateWithoutAlarm_contact_sensorsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  protocol?: Prisma.StringFieldUpdateOperationsInput | string
-  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  power_meters?: Prisma.PowerMeterUncheckedUpdateManyWithoutGatewayNestedInput
-  temp_sensors?: Prisma.TemperatureSensorUncheckedUpdateManyWithoutGatewayNestedInput
-  on_contact_sensors?: Prisma.OnContactSensorUncheckedUpdateManyWithoutGatewayNestedInput
   capstan_speeds?: Prisma.CapstanSpeedUncheckedUpdateManyWithoutGatewayNestedInput
 }
 
@@ -727,7 +632,6 @@ export type GatewayCountOutputType = {
   power_meters: number
   temp_sensors: number
   on_contact_sensors: number
-  alarm_contact_sensors: number
   capstan_speeds: number
 }
 
@@ -735,7 +639,6 @@ export type GatewayCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   power_meters?: boolean | GatewayCountOutputTypeCountPower_metersArgs
   temp_sensors?: boolean | GatewayCountOutputTypeCountTemp_sensorsArgs
   on_contact_sensors?: boolean | GatewayCountOutputTypeCountOn_contact_sensorsArgs
-  alarm_contact_sensors?: boolean | GatewayCountOutputTypeCountAlarm_contact_sensorsArgs
   capstan_speeds?: boolean | GatewayCountOutputTypeCountCapstan_speedsArgs
 }
 
@@ -773,13 +676,6 @@ export type GatewayCountOutputTypeCountOn_contact_sensorsArgs<ExtArgs extends ru
 /**
  * GatewayCountOutputType without action
  */
-export type GatewayCountOutputTypeCountAlarm_contact_sensorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AlarmContactSensorWhereInput
-}
-
-/**
- * GatewayCountOutputType without action
- */
 export type GatewayCountOutputTypeCountCapstan_speedsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CapstanSpeedWhereInput
 }
@@ -793,7 +689,6 @@ export type GatewaySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   power_meters?: boolean | Prisma.Gateway$power_metersArgs<ExtArgs>
   temp_sensors?: boolean | Prisma.Gateway$temp_sensorsArgs<ExtArgs>
   on_contact_sensors?: boolean | Prisma.Gateway$on_contact_sensorsArgs<ExtArgs>
-  alarm_contact_sensors?: boolean | Prisma.Gateway$alarm_contact_sensorsArgs<ExtArgs>
   capstan_speeds?: boolean | Prisma.Gateway$capstan_speedsArgs<ExtArgs>
   _count?: boolean | Prisma.GatewayCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["gateway"]>
@@ -824,7 +719,6 @@ export type GatewayInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   power_meters?: boolean | Prisma.Gateway$power_metersArgs<ExtArgs>
   temp_sensors?: boolean | Prisma.Gateway$temp_sensorsArgs<ExtArgs>
   on_contact_sensors?: boolean | Prisma.Gateway$on_contact_sensorsArgs<ExtArgs>
-  alarm_contact_sensors?: boolean | Prisma.Gateway$alarm_contact_sensorsArgs<ExtArgs>
   capstan_speeds?: boolean | Prisma.Gateway$capstan_speedsArgs<ExtArgs>
   _count?: boolean | Prisma.GatewayCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -837,7 +731,6 @@ export type $GatewayPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     power_meters: Prisma.$PowerMeterPayload<ExtArgs>[]
     temp_sensors: Prisma.$TemperatureSensorPayload<ExtArgs>[]
     on_contact_sensors: Prisma.$OnContactSensorPayload<ExtArgs>[]
-    alarm_contact_sensors: Prisma.$AlarmContactSensorPayload<ExtArgs>[]
     capstan_speeds: Prisma.$CapstanSpeedPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1242,7 +1135,6 @@ export interface Prisma__GatewayClient<T, Null = never, ExtArgs extends runtime.
   power_meters<T extends Prisma.Gateway$power_metersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Gateway$power_metersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PowerMeterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   temp_sensors<T extends Prisma.Gateway$temp_sensorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Gateway$temp_sensorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TemperatureSensorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   on_contact_sensors<T extends Prisma.Gateway$on_contact_sensorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Gateway$on_contact_sensorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnContactSensorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  alarm_contact_sensors<T extends Prisma.Gateway$alarm_contact_sensorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Gateway$alarm_contact_sensorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlarmContactSensorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   capstan_speeds<T extends Prisma.Gateway$capstan_speedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Gateway$capstan_speedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapstanSpeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1734,30 +1626,6 @@ export type Gateway$on_contact_sensorsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.OnContactSensorScalarFieldEnum | Prisma.OnContactSensorScalarFieldEnum[]
-}
-
-/**
- * Gateway.alarm_contact_sensors
- */
-export type Gateway$alarm_contact_sensorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the AlarmContactSensor
-   */
-  select?: Prisma.AlarmContactSensorSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the AlarmContactSensor
-   */
-  omit?: Prisma.AlarmContactSensorOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AlarmContactSensorInclude<ExtArgs> | null
-  where?: Prisma.AlarmContactSensorWhereInput
-  orderBy?: Prisma.AlarmContactSensorOrderByWithRelationInput | Prisma.AlarmContactSensorOrderByWithRelationInput[]
-  cursor?: Prisma.AlarmContactSensorWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AlarmContactSensorScalarFieldEnum | Prisma.AlarmContactSensorScalarFieldEnum[]
 }
 
 /**

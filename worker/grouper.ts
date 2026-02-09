@@ -1,19 +1,21 @@
 // worker/grouper.ts
 // Helper untuk group sensors by gateway
 
-import type { MachineData, GatewayGroup, SensorTask, ModbusConfig } from '../type';
+import type { MachineData, GatewayGroup, SensorTask, ModbusConfig, SensorType } from '../type';
 
 export function groupByGateway(machines: MachineData[]): GatewayGroup[] {
   const gatewayMap = new Map<string, GatewayGroup>();
 
   for (const machine of machines) {
-    // Process each sensor type (5 sensors)
-    const sensors = [
-      { sensor: machine.power_meter, type: 'power_meter' as const },
-      { sensor: machine.temperature_sensor, type: 'temperature_sensor' as const },
-      { sensor: machine.on_contact_sensor, type: 'on_contact_sensor' as const },
-      { sensor: machine.alarm_contact_sensor, type: 'alarm_contact_sensor' as const },
-      { sensor: machine.capstan_speed, type: 'capstan_speed' as const },
+    // Process each sensor type (7 sensors: power_meter, 4 temperature sensors, on_contact, capstan_speed)
+    const sensors: { sensor: any; type: SensorType }[] = [
+      { sensor: machine.power_meter, type: 'power_meter' },
+      { sensor: machine.temperature_inlet_heater, type: 'temperature_inlet_heater' },
+      { sensor: machine.temperature_lower_heater, type: 'temperature_lower_heater' },
+      { sensor: machine.temperature_after_catalyst, type: 'temperature_after_catalyst' },
+      { sensor: machine.temperature_upper_heater, type: 'temperature_upper_heater' },
+      { sensor: machine.on_contact_sensor, type: 'on_contact_sensor' },
+      { sensor: machine.capstan_speed, type: 'capstan_speed' },
     ];
 
     for (const { sensor, type } of sensors) {

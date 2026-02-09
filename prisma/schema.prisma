@@ -47,10 +47,12 @@ model Session {
 model LogHistory {
   id            String  @id @default(uuid())
   on_contact    Int?
-  alarm_contact Int?
-  temperature   String?
+  temperature_inlet_heater  Int?
+  temperature_lower_heater  Int?
+  temperature_after_catalyst Int?
+  temperature_upper_heater  Int?
   kwh           String?
-  capstan_speed String?
+  capstan_speed Int?
   timestamp     DateTime @db.Timestamptz
   machine_id    Int
 
@@ -89,6 +91,7 @@ model CapstanSpeed {
   id         Int @id @default(autoincrement())
   name       String
   address    Int
+  speed_to_production Int @default(60)
   gateway_id Int
   mapping_id Int
 
@@ -107,7 +110,6 @@ model Gateway {
   power_meters           PowerMeter[]
   temp_sensors           TemperatureSensor[]
   on_contact_sensors     OnContactSensor[]
-  alarm_contact_sensors  AlarmContactSensor[]
   capstan_speeds         CapstanSpeed[]
   @@map("tbl_gateway")
 }
@@ -121,7 +123,6 @@ model Mapping {
   capstan_speeds        CapstanSpeed[]
   temp_sensors          TemperatureSensor[]
   on_contact_sensors    OnContactSensor[]
-  alarm_contact_sensors AlarmContactSensor[]
   @@map("tbl_mapping")
 }
 
@@ -129,12 +130,19 @@ model TemperatureSensor {
   id         Int @id @default(autoincrement())
   name       String
   address    Int
+  target_temp Int @default(300)
   gateway_id Int
   mapping_id Int
 
   gateway Gateway @relation(fields: [gateway_id], references: [id])
   mapping Mapping @relation(fields: [mapping_id], references: [id])
-  machines Machine[]
+  
+  // Explicit relations for each temperature sensor type
+  machines_inlet_heater      Machine[] @relation("InletHeater")
+  machines_lower_heater      Machine[] @relation("LowerHeater")
+  machines_after_catalyst    Machine[] @relation("AfterCatalyst")
+  machines_upper_heater      Machine[] @relation("UpperHeater")
+  
   @@map("tbl_temperature_sensor")
 }
 
@@ -151,33 +159,24 @@ model OnContactSensor {
   @@map("tbl_on_contact_sensor")
 }
 
-model AlarmContactSensor {
-  id         Int @id @default(autoincrement())
-  name       String
-  address    Int
-  gateway_id Int
-  mapping_id Int
-
-  gateway Gateway @relation(fields: [gateway_id], references: [id])
-  mapping Mapping @relation(fields: [mapping_id], references: [id])
-  machines Machine[]
-  @@map("tbl_alarm_contact_sensor")
-}
-
 model Machine {
   id                     Int @id @default(autoincrement())
   name                   String
   enabled                Boolean @default(true)
   power_meter_id         Int
-  temperature_sensor_id  Int
+  temperature_inlet_heater_id  Int @default(1)
+  temperature_lower_heater_id  Int @default(1)
+  temperature_after_catalyst_id  Int @default(1)
+  temperature_upper_heater_id  Int @default(1)
   on_contact_sensor_id   Int
-  alarm_contact_sensor_id Int
   capstan_speed_id       Int
 
   power_meter         PowerMeter         @relation(fields: [power_meter_id], references: [id])
-  temperature_sensor  TemperatureSensor  @relation(fields: [temperature_sensor_id], references: [id])
+  temperature_inlet_heater     TemperatureSensor  @relation("InletHeater", fields: [temperature_inlet_heater_id], references: [id])
+  temperature_lower_heater     TemperatureSensor  @relation("LowerHeater", fields: [temperature_lower_heater_id], references: [id])
+  temperature_after_catalyst   TemperatureSensor  @relation("AfterCatalyst", fields: [temperature_after_catalyst_id], references: [id])
+  temperature_upper_heater     TemperatureSensor  @relation("UpperHeater", fields: [temperature_upper_heater_id], references: [id])
   on_contact_sensor   OnContactSensor   @relation(fields: [on_contact_sensor_id], references: [id])
-  alarm_contact_sensor AlarmContactSensor @relation(fields: [alarm_contact_sensor_id], references: [id])
   capstan_speed       CapstanSpeed       @relation(fields: [capstan_speed_id], references: [id])
 
   logs       LogHistory[]

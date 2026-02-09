@@ -28,23 +28,33 @@ export type AggregateLogHistory = {
 
 export type LogHistoryAvgAggregateOutputType = {
   on_contact: number | null
-  alarm_contact: number | null
+  temperature_inlet_heater: number | null
+  temperature_lower_heater: number | null
+  temperature_after_catalyst: number | null
+  temperature_upper_heater: number | null
+  capstan_speed: number | null
   machine_id: number | null
 }
 
 export type LogHistorySumAggregateOutputType = {
   on_contact: number | null
-  alarm_contact: number | null
+  temperature_inlet_heater: number | null
+  temperature_lower_heater: number | null
+  temperature_after_catalyst: number | null
+  temperature_upper_heater: number | null
+  capstan_speed: number | null
   machine_id: number | null
 }
 
 export type LogHistoryMinAggregateOutputType = {
   id: string | null
   on_contact: number | null
-  alarm_contact: number | null
-  temperature: string | null
+  temperature_inlet_heater: number | null
+  temperature_lower_heater: number | null
+  temperature_after_catalyst: number | null
+  temperature_upper_heater: number | null
   kwh: string | null
-  capstan_speed: string | null
+  capstan_speed: number | null
   timestamp: Date | null
   machine_id: number | null
 }
@@ -52,10 +62,12 @@ export type LogHistoryMinAggregateOutputType = {
 export type LogHistoryMaxAggregateOutputType = {
   id: string | null
   on_contact: number | null
-  alarm_contact: number | null
-  temperature: string | null
+  temperature_inlet_heater: number | null
+  temperature_lower_heater: number | null
+  temperature_after_catalyst: number | null
+  temperature_upper_heater: number | null
   kwh: string | null
-  capstan_speed: string | null
+  capstan_speed: number | null
   timestamp: Date | null
   machine_id: number | null
 }
@@ -63,8 +75,10 @@ export type LogHistoryMaxAggregateOutputType = {
 export type LogHistoryCountAggregateOutputType = {
   id: number
   on_contact: number
-  alarm_contact: number
-  temperature: number
+  temperature_inlet_heater: number
+  temperature_lower_heater: number
+  temperature_after_catalyst: number
+  temperature_upper_heater: number
   kwh: number
   capstan_speed: number
   timestamp: number
@@ -75,21 +89,31 @@ export type LogHistoryCountAggregateOutputType = {
 
 export type LogHistoryAvgAggregateInputType = {
   on_contact?: true
-  alarm_contact?: true
+  temperature_inlet_heater?: true
+  temperature_lower_heater?: true
+  temperature_after_catalyst?: true
+  temperature_upper_heater?: true
+  capstan_speed?: true
   machine_id?: true
 }
 
 export type LogHistorySumAggregateInputType = {
   on_contact?: true
-  alarm_contact?: true
+  temperature_inlet_heater?: true
+  temperature_lower_heater?: true
+  temperature_after_catalyst?: true
+  temperature_upper_heater?: true
+  capstan_speed?: true
   machine_id?: true
 }
 
 export type LogHistoryMinAggregateInputType = {
   id?: true
   on_contact?: true
-  alarm_contact?: true
-  temperature?: true
+  temperature_inlet_heater?: true
+  temperature_lower_heater?: true
+  temperature_after_catalyst?: true
+  temperature_upper_heater?: true
   kwh?: true
   capstan_speed?: true
   timestamp?: true
@@ -99,8 +123,10 @@ export type LogHistoryMinAggregateInputType = {
 export type LogHistoryMaxAggregateInputType = {
   id?: true
   on_contact?: true
-  alarm_contact?: true
-  temperature?: true
+  temperature_inlet_heater?: true
+  temperature_lower_heater?: true
+  temperature_after_catalyst?: true
+  temperature_upper_heater?: true
   kwh?: true
   capstan_speed?: true
   timestamp?: true
@@ -110,8 +136,10 @@ export type LogHistoryMaxAggregateInputType = {
 export type LogHistoryCountAggregateInputType = {
   id?: true
   on_contact?: true
-  alarm_contact?: true
-  temperature?: true
+  temperature_inlet_heater?: true
+  temperature_lower_heater?: true
+  temperature_after_catalyst?: true
+  temperature_upper_heater?: true
   kwh?: true
   capstan_speed?: true
   timestamp?: true
@@ -208,10 +236,12 @@ export type LogHistoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type LogHistoryGroupByOutputType = {
   id: string
   on_contact: number | null
-  alarm_contact: number | null
-  temperature: string | null
+  temperature_inlet_heater: number | null
+  temperature_lower_heater: number | null
+  temperature_after_catalyst: number | null
+  temperature_upper_heater: number | null
   kwh: string | null
-  capstan_speed: string | null
+  capstan_speed: number | null
   timestamp: Date
   machine_id: number
   _count: LogHistoryCountAggregateOutputType | null
@@ -242,10 +272,12 @@ export type LogHistoryWhereInput = {
   NOT?: Prisma.LogHistoryWhereInput | Prisma.LogHistoryWhereInput[]
   id?: Prisma.StringFilter<"LogHistory"> | string
   on_contact?: Prisma.IntNullableFilter<"LogHistory"> | number | null
-  alarm_contact?: Prisma.IntNullableFilter<"LogHistory"> | number | null
-  temperature?: Prisma.StringNullableFilter<"LogHistory"> | string | null
+  temperature_inlet_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_lower_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_after_catalyst?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_upper_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
   kwh?: Prisma.StringNullableFilter<"LogHistory"> | string | null
-  capstan_speed?: Prisma.StringNullableFilter<"LogHistory"> | string | null
+  capstan_speed?: Prisma.IntNullableFilter<"LogHistory"> | number | null
   timestamp?: Prisma.DateTimeFilter<"LogHistory"> | Date | string
   machine_id?: Prisma.IntFilter<"LogHistory"> | number
   machine?: Prisma.XOR<Prisma.MachineScalarRelationFilter, Prisma.MachineWhereInput>
@@ -254,8 +286,10 @@ export type LogHistoryWhereInput = {
 export type LogHistoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   on_contact?: Prisma.SortOrderInput | Prisma.SortOrder
-  alarm_contact?: Prisma.SortOrderInput | Prisma.SortOrder
-  temperature?: Prisma.SortOrderInput | Prisma.SortOrder
+  temperature_inlet_heater?: Prisma.SortOrderInput | Prisma.SortOrder
+  temperature_lower_heater?: Prisma.SortOrderInput | Prisma.SortOrder
+  temperature_after_catalyst?: Prisma.SortOrderInput | Prisma.SortOrder
+  temperature_upper_heater?: Prisma.SortOrderInput | Prisma.SortOrder
   kwh?: Prisma.SortOrderInput | Prisma.SortOrder
   capstan_speed?: Prisma.SortOrderInput | Prisma.SortOrder
   timestamp?: Prisma.SortOrder
@@ -269,10 +303,12 @@ export type LogHistoryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.LogHistoryWhereInput[]
   NOT?: Prisma.LogHistoryWhereInput | Prisma.LogHistoryWhereInput[]
   on_contact?: Prisma.IntNullableFilter<"LogHistory"> | number | null
-  alarm_contact?: Prisma.IntNullableFilter<"LogHistory"> | number | null
-  temperature?: Prisma.StringNullableFilter<"LogHistory"> | string | null
+  temperature_inlet_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_lower_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_after_catalyst?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_upper_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
   kwh?: Prisma.StringNullableFilter<"LogHistory"> | string | null
-  capstan_speed?: Prisma.StringNullableFilter<"LogHistory"> | string | null
+  capstan_speed?: Prisma.IntNullableFilter<"LogHistory"> | number | null
   timestamp?: Prisma.DateTimeFilter<"LogHistory"> | Date | string
   machine_id?: Prisma.IntFilter<"LogHistory"> | number
   machine?: Prisma.XOR<Prisma.MachineScalarRelationFilter, Prisma.MachineWhereInput>
@@ -281,8 +317,10 @@ export type LogHistoryWhereUniqueInput = Prisma.AtLeast<{
 export type LogHistoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   on_contact?: Prisma.SortOrderInput | Prisma.SortOrder
-  alarm_contact?: Prisma.SortOrderInput | Prisma.SortOrder
-  temperature?: Prisma.SortOrderInput | Prisma.SortOrder
+  temperature_inlet_heater?: Prisma.SortOrderInput | Prisma.SortOrder
+  temperature_lower_heater?: Prisma.SortOrderInput | Prisma.SortOrder
+  temperature_after_catalyst?: Prisma.SortOrderInput | Prisma.SortOrder
+  temperature_upper_heater?: Prisma.SortOrderInput | Prisma.SortOrder
   kwh?: Prisma.SortOrderInput | Prisma.SortOrder
   capstan_speed?: Prisma.SortOrderInput | Prisma.SortOrder
   timestamp?: Prisma.SortOrder
@@ -300,10 +338,12 @@ export type LogHistoryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.LogHistoryScalarWhereWithAggregatesInput | Prisma.LogHistoryScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"LogHistory"> | string
   on_contact?: Prisma.IntNullableWithAggregatesFilter<"LogHistory"> | number | null
-  alarm_contact?: Prisma.IntNullableWithAggregatesFilter<"LogHistory"> | number | null
-  temperature?: Prisma.StringNullableWithAggregatesFilter<"LogHistory"> | string | null
+  temperature_inlet_heater?: Prisma.IntNullableWithAggregatesFilter<"LogHistory"> | number | null
+  temperature_lower_heater?: Prisma.IntNullableWithAggregatesFilter<"LogHistory"> | number | null
+  temperature_after_catalyst?: Prisma.IntNullableWithAggregatesFilter<"LogHistory"> | number | null
+  temperature_upper_heater?: Prisma.IntNullableWithAggregatesFilter<"LogHistory"> | number | null
   kwh?: Prisma.StringNullableWithAggregatesFilter<"LogHistory"> | string | null
-  capstan_speed?: Prisma.StringNullableWithAggregatesFilter<"LogHistory"> | string | null
+  capstan_speed?: Prisma.IntNullableWithAggregatesFilter<"LogHistory"> | number | null
   timestamp?: Prisma.DateTimeWithAggregatesFilter<"LogHistory"> | Date | string
   machine_id?: Prisma.IntWithAggregatesFilter<"LogHistory"> | number
 }
@@ -311,10 +351,12 @@ export type LogHistoryScalarWhereWithAggregatesInput = {
 export type LogHistoryCreateInput = {
   id?: string
   on_contact?: number | null
-  alarm_contact?: number | null
-  temperature?: string | null
+  temperature_inlet_heater?: number | null
+  temperature_lower_heater?: number | null
+  temperature_after_catalyst?: number | null
+  temperature_upper_heater?: number | null
   kwh?: string | null
-  capstan_speed?: string | null
+  capstan_speed?: number | null
   timestamp: Date | string
   machine: Prisma.MachineCreateNestedOneWithoutLogsInput
 }
@@ -322,10 +364,12 @@ export type LogHistoryCreateInput = {
 export type LogHistoryUncheckedCreateInput = {
   id?: string
   on_contact?: number | null
-  alarm_contact?: number | null
-  temperature?: string | null
+  temperature_inlet_heater?: number | null
+  temperature_lower_heater?: number | null
+  temperature_after_catalyst?: number | null
+  temperature_upper_heater?: number | null
   kwh?: string | null
-  capstan_speed?: string | null
+  capstan_speed?: number | null
   timestamp: Date | string
   machine_id: number
 }
@@ -333,10 +377,12 @@ export type LogHistoryUncheckedCreateInput = {
 export type LogHistoryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   on_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  alarm_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  temperature_inlet_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_lower_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_after_catalyst?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_upper_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kwh?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  capstan_speed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capstan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   machine?: Prisma.MachineUpdateOneRequiredWithoutLogsNestedInput
 }
@@ -344,10 +390,12 @@ export type LogHistoryUpdateInput = {
 export type LogHistoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   on_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  alarm_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  temperature_inlet_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_lower_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_after_catalyst?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_upper_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kwh?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  capstan_speed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capstan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   machine_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -355,10 +403,12 @@ export type LogHistoryUncheckedUpdateInput = {
 export type LogHistoryCreateManyInput = {
   id?: string
   on_contact?: number | null
-  alarm_contact?: number | null
-  temperature?: string | null
+  temperature_inlet_heater?: number | null
+  temperature_lower_heater?: number | null
+  temperature_after_catalyst?: number | null
+  temperature_upper_heater?: number | null
   kwh?: string | null
-  capstan_speed?: string | null
+  capstan_speed?: number | null
   timestamp: Date | string
   machine_id: number
 }
@@ -366,20 +416,24 @@ export type LogHistoryCreateManyInput = {
 export type LogHistoryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   on_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  alarm_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  temperature_inlet_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_lower_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_after_catalyst?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_upper_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kwh?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  capstan_speed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capstan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LogHistoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   on_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  alarm_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  temperature_inlet_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_lower_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_after_catalyst?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_upper_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kwh?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  capstan_speed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capstan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   machine_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -387,8 +441,10 @@ export type LogHistoryUncheckedUpdateManyInput = {
 export type LogHistoryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   on_contact?: Prisma.SortOrder
-  alarm_contact?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  temperature_inlet_heater?: Prisma.SortOrder
+  temperature_lower_heater?: Prisma.SortOrder
+  temperature_after_catalyst?: Prisma.SortOrder
+  temperature_upper_heater?: Prisma.SortOrder
   kwh?: Prisma.SortOrder
   capstan_speed?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
@@ -397,15 +453,21 @@ export type LogHistoryCountOrderByAggregateInput = {
 
 export type LogHistoryAvgOrderByAggregateInput = {
   on_contact?: Prisma.SortOrder
-  alarm_contact?: Prisma.SortOrder
+  temperature_inlet_heater?: Prisma.SortOrder
+  temperature_lower_heater?: Prisma.SortOrder
+  temperature_after_catalyst?: Prisma.SortOrder
+  temperature_upper_heater?: Prisma.SortOrder
+  capstan_speed?: Prisma.SortOrder
   machine_id?: Prisma.SortOrder
 }
 
 export type LogHistoryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   on_contact?: Prisma.SortOrder
-  alarm_contact?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  temperature_inlet_heater?: Prisma.SortOrder
+  temperature_lower_heater?: Prisma.SortOrder
+  temperature_after_catalyst?: Prisma.SortOrder
+  temperature_upper_heater?: Prisma.SortOrder
   kwh?: Prisma.SortOrder
   capstan_speed?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
@@ -415,8 +477,10 @@ export type LogHistoryMaxOrderByAggregateInput = {
 export type LogHistoryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   on_contact?: Prisma.SortOrder
-  alarm_contact?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  temperature_inlet_heater?: Prisma.SortOrder
+  temperature_lower_heater?: Prisma.SortOrder
+  temperature_after_catalyst?: Prisma.SortOrder
+  temperature_upper_heater?: Prisma.SortOrder
   kwh?: Prisma.SortOrder
   capstan_speed?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
@@ -425,7 +489,11 @@ export type LogHistoryMinOrderByAggregateInput = {
 
 export type LogHistorySumOrderByAggregateInput = {
   on_contact?: Prisma.SortOrder
-  alarm_contact?: Prisma.SortOrder
+  temperature_inlet_heater?: Prisma.SortOrder
+  temperature_lower_heater?: Prisma.SortOrder
+  temperature_after_catalyst?: Prisma.SortOrder
+  temperature_upper_heater?: Prisma.SortOrder
+  capstan_speed?: Prisma.SortOrder
   machine_id?: Prisma.SortOrder
 }
 
@@ -496,20 +564,24 @@ export type LogHistoryUncheckedUpdateManyWithoutMachineNestedInput = {
 export type LogHistoryCreateWithoutMachineInput = {
   id?: string
   on_contact?: number | null
-  alarm_contact?: number | null
-  temperature?: string | null
+  temperature_inlet_heater?: number | null
+  temperature_lower_heater?: number | null
+  temperature_after_catalyst?: number | null
+  temperature_upper_heater?: number | null
   kwh?: string | null
-  capstan_speed?: string | null
+  capstan_speed?: number | null
   timestamp: Date | string
 }
 
 export type LogHistoryUncheckedCreateWithoutMachineInput = {
   id?: string
   on_contact?: number | null
-  alarm_contact?: number | null
-  temperature?: string | null
+  temperature_inlet_heater?: number | null
+  temperature_lower_heater?: number | null
+  temperature_after_catalyst?: number | null
+  temperature_upper_heater?: number | null
   kwh?: string | null
-  capstan_speed?: string | null
+  capstan_speed?: number | null
   timestamp: Date | string
 }
 
@@ -545,10 +617,12 @@ export type LogHistoryScalarWhereInput = {
   NOT?: Prisma.LogHistoryScalarWhereInput | Prisma.LogHistoryScalarWhereInput[]
   id?: Prisma.StringFilter<"LogHistory"> | string
   on_contact?: Prisma.IntNullableFilter<"LogHistory"> | number | null
-  alarm_contact?: Prisma.IntNullableFilter<"LogHistory"> | number | null
-  temperature?: Prisma.StringNullableFilter<"LogHistory"> | string | null
+  temperature_inlet_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_lower_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_after_catalyst?: Prisma.IntNullableFilter<"LogHistory"> | number | null
+  temperature_upper_heater?: Prisma.IntNullableFilter<"LogHistory"> | number | null
   kwh?: Prisma.StringNullableFilter<"LogHistory"> | string | null
-  capstan_speed?: Prisma.StringNullableFilter<"LogHistory"> | string | null
+  capstan_speed?: Prisma.IntNullableFilter<"LogHistory"> | number | null
   timestamp?: Prisma.DateTimeFilter<"LogHistory"> | Date | string
   machine_id?: Prisma.IntFilter<"LogHistory"> | number
 }
@@ -556,40 +630,48 @@ export type LogHistoryScalarWhereInput = {
 export type LogHistoryCreateManyMachineInput = {
   id?: string
   on_contact?: number | null
-  alarm_contact?: number | null
-  temperature?: string | null
+  temperature_inlet_heater?: number | null
+  temperature_lower_heater?: number | null
+  temperature_after_catalyst?: number | null
+  temperature_upper_heater?: number | null
   kwh?: string | null
-  capstan_speed?: string | null
+  capstan_speed?: number | null
   timestamp: Date | string
 }
 
 export type LogHistoryUpdateWithoutMachineInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   on_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  alarm_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  temperature_inlet_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_lower_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_after_catalyst?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_upper_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kwh?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  capstan_speed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capstan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LogHistoryUncheckedUpdateWithoutMachineInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   on_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  alarm_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  temperature_inlet_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_lower_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_after_catalyst?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_upper_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kwh?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  capstan_speed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capstan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LogHistoryUncheckedUpdateManyWithoutMachineInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   on_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  alarm_contact?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  temperature_inlet_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_lower_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_after_catalyst?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  temperature_upper_heater?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kwh?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  capstan_speed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capstan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -598,8 +680,10 @@ export type LogHistoryUncheckedUpdateManyWithoutMachineInput = {
 export type LogHistorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   on_contact?: boolean
-  alarm_contact?: boolean
-  temperature?: boolean
+  temperature_inlet_heater?: boolean
+  temperature_lower_heater?: boolean
+  temperature_after_catalyst?: boolean
+  temperature_upper_heater?: boolean
   kwh?: boolean
   capstan_speed?: boolean
   timestamp?: boolean
@@ -610,8 +694,10 @@ export type LogHistorySelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type LogHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   on_contact?: boolean
-  alarm_contact?: boolean
-  temperature?: boolean
+  temperature_inlet_heater?: boolean
+  temperature_lower_heater?: boolean
+  temperature_after_catalyst?: boolean
+  temperature_upper_heater?: boolean
   kwh?: boolean
   capstan_speed?: boolean
   timestamp?: boolean
@@ -622,8 +708,10 @@ export type LogHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type LogHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   on_contact?: boolean
-  alarm_contact?: boolean
-  temperature?: boolean
+  temperature_inlet_heater?: boolean
+  temperature_lower_heater?: boolean
+  temperature_after_catalyst?: boolean
+  temperature_upper_heater?: boolean
   kwh?: boolean
   capstan_speed?: boolean
   timestamp?: boolean
@@ -634,15 +722,17 @@ export type LogHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type LogHistorySelectScalar = {
   id?: boolean
   on_contact?: boolean
-  alarm_contact?: boolean
-  temperature?: boolean
+  temperature_inlet_heater?: boolean
+  temperature_lower_heater?: boolean
+  temperature_after_catalyst?: boolean
+  temperature_upper_heater?: boolean
   kwh?: boolean
   capstan_speed?: boolean
   timestamp?: boolean
   machine_id?: boolean
 }
 
-export type LogHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "on_contact" | "alarm_contact" | "temperature" | "kwh" | "capstan_speed" | "timestamp" | "machine_id", ExtArgs["result"]["logHistory"]>
+export type LogHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "on_contact" | "temperature_inlet_heater" | "temperature_lower_heater" | "temperature_after_catalyst" | "temperature_upper_heater" | "kwh" | "capstan_speed" | "timestamp" | "machine_id", ExtArgs["result"]["logHistory"]>
 export type LogHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   machine?: boolean | Prisma.MachineDefaultArgs<ExtArgs>
 }
@@ -661,10 +751,12 @@ export type $LogHistoryPayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     on_contact: number | null
-    alarm_contact: number | null
-    temperature: string | null
+    temperature_inlet_heater: number | null
+    temperature_lower_heater: number | null
+    temperature_after_catalyst: number | null
+    temperature_upper_heater: number | null
     kwh: string | null
-    capstan_speed: string | null
+    capstan_speed: number | null
     timestamp: Date
     machine_id: number
   }, ExtArgs["result"]["logHistory"]>
@@ -1093,10 +1185,12 @@ export interface Prisma__LogHistoryClient<T, Null = never, ExtArgs extends runti
 export interface LogHistoryFieldRefs {
   readonly id: Prisma.FieldRef<"LogHistory", 'String'>
   readonly on_contact: Prisma.FieldRef<"LogHistory", 'Int'>
-  readonly alarm_contact: Prisma.FieldRef<"LogHistory", 'Int'>
-  readonly temperature: Prisma.FieldRef<"LogHistory", 'String'>
+  readonly temperature_inlet_heater: Prisma.FieldRef<"LogHistory", 'Int'>
+  readonly temperature_lower_heater: Prisma.FieldRef<"LogHistory", 'Int'>
+  readonly temperature_after_catalyst: Prisma.FieldRef<"LogHistory", 'Int'>
+  readonly temperature_upper_heater: Prisma.FieldRef<"LogHistory", 'Int'>
   readonly kwh: Prisma.FieldRef<"LogHistory", 'String'>
-  readonly capstan_speed: Prisma.FieldRef<"LogHistory", 'String'>
+  readonly capstan_speed: Prisma.FieldRef<"LogHistory", 'Int'>
   readonly timestamp: Prisma.FieldRef<"LogHistory", 'DateTime'>
   readonly machine_id: Prisma.FieldRef<"LogHistory", 'Int'>
 }
