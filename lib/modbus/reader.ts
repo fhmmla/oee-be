@@ -61,8 +61,8 @@ export async function readSensor(
       if (!param.save) continue; // Skip if not marked for saving
 
       try {
-        // Read holding registers
-        const result = await client.readHoldingRegisters(param.address, param.length);
+        // Read input registers (FC 04)
+        const result = await client.readInputRegisters(param.address, param.length);
         
         // Convert registers to buffer
         const buffer = Buffer.alloc(param.length * 2);
