@@ -80,8 +80,28 @@ export async function readSensor(
         const valueKey = getValueKeyForSensorType(sensorType, param.name);
         
         if (valueKey) {
-          values[valueKey] = value;
-          logger.debug(`Read ${sensorType}/${param.name} from ${machineName}: ${value} -> stored as '${valueKey}'`);
+          // For KWH (power_meter), concatenate values from multiple params (high + low)
+          // Example: high=164, low=986 -> result=164986 (string concat, not addition)
+          if (valueKey === 'kwh') {
+            // Convert current value to integer (remove decimals)
+            const intValue = Math.floor(value);
+            
+            if (values[valueKey] === undefined) {
+              // First param (high) - just store it
+              values[valueKey] = intValue;
+              logger.debug(`Read ${sensorType}/${param.name} from ${machineName}: ${intValue} -> stored as '${valueKey}' (high part)`);
+            } else {
+              // Second param (low) - concatenate with existing value
+              // Convert both to strings, concatenate, then back to number
+              const highStr = Math.floor(values[valueKey]).toString();
+              const lowStr = intValue.toString();
+              values[valueKey] = parseFloat(highStr + lowStr);
+              logger.debug(`Read ${sensorType}/${param.name} from ${machineName}: ${intValue} -> concatenated to '${valueKey}' (${highStr} + ${lowStr} = ${values[valueKey]})`);
+            }
+          } else {
+            values[valueKey] = value;
+            logger.debug(`Read ${sensorType}/${param.name} from ${machineName}: ${value} -> stored as '${valueKey}'`);
+          }
         } else {
           // Fallback: store with param name as key
           values[param.name as keyof SensorReading['values']] = value;
