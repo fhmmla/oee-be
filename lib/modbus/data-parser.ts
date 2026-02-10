@@ -6,13 +6,27 @@ export function parseModbusData(buffer: Buffer, dataType: string): number {
     switch (dataType.toLowerCase()) {
       case 'float32-be':
       case 'float32be':
-        // Big Endian Float (32-bit)
+      case 'float32-msrf':
+        // Big Endian Float (32-bit) - Most Significant Register First
+        // Byte order: AB CD (High Word first, Low Word second)
         return buffer.readFloatBE(0);
 
       case 'float32-le':
       case 'float32le':
         // Little Endian Float (32-bit)
         return buffer.readFloatLE(0);
+
+      case 'float32-lsrf':
+      case 'float32-ws': {
+        // Least Significant Register First (Word Swap)
+        // Device sends: [Low Word] [High Word] -> CD AB
+        // We need to swap to: [High Word] [Low Word] -> AB CD, then read as BE
+        const swapped = Buffer.alloc(4);
+        // Swap: copy word at offset 2 (high) to offset 0, word at offset 0 (low) to offset 2
+        buffer.copy(swapped, 0, 2, 4); // High word -> position 0
+        buffer.copy(swapped, 2, 0, 2); // Low word -> position 2
+        return swapped.readFloatBE(0);
+      }
 
       case 'int16':
       case 'int16-be':
