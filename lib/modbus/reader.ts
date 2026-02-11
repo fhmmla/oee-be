@@ -92,9 +92,11 @@ export async function readSensor(
               logger.debug(`Read ${sensorType}/${param.name} from ${machineName}: ${intValue} -> stored as '${valueKey}' (high part)`);
             } else {
               // Second param (low) - concatenate with existing value
-              // Convert both to strings, concatenate, then back to number
+              // Low part must be zero-padded to match the digit count of high part
+              // Example: high=851 (3 digits), low=7 -> low padded to "007" -> 851007
               const highStr = Math.floor(values[valueKey]).toString();
-              const lowStr = intValue.toString();
+              const highDigits = highStr.length;
+              const lowStr = intValue.toString().padStart(highDigits, '0');
               values[valueKey] = parseFloat(highStr + lowStr);
               logger.debug(`Read ${sensorType}/${param.name} from ${machineName}: ${intValue} -> concatenated to '${valueKey}' (${highStr} + ${lowStr} = ${values[valueKey]})`);
             }
