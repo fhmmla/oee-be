@@ -114,6 +114,8 @@ export async function calculateDailyStats(machineId: number, targetDate: Date): 
         stats.heatingUpHours += durationHours;
         break;
       case 'Iddle':
+      case 'Iddle[SU]':
+      case 'Iddle[Make Sample]':
         stats.iddleHours += durationHours;
         break;
       case 'MachineProduction':
@@ -139,7 +141,10 @@ export async function calculateDailyStats(machineId: number, targetDate: Date): 
   // MachineOFF KWH is NOT counted
   
   stats.heatingUpKwh = calculateKwhForCondition('HeatingUp', conditions);
-  stats.iddleKwh = calculateKwhForCondition('Iddle', conditions);
+  // Iddle KWH = sum of Iddle (legacy) + Iddle[SU] + Iddle[Make Sample]
+  stats.iddleKwh = calculateKwhForCondition('Iddle', conditions) 
+    + calculateKwhForCondition('Iddle[SU]', conditions) 
+    + calculateKwhForCondition('Iddle[Make Sample]', conditions);
   stats.productionKwh = calculateKwhForCondition('MachineProduction', conditions);
   
   // Total KWH = Sum of per-condition KWH (excluding MachineOFF)
@@ -348,6 +353,8 @@ export async function saveDailyMcRunHour(machineId: number, targetDate: Date): P
 
 /**
  * Calculate and save for all machines (called by cron)
+ * Checks if H-1 data already exists before calculating.
+ * If all machines already have data, skips entirely.
  */
 export async function calculateAllMachinesDailyStats(): Promise<void> {
   try {
@@ -357,22 +364,51 @@ export async function calculateAllMachinesDailyStats(): Promise<void> {
     
     const dateStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
     
-    logger.info(`Starting daily McRunHour calculation for ${dateStr} (H-1 WIB)`);
-
     // Get all enabled machines
     const machines = await prisma.machine.findMany({
       where: { enabled: true },
       select: { id: true, name: true },
     });
 
-    logger.info(`Processing ${machines.length} machines`);
-
-    // Process each machine
-    for (const machine of machines) {
-      await saveDailyMcRunHour(machine.id, yesterday);
+    if (machines.length === 0) {
+      logger.warn('No enabled machines found');
+      return;
     }
 
-    logger.info(`✓ Daily McRunHour calculation complete for ${machines.length} machines`);
+    // Check which machines already have H-1 data
+    const dateForDbCheck = new Date(Date.UTC(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0, 0));
+    
+    const existingRecords = await prisma.mcRunHour.findMany({
+      where: {
+        date: dateForDbCheck,
+        machine_id: { in: machines.map(m => m.id) },
+      },
+      select: { machine_id: true },
+    });
+
+    const existingMachineIds = new Set(existingRecords.map(r => r.machine_id));
+    const missingMachines = machines.filter(m => !existingMachineIds.has(m.id));
+
+    // If all machines already have data, skip entirely
+    if (missingMachines.length === 0) {
+      logger.info(`✅ Daily McRunHour for ${dateStr} already complete for all ${machines.length} machines — skipping`);
+      return;
+    }
+
+    logger.info(`Starting daily McRunHour calculation for ${dateStr} (H-1 WIB)`);
+    logger.info(`Processing ${missingMachines.length} machines (${existingMachineIds.size} already done, ${missingMachines.length} remaining)`);
+
+    // Process only machines that don't have data yet
+    for (const machine of missingMachines) {
+      try {
+        await saveDailyMcRunHour(machine.id, yesterday);
+      } catch (error) {
+        logger.error(`Error calculating McRunHour for machine ${machine.id} (${machine.name}):`, error);
+        // Continue with other machines even if one fails
+      }
+    }
+
+    logger.info(`✓ Daily McRunHour calculation complete for ${dateStr}`);
   } catch (error) {
     logger.error('Error in daily calculation:', error);
     throw error;

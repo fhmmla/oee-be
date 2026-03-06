@@ -1,11 +1,12 @@
 import { prisma } from "../lib/prisma";
 
-// Helper function for sensor select structure with target_temp
+// Helper function for sensor select structure with target_temp and time_to_make_sample
 const temperatureSensorSelect = {
     id: true,
     name: true,
     address: true,
     target_temp: true,  // Include target_temp for temperature sensors
+    time_to_make_sample: true,  // Include time_to_make_sample for Iddle[Make Sample] condition
     gateway_id: true,
     mapping_id: true,
     gateway: {

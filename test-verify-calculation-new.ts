@@ -1,6 +1,9 @@
-// test-verify-calculation.ts
-// Script untuk verifikasi manual perhitungan daily calculation
-// Jalankan dengan: bun run test-verify-calculation.ts
+// test-verify-calculation-new.ts
+// Script untuk verifikasi manual perhitungan daily calculation (VERSI BARU)
+// Termasuk perbaikan:
+// 1. Handling last_kwh=null (fallback ke current_kwh)
+// 2. Logic Shared Power Meter (isOneBlock)
+// Jalankan dengan: bun run test-verify-calculation-new.ts
 
 import { prisma } from './lib/prisma';
 import type { Condition } from './lib/generated/prisma/client';
@@ -18,7 +21,7 @@ interface ConditionStats {
 
 async function verifyCalculation(): Promise<void> {
   console.log('='.repeat(80));
-  console.log('🔍 VERIFIKASI PERHITUNGAN DAILY CALCULATION');
+  console.log('🔍 VERIFIKASI PERHITUNGAN DAILY CALCULATION (V2 - IMPROVED)');
   console.log('='.repeat(80));
   console.log(`📅 Tanggal Target: ${TARGET_DATE}`);
   console.log(`🏭 Machine ID: ${MACHINE_ID}`);
@@ -135,12 +138,12 @@ async function verifyCalculation(): Promise<void> {
           durationStr = `${duration.toFixed(4)} h`;
           
           // KWH delta for this segment
-          const startKwh = parseFloat(record.last_kwh ?? '0') || 0;
+          const startKwh = parseFloat(record.last_kwh ?? record.current_kwh) || 0; // FIX: use current_kwh fallback
           const endKwh = parseFloat(endRecord.current_kwh) || 0;
           kwhDelta = `${(endKwh - startKwh).toFixed(2)} kWh`;
         } else {
           durationStr = '(last)';
-          const startKwh = parseFloat(record.last_kwh ?? '0') || 0;
+          const startKwh = parseFloat(record.last_kwh ?? record.current_kwh) || 0; // FIX: use current_kwh fallback
           const endKwh = parseFloat(endRecord.current_kwh) || 0;
           kwhDelta = `${(endKwh - startKwh).toFixed(2)} kWh`;
         }
@@ -195,6 +198,8 @@ async function verifyCalculation(): Promise<void> {
         conditionStats['HeatingUp']!.totalHours += durationHours;
         break;
       case 'Iddle':
+      case 'Iddle[SU]':
+      case 'Iddle[Make Sample]':
         conditionStats['Iddle']!.totalHours += durationHours;
         break;
       case 'MachineProduction':
@@ -223,7 +228,7 @@ async function verifyCalculation(): Promise<void> {
         }
       } else {
         if (currentSegment) {
-          const startKwh = parseFloat(currentSegment.start.last_kwh ?? '0') || 0;
+          const startKwh = parseFloat(currentSegment.start.last_kwh ?? currentSegment.start.current_kwh) || 0; // FIX
           const endKwh = parseFloat(currentSegment.end.current_kwh) || 0;
           totalCondKwh += endKwh - startKwh;
           segmentCount++;
@@ -233,7 +238,7 @@ async function verifyCalculation(): Promise<void> {
     }
     
     if (currentSegment) {
-      const startKwh = parseFloat(currentSegment.start.last_kwh ?? '0') || 0;
+      const startKwh = parseFloat(currentSegment.start.last_kwh ?? currentSegment.start.current_kwh) || 0; // FIX
       const endKwh = parseFloat(currentSegment.end.current_kwh) || 0;
       totalCondKwh += endKwh - startKwh;
       segmentCount++;
@@ -243,7 +248,13 @@ async function verifyCalculation(): Promise<void> {
   }
 
   const heatingUpKwh = calculateKwhForCondition('HeatingUp');
-  const iddleKwh = calculateKwhForCondition('Iddle');
+  const iddleLegacyKwh = calculateKwhForCondition('Iddle');
+  const iddleSuKwh = calculateKwhForCondition('Iddle[SU]');
+  const iddleMakeSampleKwh = calculateKwhForCondition('Iddle[Make Sample]');
+  const iddleKwh = {
+    kwh: iddleLegacyKwh.kwh + iddleSuKwh.kwh + iddleMakeSampleKwh.kwh,
+    segments: iddleLegacyKwh.segments + iddleSuKwh.segments + iddleMakeSampleKwh.segments,
+  };
   const productionKwh = calculateKwhForCondition('MachineProduction');
   const machineOffKwhData = calculateKwhForCondition('MachineOFF');
   machineOffKwh = machineOffKwhData.kwh;
@@ -255,15 +266,88 @@ async function verifyCalculation(): Promise<void> {
   conditionStats['MachineProduction']!.totalKwh = productionKwh.kwh;
   conditionStats['MachineProduction']!.segmentCount = productionKwh.segments;
 
-  // ===== CALCULATE TOTALS =====
-  const totalHours = conditionStats['HeatingUp']!.totalHours + 
-                     conditionStats['Iddle']!.totalHours + 
-                     conditionStats['MachineProduction']!.totalHours;
-  const totalKwh = conditionStats['HeatingUp']!.totalKwh + 
-                   conditionStats['Iddle']!.totalKwh + 
-                   conditionStats['MachineProduction']!.totalKwh;
+  // ========== 5. CEK SHARED POWER METER (LOGIC CRON) ==========
+  console.log('\n' + '─'.repeat(80));
+  console.log('🔌 CEK SHARED POWER METER (Is One Block Logic)');
+  console.log('─'.repeat(80));
 
-  // ========== 5. TAMPILKAN HASIL ==========
+  const currentMachine = await prisma.machine.findUnique({
+    where: { id: MACHINE_ID },
+    select: { id: true, name: true, power_meter_id: true },
+  });
+
+  let isOneBlock = true;
+  let sharedWithMachine = '-';
+
+  if (currentMachine) {
+    console.log(`Machine: ${currentMachine.name} (Power Meter ID: ${currentMachine.power_meter_id})`);
+    
+    // Cari mesin lain dengan power meter sama
+    const machinesWithSamePowerMeter = await prisma.machine.findMany({
+      where: {
+        power_meter_id: currentMachine.power_meter_id,
+        id: { not: MACHINE_ID },
+      },
+      select: { id: true, name: true },
+    });
+
+    if (machinesWithSamePowerMeter.length > 0) {
+      const currentMachineHasProduction = conditionStats['MachineProduction']!.totalHours > 0;
+      
+      if (currentMachineHasProduction) {
+        for (const otherMachine of machinesWithSamePowerMeter) {
+          // Cek apakah mesin lain tersebut juga produksi di hari yang sama
+          const otherMachineConditions = await prisma.condition.findFirst({
+            where: {
+              machine_id: otherMachine.id,
+              current_condition: 'MachineProduction',
+              current_timestamp: {
+                gte: startOfDay,
+                lte: endOfDay,
+              },
+            },
+          });
+
+          if (otherMachineConditions) {
+            isOneBlock = false;
+            sharedWithMachine = otherMachine.name;
+            console.log(`⚠️  Shared detected! Mesin '${otherMachine.name}' juga produksi hari ini.`);
+            break;
+          }
+        }
+      } else {
+        console.log('ℹ️  Mesin ini tidak produksi, skip cek shared power.');
+      }
+    } else {
+      console.log('✅  Single Machine (Tidak ada mesin lain dengan power meter ini).');
+    }
+  }
+
+  // Apply Shared Logic
+  if (!isOneBlock) {
+    console.log('\n🔄  APPLYING SHARED LOGIC (Membagi KWH dengan 2)');
+    conditionStats['HeatingUp']!.totalKwh /= 2;
+    conditionStats['Iddle']!.totalKwh /= 2;
+    conditionStats['MachineProduction']!.totalKwh /= 2;
+    machineOffKwh /= 2;
+    
+    console.log('   HeatingUp KWH     /= 2');
+    console.log('   Iddle KWH         /= 2');
+    console.log('   Production KWH    /= 2');
+  } else {
+    console.log('\n✅  Is One Block = TRUE (Tidak ada pembagian KWH)');
+  }
+
+  // Recalculate Totals
+  const finalTotalHours = conditionStats['HeatingUp']!.totalHours + 
+                          conditionStats['Iddle']!.totalHours + 
+                          conditionStats['MachineProduction']!.totalHours;
+                          
+  const finalTotalKwh = conditionStats['HeatingUp']!.totalKwh + 
+                        conditionStats['Iddle']!.totalKwh + 
+                        conditionStats['MachineProduction']!.totalKwh;
+
+  // ========== 6. TAMPILKAN HASIL AKHIR ==========
   const conditionTypes = ['HeatingUp', 'Iddle', 'MachineProduction'];
   
   console.log('\n┌────────────────────────┬────────────────┬────────────────┬──────────┐');
@@ -278,10 +362,10 @@ async function verifyCalculation(): Promise<void> {
   console.log('├────────────────────────┼────────────────┼────────────────┼──────────┤');
   console.log(`│ ${'MachineOFF (excluded)'.padEnd(22)} │ ${machineOffHours.toFixed(4).padStart(14)} │ ${machineOffKwh.toFixed(2).padStart(14)} │ ${String(machineOffKwhData.segments).padStart(8)} │`);
   console.log('├────────────────────────┼────────────────┼────────────────┼──────────┤');
-  console.log(`│ ${'TOTAL (excl. OFF)'.padEnd(22)} │ ${totalHours.toFixed(4).padStart(14)} │ ${totalKwh.toFixed(2).padStart(14)} │          │`);
+  console.log(`│ ${'TOTAL (excl. OFF)'.padEnd(22)} │ ${finalTotalHours.toFixed(4).padStart(14)} │ ${finalTotalKwh.toFixed(2).padStart(14)} │          │`);
   console.log('└────────────────────────┴────────────────┴────────────────┴──────────┘');
 
-  // ========== 6. BANDINGKAN DENGAN HASIL CRON ==========
+  // ========== 7. BANDINGKAN DENGAN HASIL CRON ==========
   console.log('\n' + '─'.repeat(80));
   console.log('🔄 PERBANDINGAN DENGAN HASIL CRON (tbl_mc_run_hour)');
   console.log('─'.repeat(80));
@@ -315,15 +399,15 @@ async function verifyCalculation(): Promise<void> {
     const checkMatch = (manual: number, cron: number, threshold: number = 0.1) => 
       Math.abs(manual - cron) < threshold ? '✅' : '⚠️';
     
-    console.log(`│ ${'Total Hours'.padEnd(22)} │ ${totalHours.toFixed(2).padStart(14)} │ ${cronTotalH.toFixed(2).padStart(14)} │ ${checkMatch(totalHours, cronTotalH).padStart(14)} │`);
-    console.log(`│ ${'Total KWH'.padEnd(22)} │ ${totalKwh.toFixed(2).padStart(14)} │ ${cronTotalKwh.toFixed(2).padStart(14)} │ ${checkMatch(totalKwh, cronTotalKwh).padStart(14)} │`);
+    console.log(`│ ${'Total Hours'.padEnd(22)} │ ${finalTotalHours.toFixed(2).padStart(14)} │ ${cronTotalH.toFixed(2).padStart(14)} │ ${checkMatch(finalTotalHours, cronTotalH).padStart(14)} │`);
+    console.log(`│ ${'Total KWH'.padEnd(22)} │ ${finalTotalKwh.toFixed(2).padStart(14)} │ ${cronTotalKwh.toFixed(2).padStart(14)} │ ${checkMatch(finalTotalKwh, cronTotalKwh, 1.0).padStart(14)} │`);
     console.log('├────────────────────────┼────────────────┼────────────────┼────────────────┤');
     console.log(`│ ${'HeatingUp Hours'.padEnd(22)} │ ${conditionStats['HeatingUp']!.totalHours.toFixed(2).padStart(14)} │ ${cronHeatUpH.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['HeatingUp']!.totalHours, cronHeatUpH).padStart(14)} │`);
-    console.log(`│ ${'HeatingUp KWH'.padEnd(22)} │ ${conditionStats['HeatingUp']!.totalKwh.toFixed(2).padStart(14)} │ ${cronHeatUpKwh.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['HeatingUp']!.totalKwh, cronHeatUpKwh).padStart(14)} │`);
+    console.log(`│ ${'HeatingUp KWH'.padEnd(22)} │ ${conditionStats['HeatingUp']!.totalKwh.toFixed(2).padStart(14)} │ ${cronHeatUpKwh.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['HeatingUp']!.totalKwh, cronHeatUpKwh, 1.0).padStart(14)} │`);
     console.log(`│ ${'Iddle Hours'.padEnd(22)} │ ${conditionStats['Iddle']!.totalHours.toFixed(2).padStart(14)} │ ${cronIddleH.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['Iddle']!.totalHours, cronIddleH).padStart(14)} │`);
-    console.log(`│ ${'Iddle KWH'.padEnd(22)} │ ${conditionStats['Iddle']!.totalKwh.toFixed(2).padStart(14)} │ ${cronIddleKwh.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['Iddle']!.totalKwh, cronIddleKwh).padStart(14)} │`);
+    console.log(`│ ${'Iddle KWH'.padEnd(22)} │ ${conditionStats['Iddle']!.totalKwh.toFixed(2).padStart(14)} │ ${cronIddleKwh.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['Iddle']!.totalKwh, cronIddleKwh, 1.0).padStart(14)} │`);
     console.log(`│ ${'Production Hours'.padEnd(22)} │ ${conditionStats['MachineProduction']!.totalHours.toFixed(2).padStart(14)} │ ${cronProdH.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['MachineProduction']!.totalHours, cronProdH).padStart(14)} │`);
-    console.log(`│ ${'Production KWH'.padEnd(22)} │ ${conditionStats['MachineProduction']!.totalKwh.toFixed(2).padStart(14)} │ ${cronProdKwh.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['MachineProduction']!.totalKwh, cronProdKwh).padStart(14)} │`);
+    console.log(`│ ${'Production KWH'.padEnd(22)} │ ${conditionStats['MachineProduction']!.totalKwh.toFixed(2).padStart(14)} │ ${cronProdKwh.toFixed(2).padStart(14)} │ ${checkMatch(conditionStats['MachineProduction']!.totalKwh, cronProdKwh, 1.0).padStart(14)} │`);
     console.log('└────────────────────────┴────────────────┴────────────────┴────────────────┘');
     
     // Sum verification

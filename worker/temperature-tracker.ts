@@ -198,8 +198,99 @@ class TemperatureTracker {
   }
 
   /**
+   * Check if temperature has been >= target_temp for a custom duration (in minutes)
+   * Same as check() but with configurable duration instead of fixed 1 hour
+   * Used for time_to_make_sample check in Iddle[Make Sample] condition
+   */
+  async checkWithDuration(
+    machineId: number,
+    sensorType: TemperatureSensorType,
+    currentTemperature: number,
+    targetTemp: number,
+    durationMinutes: number
+  ): Promise<boolean> {
+    // If current temperature < target, definitely not met
+    if (currentTemperature < targetTemp) {
+      const cacheKey = this.getCacheKey(machineId, sensorType);
+      this.cache.set(cacheKey, {
+        machineId,
+        sensorType,
+        heatingUpSince: null,
+        lastFetch: new Date(),
+      });
+      return false;
+    }
+
+    // Always fetch fresh data from LogHistory for accuracy
+    await this.fetchFromDatabase(machineId, sensorType, targetTemp);
+
+    // Check cache
+    const cacheKey = this.getCacheKey(machineId, sensorType);
+    const cached = this.cache.get(cacheKey);
+    
+    // Calculate duration if we have cache data
+    const requiredDurationMs = durationMinutes * 60 * 1000;
+    if (cached && cached.heatingUpSince) {
+      const now = new Date();
+      const duration = now.getTime() - cached.heatingUpSince.getTime();
+      
+      if (duration >= requiredDurationMs) {
+        return true;
+      }
+    }
+
+    // FALLBACK: check last condition
+    const fallbackResult = await this.checkLastConditionFallback(machineId);
+    if (fallbackResult) {
+      console.log(`[TempTracker] Machine ${machineId}, Sensor ${sensorType}: Using fallback for duration ${durationMinutes}min`);
+    }
+    
+    return fallbackResult;
+  }
+
+  /**
+   * Check all 4 temperature sensors with custom duration per sensor
+   * Used for Iddle[Make Sample] condition with time_to_make_sample
+   * Returns true only if ALL 4 sensors have been >= their respective target_temp
+   * for their respective duration (in minutes)
+   */
+  async checkAllWithDuration(
+    machineId: number,
+    temperatures: {
+      inlet_heater: number;
+      lower_heater: number;
+      after_catalyst: number;
+      upper_heater: number;
+    },
+    targetTemps: {
+      inlet_heater: number;
+      lower_heater: number;
+      after_catalyst: number;
+      upper_heater: number;
+    },
+    durations: {
+      inlet_heater: number;
+      lower_heater: number;
+      after_catalyst: number;
+      upper_heater: number;
+    }
+  ): Promise<boolean> {
+    // Check each sensor independently with its own duration
+    const results = await Promise.all([
+      this.checkWithDuration(machineId, 'temperature_inlet_heater', temperatures.inlet_heater, targetTemps.inlet_heater, durations.inlet_heater),
+      this.checkWithDuration(machineId, 'temperature_lower_heater', temperatures.lower_heater, targetTemps.lower_heater, durations.lower_heater),
+      this.checkWithDuration(machineId, 'temperature_after_catalyst', temperatures.after_catalyst, targetTemps.after_catalyst, durations.after_catalyst),
+      this.checkWithDuration(machineId, 'temperature_upper_heater', temperatures.upper_heater, targetTemps.upper_heater, durations.upper_heater),
+    ]);
+
+    // All 4 sensors must meet the condition (AND logic)
+    return results.every(result => result === true);
+  }
+
+  /**
    * Fallback: Check last condition from Condition table
-   * If last condition was MachineProduction or Iddle, temp was >= target for 1 hour before
+   * If last condition was MachineProduction, Iddle[SU], or Iddle[Make Sample],
+   * temp was >= target for required duration before
    * This handles cases where LogHistory has gaps (restart, downtime, etc.)
    */
   private async checkLastConditionFallback(machineId: number): Promise<boolean> {
@@ -214,10 +305,10 @@ class TemperatureTracker {
         return false;
       }
 
-      // If last condition was MachineProduction or Iddle, 
-      // it means temperature WAS >= target for at least 1 hour before
+      // If last condition was MachineProduction or Iddle variants,
+      // it means temperature WAS >= target for required duration before
       // So we maintain that state instead of resetting to HeatingUp
-      const conditionsRequiringTempTarget = ['MachineProduction', 'Iddle'];
+      const conditionsRequiringTempTarget = ['MachineProduction', 'Iddle[SU]', 'Iddle[Make Sample]', 'Iddle'];
       return conditionsRequiringTempTarget.includes(lastCondition.current_condition || '');
     } catch (error) {
       console.error(`Error checking last condition fallback for machine ${machineId}:`, error);

@@ -1666,6 +1666,7 @@ export const TemperatureSensorScalarFieldEnum = {
   name: 'name',
   address: 'address',
   target_temp: 'target_temp',
+  time_to_make_sample: 'time_to_make_sample',
   gateway_id: 'gateway_id',
   mapping_id: 'mapping_id'
 } as const

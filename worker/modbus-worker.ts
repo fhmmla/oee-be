@@ -112,7 +112,8 @@ class ModbusWorker {
           const aggregated = this.aggregateWithConfig(this.latestReadings);
           for (const reading of aggregated) {
             const condition = await checkConditions(reading);
-            const kwh = reading.kwh?.toString() || '0';
+            if (condition === null) continue; // Skip jika ada sensor value null
+            const kwh = reading.kwh!.toString();
             
             // forceSnapshot=true ensures INSERT even if condition unchanged
             // skipLogHistory=true because saveLogHistory() already saved above
@@ -130,26 +131,27 @@ class ModbusWorker {
 
     logger.info('✓ Snapshot cron job scheduled successfully');
 
-    // 2. Setup daily calculation cron (01:00 WIB every day)
-    // Cron expression: "0 1 * * *" = At 01:00 every day
+    // 2. Setup daily calculation cron (01:00 - 06:00 WIB every day)
+    // Cron expression: "0 1-6 * * *" = At 01:00, 02:00, 03:00, 04:00, 05:00, 06:00 every day
+    // If calculation succeeds at 01:00, subsequent hours will skip (data already exists)
+    // If it fails at 01:00, it will retry at 02:00, etc.
     // Note: Server timezone should be UTC+7 (WIB)
-    const dailyCronExpression = '0 1 * * *';
+    const dailyCronExpression = '0 1-6 * * *';
     
-    logger.info(`📅 Setting up daily calculation cron job: "${dailyCronExpression}" (01:00 WIB)`);
+    logger.info(`📅 Setting up daily calculation cron job: "${dailyCronExpression}" (01:00-06:00 WIB)`);
 
     const { calculateAllMachinesDailyStats } = require('./daily-calculator');
     
     cron.schedule(dailyCronExpression, async () => {
       try {
-        logger.info('🌙 Daily calculation triggered - Calculating yesterday\'s run hours');
+        logger.info('🌙 Daily calculation triggered - Checking yesterday\'s run hours');
         await calculateAllMachinesDailyStats();
-        logger.info('✓ Daily calculation complete');
       } catch (error) {
         logger.error('Error in daily calculation cron:', error);
       }
     });
 
-    logger.info('✓ Daily calculation cron job scheduled successfully');
+    logger.info('✓ Daily calculation cron job scheduled successfully (retries hourly until 06:00)');
   }
 
   /**
@@ -207,7 +209,8 @@ class ModbusWorker {
           const aggregated = this.aggregateWithConfig(this.latestReadings);
           for (const reading of aggregated) {
             const condition = await checkConditions(reading);
-            const kwh = reading.kwh?.toString() || '0';
+            if (condition === null) continue; // Skip jika ada sensor value null
+            const kwh = reading.kwh!.toString();
             
             // forceSnapshot=true ensures INSERT even if condition unchanged
             // skipLogHistory=true because saveLogHistory() already saved above
@@ -239,6 +242,12 @@ class ModbusWorker {
         reading.target_temp_after_catalyst = machineConfig.temperature_after_catalyst?.target_temp || 300;
         reading.target_temp_upper_heater = machineConfig.temperature_upper_heater?.target_temp || 300;
         reading.speed_to_production = machineConfig.capstan_speed?.speed_to_production || 60;
+        
+        // time_to_make_sample per sensor (untuk Iddle[Make Sample] condition)
+        reading.time_to_make_sample_inlet_heater = machineConfig.temperature_inlet_heater?.time_to_make_sample || 60;
+        reading.time_to_make_sample_lower_heater = machineConfig.temperature_lower_heater?.time_to_make_sample || 60;
+        reading.time_to_make_sample_after_catalyst = machineConfig.temperature_after_catalyst?.time_to_make_sample || 60;
+        reading.time_to_make_sample_upper_heater = machineConfig.temperature_upper_heater?.time_to_make_sample || 60;
       }
     }
     
@@ -287,7 +296,8 @@ class ModbusWorker {
       const aggregated = this.aggregateWithConfig(allReadings);
       for (const reading of aggregated) {
         const condition = await checkConditions(reading);
-        const kwh = reading.kwh?.toString() || '0';
+        if (condition === null) continue; // Skip jika ada sensor value null
+        const kwh = reading.kwh!.toString();
         
         // This will save Condition if changed, and also LogHistory on condition change
         await updateCondition(reading.machineId, condition, kwh, reading.timestamp, reading);

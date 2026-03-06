@@ -131,6 +131,7 @@ model TemperatureSensor {
   name       String
   address    Int
   target_temp Int @default(300)
+  time_to_make_sample Int @default(60)
   gateway_id Int
   mapping_id Int
 

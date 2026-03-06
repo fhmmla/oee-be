@@ -30,6 +30,7 @@ export type TemperatureSensorAvgAggregateOutputType = {
   id: number | null
   address: number | null
   target_temp: number | null
+  time_to_make_sample: number | null
   gateway_id: number | null
   mapping_id: number | null
 }
@@ -38,6 +39,7 @@ export type TemperatureSensorSumAggregateOutputType = {
   id: number | null
   address: number | null
   target_temp: number | null
+  time_to_make_sample: number | null
   gateway_id: number | null
   mapping_id: number | null
 }
@@ -47,6 +49,7 @@ export type TemperatureSensorMinAggregateOutputType = {
   name: string | null
   address: number | null
   target_temp: number | null
+  time_to_make_sample: number | null
   gateway_id: number | null
   mapping_id: number | null
 }
@@ -56,6 +59,7 @@ export type TemperatureSensorMaxAggregateOutputType = {
   name: string | null
   address: number | null
   target_temp: number | null
+  time_to_make_sample: number | null
   gateway_id: number | null
   mapping_id: number | null
 }
@@ -65,6 +69,7 @@ export type TemperatureSensorCountAggregateOutputType = {
   name: number
   address: number
   target_temp: number
+  time_to_make_sample: number
   gateway_id: number
   mapping_id: number
   _all: number
@@ -75,6 +80,7 @@ export type TemperatureSensorAvgAggregateInputType = {
   id?: true
   address?: true
   target_temp?: true
+  time_to_make_sample?: true
   gateway_id?: true
   mapping_id?: true
 }
@@ -83,6 +89,7 @@ export type TemperatureSensorSumAggregateInputType = {
   id?: true
   address?: true
   target_temp?: true
+  time_to_make_sample?: true
   gateway_id?: true
   mapping_id?: true
 }
@@ -92,6 +99,7 @@ export type TemperatureSensorMinAggregateInputType = {
   name?: true
   address?: true
   target_temp?: true
+  time_to_make_sample?: true
   gateway_id?: true
   mapping_id?: true
 }
@@ -101,6 +109,7 @@ export type TemperatureSensorMaxAggregateInputType = {
   name?: true
   address?: true
   target_temp?: true
+  time_to_make_sample?: true
   gateway_id?: true
   mapping_id?: true
 }
@@ -110,6 +119,7 @@ export type TemperatureSensorCountAggregateInputType = {
   name?: true
   address?: true
   target_temp?: true
+  time_to_make_sample?: true
   gateway_id?: true
   mapping_id?: true
   _all?: true
@@ -206,6 +216,7 @@ export type TemperatureSensorGroupByOutputType = {
   name: string
   address: number
   target_temp: number
+  time_to_make_sample: number
   gateway_id: number
   mapping_id: number
   _count: TemperatureSensorCountAggregateOutputType | null
@@ -238,6 +249,7 @@ export type TemperatureSensorWhereInput = {
   name?: Prisma.StringFilter<"TemperatureSensor"> | string
   address?: Prisma.IntFilter<"TemperatureSensor"> | number
   target_temp?: Prisma.IntFilter<"TemperatureSensor"> | number
+  time_to_make_sample?: Prisma.IntFilter<"TemperatureSensor"> | number
   gateway_id?: Prisma.IntFilter<"TemperatureSensor"> | number
   mapping_id?: Prisma.IntFilter<"TemperatureSensor"> | number
   gateway?: Prisma.XOR<Prisma.GatewayScalarRelationFilter, Prisma.GatewayWhereInput>
@@ -253,6 +265,7 @@ export type TemperatureSensorOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
   target_temp?: Prisma.SortOrder
+  time_to_make_sample?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
   gateway?: Prisma.GatewayOrderByWithRelationInput
@@ -271,6 +284,7 @@ export type TemperatureSensorWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"TemperatureSensor"> | string
   address?: Prisma.IntFilter<"TemperatureSensor"> | number
   target_temp?: Prisma.IntFilter<"TemperatureSensor"> | number
+  time_to_make_sample?: Prisma.IntFilter<"TemperatureSensor"> | number
   gateway_id?: Prisma.IntFilter<"TemperatureSensor"> | number
   mapping_id?: Prisma.IntFilter<"TemperatureSensor"> | number
   gateway?: Prisma.XOR<Prisma.GatewayScalarRelationFilter, Prisma.GatewayWhereInput>
@@ -286,6 +300,7 @@ export type TemperatureSensorOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
   target_temp?: Prisma.SortOrder
+  time_to_make_sample?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
   _count?: Prisma.TemperatureSensorCountOrderByAggregateInput
@@ -303,6 +318,7 @@ export type TemperatureSensorScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"TemperatureSensor"> | string
   address?: Prisma.IntWithAggregatesFilter<"TemperatureSensor"> | number
   target_temp?: Prisma.IntWithAggregatesFilter<"TemperatureSensor"> | number
+  time_to_make_sample?: Prisma.IntWithAggregatesFilter<"TemperatureSensor"> | number
   gateway_id?: Prisma.IntWithAggregatesFilter<"TemperatureSensor"> | number
   mapping_id?: Prisma.IntWithAggregatesFilter<"TemperatureSensor"> | number
 }
@@ -311,6 +327,7 @@ export type TemperatureSensorCreateInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutTemp_sensorsInput
   mapping: Prisma.MappingCreateNestedOneWithoutTemp_sensorsInput
   machines_inlet_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_inlet_heaterInput
@@ -324,6 +341,7 @@ export type TemperatureSensorUncheckedCreateInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway_id: number
   mapping_id: number
   machines_inlet_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_inlet_heaterInput
@@ -336,6 +354,7 @@ export type TemperatureSensorUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutTemp_sensorsNestedInput
   mapping?: Prisma.MappingUpdateOneRequiredWithoutTemp_sensorsNestedInput
   machines_inlet_heater?: Prisma.MachineUpdateManyWithoutTemperature_inlet_heaterNestedInput
@@ -349,6 +368,7 @@ export type TemperatureSensorUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines_inlet_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterNestedInput
@@ -362,6 +382,7 @@ export type TemperatureSensorCreateManyInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway_id: number
   mapping_id: number
 }
@@ -370,6 +391,7 @@ export type TemperatureSensorUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type TemperatureSensorUncheckedUpdateManyInput = {
@@ -377,6 +399,7 @@ export type TemperatureSensorUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -396,6 +419,7 @@ export type TemperatureSensorCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
   target_temp?: Prisma.SortOrder
+  time_to_make_sample?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -404,6 +428,7 @@ export type TemperatureSensorAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
   target_temp?: Prisma.SortOrder
+  time_to_make_sample?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -413,6 +438,7 @@ export type TemperatureSensorMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
   target_temp?: Prisma.SortOrder
+  time_to_make_sample?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -422,6 +448,7 @@ export type TemperatureSensorMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
   target_temp?: Prisma.SortOrder
+  time_to_make_sample?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -430,6 +457,7 @@ export type TemperatureSensorSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
   target_temp?: Prisma.SortOrder
+  time_to_make_sample?: Prisma.SortOrder
   gateway_id?: Prisma.SortOrder
   mapping_id?: Prisma.SortOrder
 }
@@ -583,6 +611,7 @@ export type TemperatureSensorCreateWithoutGatewayInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   mapping: Prisma.MappingCreateNestedOneWithoutTemp_sensorsInput
   machines_inlet_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_inlet_heaterInput
   machines_lower_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_lower_heaterInput
@@ -595,6 +624,7 @@ export type TemperatureSensorUncheckedCreateWithoutGatewayInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   mapping_id: number
   machines_inlet_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_inlet_heaterInput
   machines_lower_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_lower_heaterInput
@@ -636,6 +666,7 @@ export type TemperatureSensorScalarWhereInput = {
   name?: Prisma.StringFilter<"TemperatureSensor"> | string
   address?: Prisma.IntFilter<"TemperatureSensor"> | number
   target_temp?: Prisma.IntFilter<"TemperatureSensor"> | number
+  time_to_make_sample?: Prisma.IntFilter<"TemperatureSensor"> | number
   gateway_id?: Prisma.IntFilter<"TemperatureSensor"> | number
   mapping_id?: Prisma.IntFilter<"TemperatureSensor"> | number
 }
@@ -644,6 +675,7 @@ export type TemperatureSensorCreateWithoutMappingInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutTemp_sensorsInput
   machines_inlet_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_inlet_heaterInput
   machines_lower_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_lower_heaterInput
@@ -656,6 +688,7 @@ export type TemperatureSensorUncheckedCreateWithoutMappingInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway_id: number
   machines_inlet_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_inlet_heaterInput
   machines_lower_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_lower_heaterInput
@@ -693,6 +726,7 @@ export type TemperatureSensorCreateWithoutMachines_inlet_heaterInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutTemp_sensorsInput
   mapping: Prisma.MappingCreateNestedOneWithoutTemp_sensorsInput
   machines_lower_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_lower_heaterInput
@@ -705,6 +739,7 @@ export type TemperatureSensorUncheckedCreateWithoutMachines_inlet_heaterInput = 
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway_id: number
   mapping_id: number
   machines_lower_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_lower_heaterInput
@@ -721,6 +756,7 @@ export type TemperatureSensorCreateWithoutMachines_lower_heaterInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutTemp_sensorsInput
   mapping: Prisma.MappingCreateNestedOneWithoutTemp_sensorsInput
   machines_inlet_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_inlet_heaterInput
@@ -733,6 +769,7 @@ export type TemperatureSensorUncheckedCreateWithoutMachines_lower_heaterInput = 
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway_id: number
   mapping_id: number
   machines_inlet_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_inlet_heaterInput
@@ -749,6 +786,7 @@ export type TemperatureSensorCreateWithoutMachines_after_catalystInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutTemp_sensorsInput
   mapping: Prisma.MappingCreateNestedOneWithoutTemp_sensorsInput
   machines_inlet_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_inlet_heaterInput
@@ -761,6 +799,7 @@ export type TemperatureSensorUncheckedCreateWithoutMachines_after_catalystInput 
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway_id: number
   mapping_id: number
   machines_inlet_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_inlet_heaterInput
@@ -777,6 +816,7 @@ export type TemperatureSensorCreateWithoutMachines_upper_heaterInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway: Prisma.GatewayCreateNestedOneWithoutTemp_sensorsInput
   mapping: Prisma.MappingCreateNestedOneWithoutTemp_sensorsInput
   machines_inlet_heater?: Prisma.MachineCreateNestedManyWithoutTemperature_inlet_heaterInput
@@ -789,6 +829,7 @@ export type TemperatureSensorUncheckedCreateWithoutMachines_upper_heaterInput = 
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway_id: number
   mapping_id: number
   machines_inlet_heater?: Prisma.MachineUncheckedCreateNestedManyWithoutTemperature_inlet_heaterInput
@@ -816,6 +857,7 @@ export type TemperatureSensorUpdateWithoutMachines_inlet_heaterInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutTemp_sensorsNestedInput
   mapping?: Prisma.MappingUpdateOneRequiredWithoutTemp_sensorsNestedInput
   machines_lower_heater?: Prisma.MachineUpdateManyWithoutTemperature_lower_heaterNestedInput
@@ -828,6 +870,7 @@ export type TemperatureSensorUncheckedUpdateWithoutMachines_inlet_heaterInput = 
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines_lower_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_lower_heaterNestedInput
@@ -850,6 +893,7 @@ export type TemperatureSensorUpdateWithoutMachines_lower_heaterInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutTemp_sensorsNestedInput
   mapping?: Prisma.MappingUpdateOneRequiredWithoutTemp_sensorsNestedInput
   machines_inlet_heater?: Prisma.MachineUpdateManyWithoutTemperature_inlet_heaterNestedInput
@@ -862,6 +906,7 @@ export type TemperatureSensorUncheckedUpdateWithoutMachines_lower_heaterInput = 
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines_inlet_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterNestedInput
@@ -884,6 +929,7 @@ export type TemperatureSensorUpdateWithoutMachines_after_catalystInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutTemp_sensorsNestedInput
   mapping?: Prisma.MappingUpdateOneRequiredWithoutTemp_sensorsNestedInput
   machines_inlet_heater?: Prisma.MachineUpdateManyWithoutTemperature_inlet_heaterNestedInput
@@ -896,6 +942,7 @@ export type TemperatureSensorUncheckedUpdateWithoutMachines_after_catalystInput 
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines_inlet_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterNestedInput
@@ -918,6 +965,7 @@ export type TemperatureSensorUpdateWithoutMachines_upper_heaterInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutTemp_sensorsNestedInput
   mapping?: Prisma.MappingUpdateOneRequiredWithoutTemp_sensorsNestedInput
   machines_inlet_heater?: Prisma.MachineUpdateManyWithoutTemperature_inlet_heaterNestedInput
@@ -930,6 +978,7 @@ export type TemperatureSensorUncheckedUpdateWithoutMachines_upper_heaterInput = 
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines_inlet_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterNestedInput
@@ -942,6 +991,7 @@ export type TemperatureSensorCreateManyGatewayInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   mapping_id: number
 }
 
@@ -949,6 +999,7 @@ export type TemperatureSensorUpdateWithoutGatewayInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   mapping?: Prisma.MappingUpdateOneRequiredWithoutTemp_sensorsNestedInput
   machines_inlet_heater?: Prisma.MachineUpdateManyWithoutTemperature_inlet_heaterNestedInput
   machines_lower_heater?: Prisma.MachineUpdateManyWithoutTemperature_lower_heaterNestedInput
@@ -961,6 +1012,7 @@ export type TemperatureSensorUncheckedUpdateWithoutGatewayInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines_inlet_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterNestedInput
   machines_lower_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_lower_heaterNestedInput
@@ -973,6 +1025,7 @@ export type TemperatureSensorUncheckedUpdateManyWithoutGatewayInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   mapping_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -981,6 +1034,7 @@ export type TemperatureSensorCreateManyMappingInput = {
   name: string
   address: number
   target_temp?: number
+  time_to_make_sample?: number
   gateway_id: number
 }
 
@@ -988,6 +1042,7 @@ export type TemperatureSensorUpdateWithoutMappingInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway?: Prisma.GatewayUpdateOneRequiredWithoutTemp_sensorsNestedInput
   machines_inlet_heater?: Prisma.MachineUpdateManyWithoutTemperature_inlet_heaterNestedInput
   machines_lower_heater?: Prisma.MachineUpdateManyWithoutTemperature_lower_heaterNestedInput
@@ -1000,6 +1055,7 @@ export type TemperatureSensorUncheckedUpdateWithoutMappingInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
   machines_inlet_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_inlet_heaterNestedInput
   machines_lower_heater?: Prisma.MachineUncheckedUpdateManyWithoutTemperature_lower_heaterNestedInput
@@ -1012,6 +1068,7 @@ export type TemperatureSensorUncheckedUpdateManyWithoutMappingInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.IntFieldUpdateOperationsInput | number
   target_temp?: Prisma.IntFieldUpdateOperationsInput | number
+  time_to_make_sample?: Prisma.IntFieldUpdateOperationsInput | number
   gateway_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -1078,6 +1135,7 @@ export type TemperatureSensorSelect<ExtArgs extends runtime.Types.Extensions.Int
   name?: boolean
   address?: boolean
   target_temp?: boolean
+  time_to_make_sample?: boolean
   gateway_id?: boolean
   mapping_id?: boolean
   gateway?: boolean | Prisma.GatewayDefaultArgs<ExtArgs>
@@ -1094,6 +1152,7 @@ export type TemperatureSensorSelectCreateManyAndReturn<ExtArgs extends runtime.T
   name?: boolean
   address?: boolean
   target_temp?: boolean
+  time_to_make_sample?: boolean
   gateway_id?: boolean
   mapping_id?: boolean
   gateway?: boolean | Prisma.GatewayDefaultArgs<ExtArgs>
@@ -1105,6 +1164,7 @@ export type TemperatureSensorSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   name?: boolean
   address?: boolean
   target_temp?: boolean
+  time_to_make_sample?: boolean
   gateway_id?: boolean
   mapping_id?: boolean
   gateway?: boolean | Prisma.GatewayDefaultArgs<ExtArgs>
@@ -1116,11 +1176,12 @@ export type TemperatureSensorSelectScalar = {
   name?: boolean
   address?: boolean
   target_temp?: boolean
+  time_to_make_sample?: boolean
   gateway_id?: boolean
   mapping_id?: boolean
 }
 
-export type TemperatureSensorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "target_temp" | "gateway_id" | "mapping_id", ExtArgs["result"]["temperatureSensor"]>
+export type TemperatureSensorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "target_temp" | "time_to_make_sample" | "gateway_id" | "mapping_id", ExtArgs["result"]["temperatureSensor"]>
 export type TemperatureSensorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gateway?: boolean | Prisma.GatewayDefaultArgs<ExtArgs>
   mapping?: boolean | Prisma.MappingDefaultArgs<ExtArgs>
@@ -1154,6 +1215,7 @@ export type $TemperatureSensorPayload<ExtArgs extends runtime.Types.Extensions.I
     name: string
     address: number
     target_temp: number
+    time_to_make_sample: number
     gateway_id: number
     mapping_id: number
   }, ExtArgs["result"]["temperatureSensor"]>
@@ -1589,6 +1651,7 @@ export interface TemperatureSensorFieldRefs {
   readonly name: Prisma.FieldRef<"TemperatureSensor", 'String'>
   readonly address: Prisma.FieldRef<"TemperatureSensor", 'Int'>
   readonly target_temp: Prisma.FieldRef<"TemperatureSensor", 'Int'>
+  readonly time_to_make_sample: Prisma.FieldRef<"TemperatureSensor", 'Int'>
   readonly gateway_id: Prisma.FieldRef<"TemperatureSensor", 'Int'>
   readonly mapping_id: Prisma.FieldRef<"TemperatureSensor", 'Int'>
 }

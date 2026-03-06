@@ -57,9 +57,10 @@ export interface Sensor {
   mapping: Mapping;
 }
 
-// Temperature sensor with target_temp
+// Temperature sensor with target_temp and time_to_make_sample
 export interface TemperatureSensorData extends Sensor {
   target_temp: number;
+  time_to_make_sample: number;
 }
 
 // Capstan speed sensor with speed_to_production
@@ -141,6 +142,12 @@ export interface MachineReading {
   target_temp_after_catalyst?: number;
   target_temp_upper_heater?: number;
   
+  // Time to make sample (minutes) for each sensor (from database)
+  time_to_make_sample_inlet_heater?: number;
+  time_to_make_sample_lower_heater?: number;
+  time_to_make_sample_after_catalyst?: number;
+  time_to_make_sample_upper_heater?: number;
+
   // Speed to production threshold (from database)
   speed_to_production?: number;
   
